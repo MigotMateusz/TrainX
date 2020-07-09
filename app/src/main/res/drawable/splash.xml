@@ -3,11 +3,7 @@
     android:opacity="opaque">
     <item android:drawable="@color/colorPrimary"/>
     <item>
-        <bitmap android:src="@drawable/icon"
+        <bitmap android:src="@drawable/icon_logo_round"
             android:gravity="center"/>
     </item>
-    <!--<item>
-        <background android:drawable="@drawable/iconx_background"/>
-        <foreground android:drawable="@mipmap/iconx_foreground"/>
-    </item>-->
 </layer-list>
