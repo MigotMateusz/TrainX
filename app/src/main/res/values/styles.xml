@@ -1,9 +1,10 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents" >
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -21,5 +22,32 @@
    <style name="splashScreenTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
 
        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+    <style name="TextLabelLogin" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textSize">18dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="boxStrokeColor">@color/colorAccent</item>
+        <item name="android:textColorHint">#eee</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:hint">@string/HintLogin</item>
+
+    </style>
+    <style name="TextLabelPassword" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorAccent</item>
+        <item name="android:textColorHint">#eee</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:paddingRight">30dp </item>
+        <item name="android:layout_marginTop">10dp </item>
+        <item name="android:hint">@string/HintPassword </item>
+        <item name="android:radius">20dp</item>
+    </style>
+    <style name="LoginButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:text">@string/HintLogin</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
     </style>
 </resources>
