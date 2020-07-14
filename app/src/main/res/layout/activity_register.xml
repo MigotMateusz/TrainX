@@ -22,5 +22,67 @@
         android:text="@string/NewAccount"
         android:textSize="40dp"
         />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/LoginField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextLabelLogin"
+        app:startIconContentDescription="@string/HintLogin">
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/LoginInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/EmailField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextLabelEmail"
+        app:startIconContentDescription="@string/HintEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/EmailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextLabelPassword"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/PasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/LoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/RegisterButtonStyle"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already have an account?"
+        android:layout_marginTop="50dp"/>
+    <Button
+        android:id="@+id/LogMeInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:text="Login"
+        android:textColor="@color/colorAccent" />
 </LinearLayout>

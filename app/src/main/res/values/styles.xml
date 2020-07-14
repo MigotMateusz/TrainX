@@ -33,6 +33,16 @@
         <item name="android:hint">@string/HintLogin</item>
 
     </style>
+    <style name="TextLabelEmail" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textSize">18dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="boxStrokeColor">@color/colorAccent</item>
+        <item name="android:textColorHint">#eee</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:hint">@string/HintEmail</item>
+
+    </style>
     <style name="TextLabelPassword" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="android:textColorHint">#eee</item>
@@ -46,6 +56,14 @@
     <style name="LoginButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:text">@string/HintLogin</item>
         <item name="android:textSize">16dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+    </style>
+    <style name="RegisterButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:text">@string/RegisterMe</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:layout_marginTop">30dp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
