@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "905902757757",
+    "firebase_url": "https://trainx-50e19.firebaseio.com",
+    "project_id": "trainx-50e19",
+    "storage_bucket": "trainx-50e19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905902757757:android:7a505c5bcfbda1a6355e14",
+        "android_client_info": {
+          "package_name": "com.example.trainx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905902757757-4701urcak1rgg486c55d86ice4lu8j45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeCO0iKNAyX8_cp0tFFFtYCXM-t9JSxf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905902757757-4701urcak1rgg486c55d86ice4lu8j45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
