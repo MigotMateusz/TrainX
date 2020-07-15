@@ -68,4 +68,12 @@
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
     </style>
+    <style name="ForogotButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:text">@string/Continue</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+    </style>
 </resources>

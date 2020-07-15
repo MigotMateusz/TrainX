@@ -16,13 +16,22 @@ public class LoginActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Button button = findViewById(R.id.SignUpButton);
-        button.setOnClickListener(new View.OnClickListener(){
+        Button SignUpButton = findViewById(R.id.SignUpButton);
+        Button ForgetPassButton = findViewById(R.id.ForgetPassButton);
+        SignUpButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
+            }
+        });
+        ForgetPassButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
             }
         });
     }

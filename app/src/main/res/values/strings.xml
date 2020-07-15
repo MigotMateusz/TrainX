@@ -16,4 +16,9 @@
     <string name="Signup">Sign up</string>
     <string name="NewAccount">Create Account</string>
     <string name="RegisterMe">Create Account</string>
+    <string name="ForgotHeader">Forgot Your Password?</string>
+    <string name="ForgotText">Enter your email address and we will send you
+    instructions to reset your password.</string>
+    <string name="BackToLogin">Back to Login Screen</string>
+    <string name="Continue">Continue</string>
 </resources>
