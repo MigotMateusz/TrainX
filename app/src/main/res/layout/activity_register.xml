@@ -30,7 +30,7 @@
         app:startIconContentDescription="@string/HintLogin">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/LoginInput"
+        android:id="@+id/LoginInputRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -45,7 +45,7 @@
         app:startIconContentDescription="@string/HintEmail">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/EmailInput"
+            android:id="@+id/EmailInputRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -60,7 +60,7 @@
         app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/PasswordInput"
+            android:id="@+id/PasswordInputRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
@@ -68,7 +68,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/LoginButton"
+        android:id="@+id/RegisterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/RegisterButtonStyle"

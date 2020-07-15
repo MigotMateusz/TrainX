@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -18,6 +20,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Button SignUpButton = findViewById(R.id.SignUpButton);
         Button ForgetPassButton = findViewById(R.id.ForgetPassButton);
+        DataManager dManager = DataManager.getInstance();
+
         SignUpButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -34,5 +38,6 @@ public class LoginActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
             }
         });
+
     }
 }
