@@ -14,4 +14,20 @@ public class User {
         this.email = email;
         this.password = password;
     }
+    public String makeitString(){
+        String i = "Username: " + username + ", email: " + email + ", password: " + password;
+        return i;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

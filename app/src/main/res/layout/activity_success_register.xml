@@ -7,4 +7,9 @@
     tools:context=".SuccessRegisterActivity">
 
 
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip2"
+        android:layout_width="207dp"
+        android:layout_height="386dp"
+        android:layout_weight="1" />
 </LinearLayout>

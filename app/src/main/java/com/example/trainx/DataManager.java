@@ -24,4 +24,29 @@ public class DataManager {
         String Key = database.push().getKey();
         database.child(Key).setValue(newUser);
     }
+    public boolean checkLogin(String _login, String _password) {
+        final String login = _login;
+        final String password = _password;
+        boolean isOk = false;
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e("Count ", ""+snapshot.getChildrenCount());
+                for(DataSnapshot postSnaposhot: snapshot.getChildren()){
+                    User post = postSnaposhot.getValue(User.class);
+                    String checkLogin = post.getUsername();
+                    String checkPassword = post.getPassword();
+                    if(login.equals(checkLogin) && password.equals(checkPassword))
+
+                    Log.e("Get data", post.makeitString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("The read failed: ", error.getMessage());
+            }
+        });
+        return false;
+    }
 }
