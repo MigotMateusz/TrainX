@@ -22,16 +22,18 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         mAuth = FirebaseAuth.getInstance();
         onStart();
+
         Button SignUpButton = findViewById(R.id.SignUpButton);
         Button ForgetPassButton = findViewById(R.id.ForgetPassButton);
-        DataManager dManager = DataManager.getInstance();
         final MaterialButton loginButton = findViewById(R.id.LoginButton);
         final TextInputEditText loginInput = findViewById(R.id.LoginInput);
         final TextInputEditText passInput = findViewById(R.id.PasswordInput);
@@ -42,39 +44,36 @@ public class LoginActivity extends AppCompatActivity {
                 String login = loginInput.getText().toString();
                 String password = passInput.getText().toString();
                 signIn(login, password);
-                //changeActivitySuccessLogin();
             }
         });
 
         SignUpButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
+                changeActivity(RegisterActivity.class);
             }
         });
         ForgetPassButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
+                changeActivity(ForgotPasswordActivity.class);
             }
         });
 
     }
 
-    private void changeActivitySuccessLogin(){
-        Intent intent = new Intent(LoginActivity.this, SuccessRegisterActivity.class);
+    private void changeActivity(Class<?> cls){
+        Intent intent = new Intent(LoginActivity.this, cls);
         startActivity(intent);
         overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
     }
+
     public void onStart(){
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        changeActivitySuccessLogin();
+        changeActivity(SuccessRegisterActivity.class);
     }
+
     public void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             Log.d("TAG", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            changeActivitySuccessLogin();
+                            changeActivity(SuccessRegisterActivity.class);
                         } else {
                             Log.w("TAG", "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",

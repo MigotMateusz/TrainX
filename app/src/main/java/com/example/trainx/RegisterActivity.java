@@ -22,25 +22,28 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
+
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        final DataManager dManager = DataManager.getInstance();
+
         Button button = findViewById(R.id.LogMeInButton);
         MaterialButton registerButton = findViewById(R.id.RegisterButton);
         final TextInputEditText loginInput = findViewById(R.id.LoginInputRegister);
         final TextInputEditText passwordInput = findViewById(R.id.PasswordInputRegister);
         final TextInputEditText emailInput = findViewById(R.id.EmailInputRegister);
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String login = loginInput.getText().toString();
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
-                createAccount(login,email,password);
+                createAccount(login, email, password);
                 sendEmailVerification();
             }
         });
@@ -65,8 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             makeSuccessDialog();
-                        }
-                        else {
+                        } else {
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Autentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -82,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         changeActivity();
-
                     }
                 })
                 .show();

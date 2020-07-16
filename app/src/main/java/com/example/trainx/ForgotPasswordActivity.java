@@ -23,23 +23,23 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+
         Button GoLoginScreen = findViewById(R.id.GoBackButton);
         MaterialButton sendButton = findViewById(R.id.SendButton);
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TextInputEditText emailInput = findViewById(R.id.ForgotEmailInput);
                 String email = emailInput.getText().toString();
-
                 sendPasswordResetEmail(email);
             }
         });
+
         GoLoginScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
+                changeToLoginActivity();
             }
         });
     }
@@ -56,5 +56,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void changeToLoginActivity() {
+        Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
     }
 }

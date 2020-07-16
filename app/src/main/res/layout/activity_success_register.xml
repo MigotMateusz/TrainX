@@ -6,15 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".SuccessRegisterActivity"
     android:id="@+id/generallayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/testUser"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textSize="40dp"
         android:textColor="@color/colorAccent"
         android:text="XD"
         />
+    <Button
+        android:id="@+id/SignOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Signout"
+        android:textColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:gravity="center|bottom"/>
 
 </LinearLayout>
