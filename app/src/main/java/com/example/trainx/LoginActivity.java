@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        //onStart();
+        onStart();
         Button SignUpButton = findViewById(R.id.SignUpButton);
         Button ForgetPassButton = findViewById(R.id.ForgetPassButton);
         DataManager dManager = DataManager.getInstance();
@@ -70,11 +70,11 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
     }
-    /*public void onStart(){
+    public void onStart(){
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         changeActivitySuccessLogin();
-    }*/
+    }
     public void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

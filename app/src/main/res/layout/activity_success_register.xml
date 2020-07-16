@@ -4,12 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SuccessRegisterActivity">
+    tools:context=".SuccessRegisterActivity"
+    android:id="@+id/generallayout"
+    android:orientation="vertical">
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/testUser"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="40dp"
+        android:textColor="@color/colorAccent"
+        android:text="XD"
+        />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip2"
-        android:layout_width="207dp"
-        android:layout_height="386dp"
-        android:layout_weight="1" />
 </LinearLayout>

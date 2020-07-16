@@ -1,15 +1,20 @@
 package com.example.trainx;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -26,16 +31,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 TextInputEditText emailInput = findViewById(R.id.ForgotEmailInput);
                 String email = emailInput.getText().toString();
 
-                Intent sendEmail = new Intent(Intent.ACTION_SEND);
-                sendEmail.setType("message/rfc822");
-                sendEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-                sendEmail.putExtra(Intent.EXTRA_SUBJECT, "New password");
-                sendEmail.putExtra(Intent.EXTRA_TEXT, "something something");
-                try{
-                    startActivity(Intent.createChooser(sendEmail, "Send mail..."));
-                } catch(android.content.ActivityNotFoundException ex){
-                    Toast.makeText(ForgotPasswordActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
-                }
+                sendPasswordResetEmail(email);
             }
         });
         GoLoginScreen.setOnClickListener(new View.OnClickListener() {
@@ -46,5 +42,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
             }
         });
+    }
+
+    public void sendPasswordResetEmail(String emailAddress) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        auth.sendPasswordResetEmail(emailAddress)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d("TAG", "Email sent.");
+                        }
+                    }
+                });
     }
 }

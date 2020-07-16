@@ -41,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
                 createAccount(login,email,password);
+                sendEmailVerification();
             }
         });
         button.setOnClickListener(new View.OnClickListener(){
@@ -85,5 +86,20 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    public void sendEmailVerification() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            Log.d("TAG", "Email sent.");
+                        }
+                    }
+                });
     }
 }
