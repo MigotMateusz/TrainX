@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,6 +22,16 @@ public class LoginActivity extends AppCompatActivity {
         Button SignUpButton = findViewById(R.id.SignUpButton);
         Button ForgetPassButton = findViewById(R.id.ForgetPassButton);
         DataManager dManager = DataManager.getInstance();
+        final MaterialButton loginButton = findViewById(R.id.LoginButton);
+        final TextInputEditText loginInput = findViewById(R.id.LoginInput);
+        final TextInputEditText passInput = findViewById(R.id.PasswordInput);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String login = loginInput.getText().toString();
+                String password = passInput.getText().toString();
+            }
+        });
 
         SignUpButton.setOnClickListener(new View.OnClickListener(){
             @Override

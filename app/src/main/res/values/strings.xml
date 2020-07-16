@@ -21,4 +21,7 @@
     instructions to reset your password.</string>
     <string name="BackToLogin">Back to Login Screen</string>
     <string name="Continue">Continue</string>
+    <string name="SuccessRegiser">Successful Registration</string>
+    <string name="ThankyouRegiser">Thank you for your registration</string>
+    <string name="Ok">Ok</string>
 </resources>
