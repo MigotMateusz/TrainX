@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextLabelLogin"
-            app:startIconContentDescription="@string/HintLogin">
+            app:startIconContentDescription="@string/HintLogin"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/LoginInput"
@@ -38,7 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextLabelPassword"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/PasswordInput"
@@ -52,7 +54,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot your password?"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="60dp"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="#eee"

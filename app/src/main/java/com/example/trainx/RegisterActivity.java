@@ -16,9 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -40,11 +42,23 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TextInputLayout loginField = findViewById(R.id.LoginFieldRegister);
+                TextInputLayout emailFiled = findViewById(R.id.EmailFieldRegister);
+                TextInputLayout passwordField = findViewById(R.id.passwordFieldRegister);
+                loginField.setError(null);
+                emailFiled.setError(null);
+                passwordField.setError(null);
                 String login = loginInput.getText().toString();
+                if(login.matches(""))
+                    loginField.setError("Text field cannot be empty!");
                 String email = emailInput.getText().toString();
+                if(email.matches(""))
+                    emailFiled.setError("Text field cannot be empty!");
                 String password = passwordInput.getText().toString();
-                createAccount(login, email, password);
-                sendEmailVerification();
+                if(password.matches(""))
+                    passwordField.setError("Text field cannot be empty!");
+                if(!login.matches("") && !password.matches("") && !email.matches(""))
+                    createAccount(login, email, password);
             }
         });
         button.setOnClickListener(new View.OnClickListener(){
@@ -67,14 +81,27 @@ public class RegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Log.d("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            sendEmailVerification();
                             makeSuccessDialog();
                         } else {
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Autentication failed.",
+                            Toast.makeText(RegisterActivity.this, "Registration failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                .setDisplayName(login)
+                .build();
+        user.updateProfile(profileUpdate)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                            Log.d("TAG", "User profile updated.");
+                    }
+                });*/
     }
     public void makeSuccessDialog(){
         new MaterialAlertDialogBuilder(RegisterActivity.this)
@@ -99,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
                             Log.d("TAG", "Email sent.");
+                            Toast.makeText(RegisterActivity.this, "Email verification sent.", Toast.LENGTH_SHORT);
                         }
                     }
                 });

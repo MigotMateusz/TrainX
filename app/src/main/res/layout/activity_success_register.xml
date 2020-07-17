@@ -17,6 +17,14 @@
         android:textColor="@color/colorAccent"
         android:text="XD"
         />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/testUser2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40dp"
+        android:textColor="@color/colorAccent"
+        android:text="XD"
+        />
     <Button
         android:id="@+id/SignOutButton"
         android:layout_width="wrap_content"

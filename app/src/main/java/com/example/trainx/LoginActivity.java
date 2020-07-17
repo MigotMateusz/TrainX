@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,9 +42,20 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TextInputLayout loginfield = findViewById(R.id.LoginField);
+                TextInputLayout passwordField = findViewById(R.id.passwordField);
+                loginfield.setError(null);
+                passwordField.setError(null);
                 String login = loginInput.getText().toString();
+                if(login.matches("")){
+                    loginfield.setError("This field cannot be empty!");
+                }
                 String password = passInput.getText().toString();
-                signIn(login, password);
+                if(password.matches("")){
+                    passwordField.setError("This field cannot be empty!");
+                }
+                if(!password.matches("") && !login.matches(""))
+                    signIn(login, password);
             }
         });
 
@@ -71,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        changeActivity(SuccessRegisterActivity.class);
+        if(currentUser != null)
+            changeActivity(SuccessRegisterActivity.class);
     }
 
     public void signIn(String email, String password) {
