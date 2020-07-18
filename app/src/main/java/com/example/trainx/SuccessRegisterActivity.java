@@ -1,5 +1,6 @@
 package com.example.trainx;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,6 +12,12 @@ import android.widget.LinearLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class SuccessRegisterActivity extends AppCompatActivity {
     @Override
@@ -32,17 +39,11 @@ public class SuccessRegisterActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null) {
-            String name = user.getDisplayName();
             String email = user.getEmail();
-
-            boolean emailVerified = user.isEmailVerified();
-
-            String uid = user.getUid();
 
             MaterialTextView textView = findViewById(R.id.testUser);
             MaterialTextView textView2 = findViewById(R.id.testUser2);
             textView.setText(email);
-            textView2.setText(name);
         }
     }
 }

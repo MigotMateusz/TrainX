@@ -21,6 +21,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -73,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
     }
-    public void createAccount(String login, String email, String password) {
+    public void createAccount(final String login, String email, String password) {
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -81,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Log.d("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            addUsertoDatabase(user.getUid(), login);
                             sendEmailVerification();
                             makeSuccessDialog();
                         } else {
@@ -130,5 +133,10 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public void addUsertoDatabase(String username, String uid){
+        FirebaseDatabase firebase = FirebaseDatabase.getInstance();
+        DatabaseReference ref = firebase.getReference().child("users");
+        ref.child(uid).setValue(username);
     }
 }
