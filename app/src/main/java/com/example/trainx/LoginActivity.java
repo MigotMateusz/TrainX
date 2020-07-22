@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null)
-            changeActivity(SuccessRegisterActivity.class);
+            changeActivity(MainActivity.class);
     }
 
     public void signIn(String email, String password) {
