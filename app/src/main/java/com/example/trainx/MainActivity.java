@@ -1,6 +1,8 @@
 package com.example.trainx;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.Toolbar;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -56,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+    }
+    public void replaceFragment() {
+        Fragment fragment = new PlanStructureFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.FrameLayout, fragment)
+                .commit();
     }
 }

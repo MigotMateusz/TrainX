@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:title="TrainX"
             app:menu="@menu/menu_main"
             />

@@ -1,23 +1,19 @@
 package com.example.trainx;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.card.MaterialCardView;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PlanModule#newInstance} factory method to
+ * Use the {@link PlanStructureFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PlanModule extends Fragment implements View.OnClickListener {
+public class PlanStructureFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +24,7 @@ public class PlanModule extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    public PlanModule() {
+    public PlanStructureFragment() {
         // Required empty public constructor
     }
 
@@ -38,11 +34,11 @@ public class PlanModule extends Fragment implements View.OnClickListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PlanModule.
+     * @return A new instance of fragment PlanStructureFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PlanModule newInstance(String param1, String param2) {
-        PlanModule fragment = new PlanModule();
+    public static PlanStructureFragment newInstance(String param1, String param2) {
+        PlanStructureFragment fragment = new PlanStructureFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,19 +59,6 @@ public class PlanModule extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View myView = inflater.inflate(R.layout.fragment_plan_module, container, false);
-        MaterialCardView materialCardView = myView.findViewById(R.id.PlanCardView);
-        materialCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment();
-            }
-        });
-        return myView;
-    }
-
-    @Override
-    public void onClick(View view) {
-
+        return inflater.inflate(R.layout.fragment_plan_structure, container, false);
     }
 }

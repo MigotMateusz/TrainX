@@ -7,9 +7,11 @@
     tools:context=".PlanModule">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/PlanCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:clickable="true"
         app:cardCornerRadius="15dp"
         app:strokeWidth="1dp">
         <LinearLayout
