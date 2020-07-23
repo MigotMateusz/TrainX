@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PlansFragment">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <androidx.core.widget.NestedScrollView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/LlPlans"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No saved trainings"
+                    android:layout_marginTop="25dp"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:name="com.example.trainx.PlanModule"/>
+            </LinearLayout>
+       </androidx.core.widget.NestedScrollView>
+       <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+           android:id="@+id/PlanFloatingButton"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:layout_alignParentRight="true"
+           android:layout_margin="16dp"
+           app:icon="@drawable/ic_baseline_add_24"
+           android:text="Add new training"/>
+
+   </RelativeLayout>
+
+</FrameLayout>

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toolbar;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -20,19 +21,34 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
-        TabItem tabWeek = findViewById(R.id.TWeekTab);
+        final TabItem tabWeek = findViewById(R.id.TWeekTab);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                ThisWeekFragment thisWeekFragment = new ThisWeekFragment();
-                thisWeekFragment.setArguments(getIntent().getExtras());
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.FrameLayout, thisWeekFragment).commit();
+                if(tab.getPosition() == 0) {
+
+                }
+                else if(tab.getPosition() == 1){
+                    ThisWeekFragment thisWeekFragment = new ThisWeekFragment();
+                    thisWeekFragment.setArguments(getIntent().getExtras());
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.FrameLayout, thisWeekFragment).commit();
+                }
+                else if(tab.getPosition() == 2) {
+                    PlansFragment plansFragment = new PlansFragment();
+                    plansFragment.setArguments(getIntent().getExtras());
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.FrameLayout, plansFragment).commit();
+                }
+                else {
+
+                }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                FrameLayout frameLayout = (FrameLayout)findViewById(R.id.FrameLayout);
+                frameLayout.removeAllViews();
             }
 
             @Override
