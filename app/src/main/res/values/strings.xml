@@ -34,5 +34,14 @@ Duis bibendum justo laoreet, sodales dolor vitae, aliquam tortor. Fusce congue e
 
 Pellentesque neque odio, viverra sit amet lectus at, vulputate vulputate mi. Nullam id urna in dui eleifend maximus. Proin pretium sapien vel orci auctor dictum. Vestibulum vel nunc nec purus pharetra porta sed eu nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse vestibulum euismod massa, non lobortis risus consequat non. Fusce pulvinar tempus nulla et posuere. Curabitur commodo turpis sodales nunc mollis elementum. Duis aliquet eros ac sem blandit, eget placerat ligula ornare. In sit amet ullamcorper enim. Nunc ut ex ac enim laoreet pulvinar.
     Pellentesque neque odio, viverra sit amet lectus at, vulputate vulputate mi. Nullam id urna in dui eleifend maximus. Proin pretium sapien vel orci auctor dictum. Vestibulum vel nunc nec purus pharetra porta sed eu nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse vestibulum euismod massa, non lobortis risus consequat non. Fusce pulvinar tempus nulla et posuere. Curabitur commodo turpis sodales nunc mollis elementum. Duis aliquet eros ac sem blandit, eget placerat ligula ornare. In sit amet ullamcorper enim. Nunc ut ex ac enim laoreet pulvinar.</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Monday">Monday</string>
+    <string name="Tuesday">Tuesday</string>
+    <string name="Wednesday">Wednesday</string>
+    <string name="Thursday">Thursday</string>
+    <string name="Friday">Friday</string>
+    <string name="Saturday">Saturday</string>
+    <string name="Sunday">Sunday</string>
+    <string name="Training">Training: Gym(Chest + Biceps)</string>
 </resources>
