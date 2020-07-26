@@ -5,12 +5,15 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textview.MaterialTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +31,21 @@ public class PlanModule extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
+    public Button activeButton;
+    public MaterialTextView titleText;
+    public MaterialTextView structureText;
+
+    private String titleString;
+    private String structureString;
+    private boolean isActive;
+
     public PlanModule() {
         // Required empty public constructor
+    }
+    public PlanModule(String title, String structure, boolean isActive) {
+        this.titleString = title;
+        this.structureString = structure;
+        this.isActive = isActive;
     }
 
     /**
@@ -65,6 +81,13 @@ public class PlanModule extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View myView = inflater.inflate(R.layout.fragment_plan_module, container, false);
         MaterialCardView materialCardView = myView.findViewById(R.id.PlanCardView);
+        activeButton = myView.findViewById(R.id.ActiveFlag);
+        titleText = myView.findViewById(R.id.PlanTitleText);
+        structureText = myView.findViewById(R.id.PlanStructureText);
+        if(!isActive)
+            activeButton.setVisibility(View.GONE);
+        titleText.setText(titleString);
+        structureText.setText(structureString);
         materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

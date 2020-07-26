@@ -3,10 +3,16 @@ package com.example.trainx;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textview.MaterialTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,12 +59,39 @@ public class PlansFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_plans, container, false);
+        View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
+
+        MaterialTextView materialTextView = (MaterialTextView)myView.findViewById(R.id.NoTrainingText);
+        materialTextView.setVisibility(View.GONE);
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        fm.beginTransaction();
+        Fragment newModule = new PlanModule("Split 1", "Split", true);
+
+        Fragment newModule1 = new PlanModule("FBW 1", "Full Body Workout", false);
+
+        Fragment newModule2 = new PlanModule("Crossfit elements","Full Body Workout",false);
+
+        Fragment newModule3 = new PlanModule();
+
+        ft.add(R.id.LlPlans, newModule);
+        ft.add(R.id.LlPlans, newModule1);
+        ft.add(R.id.LlPlans, newModule2);
+        ft.add(R.id.LlPlans, newModule3);
+        //ft.add(R.id.LlPlans, newModule);
+        ft.commit();
+
+
+
+        return myView;
     }
 }

@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <LinearLayout
+                android:id="@+id/leftPlanModule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -44,6 +45,7 @@
                 android:layout_gravity="center">
                 <Button
                     android:id="@+id/ActiveFlag"
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_gravity="right"
                     android:layout_height="wrap_content"
