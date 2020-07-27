@@ -1,5 +1,6 @@
 package com.example.trainx;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
 /**
@@ -70,6 +72,15 @@ public class PlansFragment extends Fragment {
 
         MaterialTextView materialTextView = (MaterialTextView)myView.findViewById(R.id.NoTrainingText);
         materialTextView.setVisibility(View.GONE);
+
+        ExtendedFloatingActionButton newPlanButton = (ExtendedFloatingActionButton) myView.findViewById(R.id.PlanFloatingButton) ;
+        newPlanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), NewPlanActivity.class);
+                startActivity(intent);
+            }
+        });
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

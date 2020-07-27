@@ -66,4 +66,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.FrameLayout, fragment)
                 .commit();
     }
+    public void visibiltyTab(){
+        TabLayout tab = findViewById(R.id.TopTabLayout);
+        tab.setVisibility(View.GONE);
+    }
 }
