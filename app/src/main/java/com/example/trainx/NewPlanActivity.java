@@ -18,9 +18,11 @@ public class NewPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_plan);
-        String[] traingTypes = new String[] {"Split", "Full Body Workout", "Push-Pull", "Push-Pull-Legs"};
+
+        String[] trainingTypes = new String[] {"Split", "Full Body Workout", "Push-Pull", "Push-Pull-Legs"};
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(NewPlanActivity.this, R.layout.dropdown_menu_popup_item, traingTypes);
+                new ArrayAdapter<String>(NewPlanActivity.this, R.layout.dropdown_menu_popup_item, trainingTypes);
+
         AutoCompleteTextView dropdownMenuTypes = findViewById(R.id.Dropdown_typeTraining);
         dropdownMenuTypes.setAdapter(adapter);
         dropdownMenuTypes.setInputType(0);

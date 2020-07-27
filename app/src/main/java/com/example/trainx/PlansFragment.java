@@ -86,22 +86,18 @@ public class PlansFragment extends Fragment {
         FragmentTransaction ft = fm.beginTransaction();
 
         fm.beginTransaction();
+
         Fragment newModule = new PlanModule("Split 1", "Split", true);
-
         Fragment newModule1 = new PlanModule("FBW 1", "Full Body Workout", false);
-
         Fragment newModule2 = new PlanModule("Crossfit elements","Full Body Workout",false);
-
-        Fragment newModule3 = new PlanModule();
+        Fragment newModule3 = new PlanModule("After recovery workout", "Push-Pull-Legs", false);
 
         ft.add(R.id.LlPlans, newModule);
         ft.add(R.id.LlPlans, newModule1);
         ft.add(R.id.LlPlans, newModule2);
         ft.add(R.id.LlPlans, newModule3);
-        //ft.add(R.id.LlPlans, newModule);
+
         ft.commit();
-
-
 
         return myView;
     }

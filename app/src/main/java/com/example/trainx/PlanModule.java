@@ -1,13 +1,10 @@
 package com.example.trainx;
 
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,14 +79,18 @@ public class PlanModule extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View myView = inflater.inflate(R.layout.fragment_plan_module, container, false);
+
         MaterialCardView materialCardView = myView.findViewById(R.id.PlanCardView);
         activeButton = myView.findViewById(R.id.ActiveFlag);
         titleText = myView.findViewById(R.id.PlanTitleText);
         structureText = myView.findViewById(R.id.PlanStructureText);
+
         if(!isActive)
             activeButton.setVisibility(View.GONE);
+
         titleText.setText(titleString);
         structureText.setText(structureString);
+
         materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

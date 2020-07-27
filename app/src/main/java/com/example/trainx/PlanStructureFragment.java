@@ -62,7 +62,6 @@ public class PlanStructureFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View myView =  inflater.inflate(R.layout.fragment_plan_structure, container, false);
-
         return myView;
     }
 }
