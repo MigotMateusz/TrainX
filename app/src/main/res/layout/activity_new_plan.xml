@@ -7,20 +7,17 @@
     tools:context=".NewPlanActivity"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarMain"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBarMain"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             style="@style/Theme.App"
-            app:title="TrainX"
+            app:title="Plan creator"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:menu="@menu/menu_main"
             />
-    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,62 +25,61 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Plan creator"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"/>
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name: "/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <com.google.android.material.textfield.TextInputEditText
+                android:layout_marginHorizontal="20dp"
+                android:padding="10dp"
+               >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                    <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:text="General Options"
+                        android:layout_marginBottom="20dp"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Plan name">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
-            <com.google.android.material.switchmaterial.SwitchMaterial
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="Type">
+                        <AutoCompleteTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Dropdown_typeTraining"
+                            android:inputType="none"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Save as active"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="Save as active"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Type: "/>
-                <!--<Spinner
-                    android:id="@+id/spinner1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"/>-->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:hint="Hint">
-                    <AutoCompleteTextView
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/Dropdown_typeTraining"
-                        android:inputType="none"/>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Next"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/colorAccent"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

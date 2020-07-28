@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import static java.security.AccessController.getContext;
 
 public class NewPlanActivity extends AppCompatActivity {
@@ -26,6 +28,10 @@ public class NewPlanActivity extends AppCompatActivity {
         AutoCompleteTextView dropdownMenuTypes = findViewById(R.id.Dropdown_typeTraining);
         dropdownMenuTypes.setAdapter(adapter);
         dropdownMenuTypes.setInputType(0);
+
+        MaterialToolbar toolbar = (MaterialToolbar) findViewById(R.id.topAppBarMain);
+        setSupportActionBar(toolbar);
+
     }
 
     @Override
