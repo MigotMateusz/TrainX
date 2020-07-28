@@ -68,7 +68,7 @@ public class PlansFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
+        final View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
 
         MaterialTextView materialTextView = (MaterialTextView)myView.findViewById(R.id.NoTrainingText);
         materialTextView.setVisibility(View.GONE);
@@ -79,6 +79,7 @@ public class PlansFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), NewPlanActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
             }
         });
 
