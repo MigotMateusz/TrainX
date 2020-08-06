@@ -1,6 +1,8 @@
 package com.example.trainx;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +23,27 @@ public class CustomDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+        builder.setView(inflater.inflate(R.layout.addexercise_dialog, null))
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //@TODO
+                        // action to save exercise...
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //@TODO
+                        //action to do nothing and delete data...
+                    }
+                });
+        return builder.create();
+       // Dialog dialog = super.onCreateDialog(savedInstanceState);
+        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //return dialog;
     }
 }
