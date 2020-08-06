@@ -12,7 +12,6 @@
             android:id="@+id/topAppBarMain"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            style="@style/Theme.App"
             app:title="Plan creator"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:menu="@menu/menu_main"

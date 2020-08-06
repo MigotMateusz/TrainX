@@ -1,6 +1,7 @@
 package com.example.trainx;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.trainx.R;
+import com.google.android.material.appbar.MaterialToolbar;
 
 
 public class CustomDialogFragment extends DialogFragment {
@@ -38,6 +41,13 @@ public class CustomDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
     }

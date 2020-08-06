@@ -46,4 +46,13 @@ public class CustomDialog extends DialogFragment {
         //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //return dialog;
     }
+    static CustomDialog newInstance(int num) {
+        CustomDialog f = new CustomDialog();
+
+        Bundle args = new Bundle();
+        args.putInt("num",num);
+        f.setArguments(args);
+
+        return f;
+    }
 }
