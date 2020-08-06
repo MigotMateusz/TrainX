@@ -38,7 +38,7 @@ public class NewPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_plan);
 
-        MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
+        final MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
 
                 String[] trainingTypes = new String[] {"Split", "Full Body Workout", "Push-Pull", "Push-Pull-Legs"};
@@ -56,22 +56,18 @@ public class NewPlanActivity extends AppCompatActivity {
         final TextInputEditText textInputPlanName = (TextInputEditText)findViewById(R.id.PlanNameInput);
         final AutoCompleteTextView typeOfTraining = (AutoCompleteTextView) findViewById(R.id.Dropdown_typeTraining);
 
-        activeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-
-                } else {
-
-                }
-            }
-        });
-
         final Button goNextButton = (Button) findViewById(R.id.GoStructureButton);
         goNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ExtendedFloatingActionButton extendedFloatingActionButton = (ExtendedFloatingActionButton) findViewById(R.id.NewTrainingUnitButton);
+                extendedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        toolbar.setTitle("Training Unit Creator");
+                        openDialog();
+                    }
+                });
                 MaterialCardView cardView = (MaterialCardView) findViewById(R.id.GoptionCard);
                 cardView.setVisibility(View.GONE);
                 goNextButton.setVisibility(View.GONE);
@@ -141,14 +137,15 @@ public class NewPlanActivity extends AppCompatActivity {
     }
     public void openDialog() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        CustomDialogFragment newFragment = new CustomDialogFragment();
+        //CustomDialogFragment newFragment = new CustomDialogFragment();
+        CustomDialogFragment.display(fragmentManager);
         //show as dialog
         //newFragment.show(fragmentManager, "dialog");
 
         //show as fullscreen
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.add(R.id.LlPlanCreator, newFragment).addToBackStack(null).commit();
+        //FragmentTransaction transaction = fragmentManager.beginTransaction();
+        //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        //transaction.add(R.id.LlPlanCreator, newFragment).addToBackStack(null).commit();
         //addExerciseHandler();
     }
 

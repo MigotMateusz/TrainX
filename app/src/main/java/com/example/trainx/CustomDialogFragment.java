@@ -20,10 +20,14 @@ import com.google.android.material.appbar.MaterialToolbar;
 
 
 public class CustomDialogFragment extends DialogFragment {
+    private MaterialToolbar toolbar;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater,container, savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
         View myView = inflater.inflate(R.layout.add_new_unit_dialog, container, false);
+        toolbar = myView.findViewById(R.id.NewUnitDialog);
         Button addButton = (Button) myView.findViewById(R.id.AddExerciseButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,21 +41,33 @@ public class CustomDialogFragment extends DialogFragment {
         return myView;
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
-    }
-    public void addExerciseHandler(){
 
+    public static CustomDialogFragment display(FragmentManager fragmentManager) {
+        CustomDialogFragment customDialogFragment = new CustomDialogFragment();
+        customDialogFragment.show(fragmentManager, "TEST");
+        return customDialogFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        toolbar.setNavigationOnClickListener(v -> dismiss());
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if(dialog != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
+        }
     }
 }
