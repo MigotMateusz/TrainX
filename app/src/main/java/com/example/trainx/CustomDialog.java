@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class CustomDialog extends DialogFragment {
     @Nullable
     @Override
@@ -32,6 +34,9 @@ public class CustomDialog extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //@TODO
                         // action to save exercise...
+                        //TextInputEditText nameInput = (TextInputEditText)
+
+                        //newExercise
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

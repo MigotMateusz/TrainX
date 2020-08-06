@@ -64,7 +64,6 @@ public class NewPlanActivity extends AppCompatActivity {
                 extendedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        toolbar.setTitle("Training Unit Creator");
                         openDialog();
                     }
                 });
