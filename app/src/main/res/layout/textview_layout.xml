@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_view_layout"
+    android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+    android:text="Test raz dwa trzy"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="40dp"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>

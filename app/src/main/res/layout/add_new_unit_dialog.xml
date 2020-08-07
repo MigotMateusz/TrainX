@@ -35,10 +35,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <ListView
-            android:id="@+id/ListViewExercise"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/listview_exercise_layout"/>
         <Button
             android:id="@+id/AddExerciseButton"
             android:layout_width="wrap_content"
