@@ -11,6 +11,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -45,5 +46,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public int getItemCount() {
         return mDataset.length;
+    }
+
+    public void addData(ArrayList<String> list, String newData) {
+        list.add(newData);
+        this.notifyDataSetChanged();
     }
 }

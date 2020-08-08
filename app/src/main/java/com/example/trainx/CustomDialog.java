@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,15 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class CustomDialog extends DialogFragment {
+    private TextInputEditText nameInput;
+    private TextInputEditText repsInput;
+    private TextInputEditText setsInput;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.addexercise_dialog, container, false);
+        View myView = inflater.inflate(R.layout.addexercise_dialog, container, false);
+
+        return myView;
     }
 
     @NonNull
@@ -32,24 +38,21 @@ public class CustomDialog extends DialogFragment {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //@TODO
-                        // action to save exercise...
-                        //TextInputEditText nameInput = (TextInputEditText)
-
-                        //newExercise
+                        String name = nameInput.getText().toString();
+                        String sets = setsInput.getText().toString();
+                        String reps = repsInput.getText().toString();
+                        String result = name + " " + sets + "x" + reps;
+                        Log.i("Result: ", result);
+                        //callback.onCallback(result);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //@TODO
-                        //action to do nothing and delete data...
+                        dialogInterface.cancel();
                     }
                 });
         return builder.create();
-       // Dialog dialog = super.onCreateDialog(savedInstanceState);
-        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //return dialog;
     }
     static CustomDialog newInstance(int num) {
         CustomDialog f = new CustomDialog();

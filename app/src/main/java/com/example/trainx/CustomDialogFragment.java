@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class CustomDialogFragment extends DialogFragment {
     private MaterialToolbar toolbar;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MyAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private TextInputEditText nameInput;
     private TextInputEditText repsInput;
@@ -53,14 +53,10 @@ public class CustomDialogFragment extends DialogFragment {
         tab1 = new ArrayList<String>();
         tab1.add("XD");
         tab1.add("XD1");
-        nameInput = (TextInputEditText) myView.findViewById(R.id.TextInputNameExercise);
-        repsInput = (TextInputEditText) myView.findViewById(R.id.textInputReps);
-        setsInput = (TextInputEditText) myView.findViewById(R.id.textInputSets);
         String[] tab = new String[tab1.size()];
         tab = tab1.toArray(tab);
         mAdapter = new MyAdapter(tab);
         recyclerView.setAdapter(mAdapter);
-
         toolbar = myView.findViewById(R.id.NewUnitDialog);
         Button addButton = (Button) myView.findViewById(R.id.AddExerciseButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +93,6 @@ public class CustomDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         toolbar.setNavigationOnClickListener(v -> dismiss());
-
     }
 
     @Override
@@ -112,14 +107,21 @@ public class CustomDialogFragment extends DialogFragment {
     }
     public void newExercise(String value) {
         tab1.add(value);
-        mAdapter.notifyDataSetChanged();
+        for(String t : tab1){
+            Log.i("For", t);
+        }
+        mAdapter.notifyItemInserted(tab1.size() - 1);
+        String[] newTab = new String[tab1.size()];
+        newTab = tab1.toArray(newTab);
+        MyAdapter newAdapter = new MyAdapter(newTab);
+        recyclerView.setAdapter(newAdapter);
     }
     private void openDialog(final MyCallback callback) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = View.inflate(getContext(), R.layout.addexercise_dialog, null);
-        builder.setTitle("Title test");
-        builder.setView(R.layout.addexercise_dialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+        LayoutInflater inflater = this.getLayoutInflater();
+        View v = inflater.inflate(R.layout.addexercise_dialog, null);
+        builder.setView(v);
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -127,7 +129,8 @@ public class CustomDialogFragment extends DialogFragment {
                 String name = nameInput.getText().toString();
                 String sets = setsInput.getText().toString();
                 String reps = repsInput.getText().toString();
-                String result = name + " " + sets + "x" + reps;
+                String result = name + " " + sets + " x " + reps;
+                Log.i("Result: ", result);
                 callback.onCallback(result);
             }
         });
@@ -137,6 +140,14 @@ public class CustomDialogFragment extends DialogFragment {
                 dialogInterface.cancel();
             }
         });
-        builder.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        nameInput = (TextInputEditText) dialog.findViewById(R.id.TextInputNameExercise);
+
+        repsInput = (TextInputEditText) dialog.findViewById(R.id.textInputReps);
+
+        setsInput = (TextInputEditText) dialog.findViewById(R.id.textInputSets);
+
+
     }
 }
