@@ -6,10 +6,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +32,15 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
+
 import static java.security.AccessController.getContext;
 
 public class NewPlanActivity extends AppCompatActivity {
     public Menu navMenu;
+    private ArrayList<String> tab1;
+    private RecyclerView recyclerView;
+    private MyAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +72,13 @@ public class NewPlanActivity extends AppCompatActivity {
                 extendedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        openDialog();
+                        openDialog(new TrainingUnitCallback() {
+                            @Override
+                            public void onCallback(String namePlan, ArrayList<String> exerciseArray) {
+                                int s = exerciseArray.size();
+                                addTrainingUnit(namePlan, s);
+                            }
+                        });
                     }
                 });
                 MaterialCardView cardView = (MaterialCardView) findViewById(R.id.GoptionCard);
@@ -133,11 +147,21 @@ public class NewPlanActivity extends AppCompatActivity {
         newTitle.setText("List of training units");
         newTitle.setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline5);
         ll.addView(newTitle);
+        recyclerView = new RecyclerView(this);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        tab1 = new ArrayList<String>();
+        String[] tab = new String[tab1.size()];
+        tab = tab1.toArray(tab);
+        mAdapter = new MyAdapter(tab);
+        recyclerView.setAdapter(mAdapter);
+        ll.addView(recyclerView);
     }
-    public void openDialog() {
+    public void openDialog(TrainingUnitCallback callback) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         //CustomDialogFragment newFragment = new CustomDialogFragment();
-        CustomDialogFragment.display(fragmentManager);
+        CustomDialogFragment.display(fragmentManager, callback);
         //show as dialog
         //newFragment.show(fragmentManager, "dialog");
 
@@ -154,5 +178,13 @@ public class NewPlanActivity extends AppCompatActivity {
         navMenu = menu;
         return true;
     }
-
+    private void addTrainingUnit(String name_and_numberExercises, int size){
+        String result = name_and_numberExercises + " " + "size: " + size;
+        tab1.add(result);
+        mAdapter.notifyItemInserted(tab1.size() - 1);
+        String[] newTab = new String[tab1.size()];
+        newTab = tab1.toArray(newTab);
+        MyAdapter newAdapter = new MyAdapter(newTab);
+        recyclerView.setAdapter(newAdapter);
+    }
 }

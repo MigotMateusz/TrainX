@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trainx.R;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -37,7 +38,9 @@ public class CustomDialogFragment extends DialogFragment {
     private TextInputEditText nameInput;
     private TextInputEditText repsInput;
     private TextInputEditText setsInput;
+    private TrainingUnitCallback myCallback;
     ArrayList<String> tab1;
+    public CustomDialogFragment(TrainingUnitCallback call) { this.myCallback = call; }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,8 +54,6 @@ public class CustomDialogFragment extends DialogFragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         tab1 = new ArrayList<String>();
-        tab1.add("XD");
-        tab1.add("XD1");
         String[] tab = new String[tab1.size()];
         tab = tab1.toArray(tab);
         mAdapter = new MyAdapter(tab);
@@ -75,11 +76,26 @@ public class CustomDialogFragment extends DialogFragment {
                 });
             }
         });
+        TextInputEditText nameInput = (TextInputEditText) myView.findViewById(R.id.NamePlanInput);
+        ExtendedFloatingActionButton saveButton = (ExtendedFloatingActionButton) myView.findViewById(R.id.saveUnitButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Zapisz tytuł i tablice z ćwiczeniami w funkcji
+                String namePlan = nameInput.getText().toString();
+                Log.i("nameInput", namePlan);
+                for(String t : tab1){
+                    Log.i("Tablica: ", t);
+                }
+                myCallback.onCallback(namePlan, tab1);
+                getDialog().cancel();
+            }
+        });
         return myView;
     }
 
-    public static CustomDialogFragment display(FragmentManager fragmentManager) {
-        CustomDialogFragment customDialogFragment = new CustomDialogFragment();
+    public static CustomDialogFragment display(FragmentManager fragmentManager, TrainingUnitCallback callback) {
+        CustomDialogFragment customDialogFragment = new CustomDialogFragment(callback);
         customDialogFragment.show(fragmentManager, "TEST");
         return customDialogFragment;
     }
