@@ -15,6 +15,8 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @Override
@@ -25,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         int test = getIntent().getIntExtra("doWhat", -1);
-
-
         tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
         final TabItem tabWeek = findViewById(R.id.TWeekTab);
         TabLayout.Tab tab;
@@ -41,10 +41,18 @@ public class MainActivity extends AppCompatActivity {
                 tab.select();
                 break;
             case 2:
+
+                String name = getIntent().getBundleExtra("BundleNewPlan").getString("name");
+                String type = getIntent().getBundleExtra("BundleNewPlan").getString("type");
+                ArrayList<String> arrayList = getIntent().getBundleExtra("BundleNewPlan").getStringArrayList("arrayOfUnits");
+                Log.i("MainData", name);
+                Log.i("MainData", type);
+                for(String t : arrayList)
+                    Log.i("MainData", t);
                 tab = tabLayout.getTabAt(2);
                 tab.select();
                 PlansFragment plansFragment = new PlansFragment();
-                plansFragment.setArguments(getIntent().getExtras());
+                plansFragment.setArguments(getIntent().getBundleExtra("BundleNewPlan"));
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.FrameLayout, plansFragment).commit();
                 break;

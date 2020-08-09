@@ -35,6 +35,8 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     private String mParam1;
     private String mParam2;
 
+    private Fragment newFragment;
+
     public PlansFragment() {
         // Required empty public constructor
     }
@@ -63,6 +65,14 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            String name = getArguments().getString("name");
+            String type = getArguments().getString("type");
+            ArrayList<String> arrayList = getArguments().getStringArrayList("arrayOfUnits");
+            Log.i("PlansData", name);
+            Log.i("PlansData", type);
+            if(name != null && type !=null) {
+                newFragment = sentData(name, type, true , arrayList);
+            }
         }
 
     }
@@ -102,6 +112,11 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         ft.add(R.id.LlPlans, newModule1);
         ft.add(R.id.LlPlans, newModule2);
         ft.add(R.id.LlPlans, newModule3);
+
+        if(newFragment != null) {
+            addToView(newFragment, ft);
+            newFragment = null;
+        }
 
         ft.commit();
 

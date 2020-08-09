@@ -235,14 +235,16 @@ public class NewPlanActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("doWhat", 2);
         Bundle arguments = new Bundle();
+        Log.i("NewPlanActvityData", name);
+        Log.i("NewPlanActvityData", type);
+        for(String t : arrayOfUnits)
+            Log.i("NewPlanActvityData", t);
         arguments.putString("name", name);
         arguments.putString("type", type);
         arguments.putBoolean("active", active);
         arguments.putStringArrayList("arrayOfUnits",arrayOfUnits);
         intent.putExtra("BundleNewPlan", arguments);
         startActivity(intent);
-        /*TabLayout tabLayout = (TabLayout) mainActivity.findViewById(R.id.TopTabLayout);
-        TabLayout.Tab tab = tabLayout.getTabAt(2);
-        tab.select();*/
+
     }
 }
