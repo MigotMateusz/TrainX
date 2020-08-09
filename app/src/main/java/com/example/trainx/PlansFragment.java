@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PlansFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PlansFragment extends Fragment {
+public class PlansFragment extends Fragment implements NewPlanActivity.DataFromActivityToFragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,6 +73,7 @@ public class PlansFragment extends Fragment {
         // Inflate the layout for this fragment
         final View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
 
+
         MaterialTextView materialTextView = (MaterialTextView)myView.findViewById(R.id.NoTrainingText);
         materialTextView.setVisibility(View.GONE);
 
@@ -77,7 +81,8 @@ public class PlansFragment extends Fragment {
         newPlanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), NewPlanActivity.class);
+                NewPlanActivity newPlanActivity = new NewPlanActivity();
+                Intent intent = new Intent(getContext(), newPlanActivity.getClass());
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
             }
@@ -101,5 +106,13 @@ public class PlansFragment extends Fragment {
         ft.commit();
 
         return myView;
+    }
+
+    @Override
+    public Fragment sentData(String name, String type, boolean active, ArrayList<String> arrayOfUnits) {
+        return new PlanModule(name, type, active);
+    }
+    public void addToView(Fragment newFragment, FragmentTransaction ft) {
+        ft.add(R.id.LlPlans, newFragment);
     }
 }

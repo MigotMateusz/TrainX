@@ -4,14 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +33,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -37,14 +42,24 @@ import java.util.ArrayList;
 import static java.security.AccessController.getContext;
 
 public class NewPlanActivity extends AppCompatActivity {
+    DataFromActivityToFragment data;
     public Menu navMenu;
     private ArrayList<String> tab1;
     private RecyclerView recyclerView;
     private MyAdapter mAdapter;
+    private String namePlan;
+    private String type;
+    private boolean activated;
+    public NewPlanActivity() {}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_plan);
+
+        PlansFragment plansFragment = new PlansFragment();
+        android.app.FragmentManager fm = getFragmentManager();
+        data = (DataFromActivityToFragment) plansFragment;
+
 
         final MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
@@ -90,6 +105,9 @@ public class NewPlanActivity extends AppCompatActivity {
                 String nameOftheTraining = textInputPlanName.getText().toString();
                 String typeOftheTraining = typeOfTraining.getText().toString();
                 boolean activeTraining = activeSwitch.isChecked();
+                namePlan = nameOftheTraining;
+                type = typeOftheTraining;
+                activated = activeTraining;
 
                 createTrainingUnitScreen(nameOftheTraining, typeOftheTraining, activeTraining);
             }
@@ -123,16 +141,35 @@ public class NewPlanActivity extends AppCompatActivity {
         //end of temp layout
         createTrainingUnitTitle();
         //openDialog();
-        navMenu.findItem(R.id.savePlan).setVisible(true);
-        MenuItem menuItemSave = navMenu.findItem(R.id.savePlan);
+        navMenu.findItem(R.id.saveBigPlan).setVisible(true);
+        MenuItem menuItemSave = navMenu.findItem(R.id.saveBigPlan);
         menuItemSave.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialAlertDialogBuilder(NewPlanActivity.this)
                         .setTitle("Saving new plan")
                         .setMessage("Are you sure to save this plan?")
-                        .setNegativeButton("Cancel", null)
-                        .setPositiveButton("Save", null)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        })
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //callback.onCallback(namePlan, type, activated, tab1);
+                                final Handler handler = new Handler();
+                                final Runnable r = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        data.sentData(namePlan, type, activated, tab1);
+                                    }
+                                };
+                                handler.post(r);
+                                goBackToMainActTab3(namePlan, type, activated, tab1);
+                            }
+                        })
                         .show();
                 return false;
             }
@@ -186,5 +223,26 @@ public class NewPlanActivity extends AppCompatActivity {
         newTab = tab1.toArray(newTab);
         MyAdapter newAdapter = new MyAdapter(newTab);
         recyclerView.setAdapter(newAdapter);
+    }
+    public String getNamePlan() {
+        return namePlan;
+    }
+    public interface DataFromActivityToFragment {
+        Fragment sentData(String name, String type, boolean active, ArrayList<String> arrayOfUnits);
+    }
+    public void goBackToMainActTab3(String name, String type, boolean active, ArrayList<String> arrayOfUnits) {
+        MainActivity mainActivity = new MainActivity();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("doWhat", 2);
+        Bundle arguments = new Bundle();
+        arguments.putString("name", name);
+        arguments.putString("type", type);
+        arguments.putBoolean("active", active);
+        arguments.putStringArrayList("arrayOfUnits",arrayOfUnits);
+        intent.putExtra("BundleNewPlan", arguments);
+        startActivity(intent);
+        /*TabLayout tabLayout = (TabLayout) mainActivity.findViewById(R.id.TopTabLayout);
+        TabLayout.Tab tab = tabLayout.getTabAt(2);
+        tab.select();*/
     }
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toolbar;
@@ -23,8 +24,35 @@ public class MainActivity extends AppCompatActivity {
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
 
+        int test = getIntent().getIntExtra("doWhat", -1);
+
+
         tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
         final TabItem tabWeek = findViewById(R.id.TWeekTab);
+        TabLayout.Tab tab;
+        switch(test) {
+            case -1:
+            case 0:
+                tab = tabLayout.getTabAt(0);
+                tab.select();
+                break;
+            case 1:
+                tab = tabLayout.getTabAt(1);
+                tab.select();
+                break;
+            case 2:
+                tab = tabLayout.getTabAt(2);
+                tab.select();
+                PlansFragment plansFragment = new PlansFragment();
+                plansFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.FrameLayout, plansFragment).commit();
+                break;
+            case 3:
+                tab = tabLayout.getTabAt(3);
+                tab.select();
+                break;
+        }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
