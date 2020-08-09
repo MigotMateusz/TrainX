@@ -30,7 +30,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    DataManager dataManager;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -71,6 +71,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
             ArrayList<String> arrayList = getArguments().getStringArrayList("arrayOfUnits");
             Log.i("PlansData", name);
             Log.i("PlansData", type);*/
+            dataManager.getInstance();
             if(getArguments().getSerializable("arrayUnits") != null) {
                 newFragment = sentData((TrainingPlan) getArguments().getSerializable("arrayUnits"));
             }
@@ -109,6 +110,10 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         Fragment newModule2 = new PlanModule("Crossfit elements","Full Body Workout",false);
         Fragment newModule3 = new PlanModule("After recovery workout", "Push-Pull-Legs", false);
 
+
+        /*for(TrainingPlan tp : dataManager.getTrainingPlans()) {
+
+        }*/
         ft.add(R.id.LlPlans, newModule);
         ft.add(R.id.LlPlans, newModule1);
         ft.add(R.id.LlPlans, newModule2);

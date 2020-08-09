@@ -18,12 +18,14 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    TabLayout tabLayout;
-    ArrayList<TrainingPlan> trainingPlans;
+    private TabLayout tabLayout;
+    public DataManager dataManager;
+    private ArrayList<TrainingPlan> trainingPlans;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dataManager = new DataManager();
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
         trainingPlans = new ArrayList<>();
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
                 boolean active = getIntent().getBundleExtra("BundleNewPlan").getBoolean("active");
                 String type = getIntent().getBundleExtra("BundleNewPlan").getString("type");
                 ArrayList<String> arrayList = getIntent().getBundleExtra("BundleNewPlan").getStringArrayList("arrayOfUnits");*/
-                trainingPlans.add((TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits"));
+                TrainingPlan newTrainingPlan = (TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits");
+                //trainingPlans.add((TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits"));
+                dataManager.addToTrainingList(newTrainingPlan);
                 /*Log.i("MainData", name);
                 Log.i("MainData", type);
                 for(String t : arrayList)
