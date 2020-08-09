@@ -37,6 +37,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static java.security.AccessController.getContext;
@@ -44,6 +45,7 @@ import static java.security.AccessController.getContext;
 public class NewPlanActivity extends AppCompatActivity {
     DataFromActivityToFragment data;
     public Menu navMenu;
+    private ArrayList<TrainingUnit> tabUnits;
     private ArrayList<String> tab1;
     private RecyclerView recyclerView;
     private MyAdapter mAdapter;
@@ -55,7 +57,7 @@ public class NewPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_plan);
-
+        tabUnits = new ArrayList<>();
         PlansFragment plansFragment = new PlansFragment();
         android.app.FragmentManager fm = getFragmentManager();
         data = (DataFromActivityToFragment) plansFragment;
@@ -89,9 +91,8 @@ public class NewPlanActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         openDialog(new TrainingUnitCallback() {
                             @Override
-                            public void onCallback(String namePlan, ArrayList<String> exerciseArray) {
-                                int s = exerciseArray.size();
-                                addTrainingUnit(namePlan, s);
+                            public void onCallback(String namePlan, ArrayList<Exercise> exerciseArray) {
+                                addTrainingUnit(namePlan, exerciseArray);
                             }
                         });
                     }
@@ -163,11 +164,13 @@ public class NewPlanActivity extends AppCompatActivity {
                                 final Runnable r = new Runnable() {
                                     @Override
                                     public void run() {
-                                        data.sentData(namePlan, type, activated, tab1);
+                                        //namePlan, type, activated, tab1
+                                        TrainingPlan trainingPlan = new TrainingPlan(namePlan, type, activated, tabUnits);
+                                        data.sentData(trainingPlan);
                                     }
                                 };
                                 handler.post(r);
-                                goBackToMainActTab3(namePlan, type, activated, tab1);
+                                goBackToMainActTab3(namePlan, type, activated, tabUnits);
                             }
                         })
                         .show();
@@ -188,7 +191,7 @@ public class NewPlanActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        tab1 = new ArrayList<String>();
+        tab1 = new ArrayList<>();
         String[] tab = new String[tab1.size()];
         tab = tab1.toArray(tab);
         mAdapter = new MyAdapter(tab);
@@ -215,9 +218,10 @@ public class NewPlanActivity extends AppCompatActivity {
         navMenu = menu;
         return true;
     }
-    private void addTrainingUnit(String name_and_numberExercises, int size){
-        String result = name_and_numberExercises + " " + "size: " + size;
+    private void addTrainingUnit(String name, ArrayList<Exercise> arrayList){
+        String result = name + " " + "size: " + arrayList.size();
         tab1.add(result);
+        tabUnits.add(new TrainingUnit(name,arrayList));
         mAdapter.notifyItemInserted(tab1.size() - 1);
         String[] newTab = new String[tab1.size()];
         newTab = tab1.toArray(newTab);
@@ -228,21 +232,25 @@ public class NewPlanActivity extends AppCompatActivity {
         return namePlan;
     }
     public interface DataFromActivityToFragment {
-        Fragment sentData(String name, String type, boolean active, ArrayList<String> arrayOfUnits);
+        Fragment sentData(TrainingPlan plan);
+        //String name, String type, boolean active, ArrayList<String> arrayOfUnits
     }
-    public void goBackToMainActTab3(String name, String type, boolean active, ArrayList<String> arrayOfUnits) {
+    public void goBackToMainActTab3(String name, String type, boolean active, ArrayList<TrainingUnit> arrayOfUnits) {
         MainActivity mainActivity = new MainActivity();
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("doWhat", 2);
         Bundle arguments = new Bundle();
-        Log.i("NewPlanActvityData", name);
+        /*Log.i("NewPlanActvityData", name);
         Log.i("NewPlanActvityData", type);
         for(String t : arrayOfUnits)
             Log.i("NewPlanActvityData", t);
         arguments.putString("name", name);
         arguments.putString("type", type);
         arguments.putBoolean("active", active);
-        arguments.putStringArrayList("arrayOfUnits",arrayOfUnits);
+        arguments.putStringArrayList("arrayOfUnits",arrayOfUnits);*/
+        TrainingPlan newTraining = new TrainingPlan(name, type, active, arrayOfUnits);
+        arguments.putSerializable("arrayUnits", newTraining);
+
         intent.putExtra("BundleNewPlan", arguments);
         startActivity(intent);
 

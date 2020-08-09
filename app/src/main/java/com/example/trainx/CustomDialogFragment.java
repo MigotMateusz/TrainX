@@ -32,6 +32,7 @@ public class CustomDialogFragment extends DialogFragment {
     private RecyclerView recyclerView;
     private MyAdapter mAdapter;
     ArrayList<String> tab1;
+    ArrayList<Exercise> tabExercise;
 
     private TrainingUnitCallback myCallback;
 
@@ -56,7 +57,8 @@ public class CustomDialogFragment extends DialogFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        tab1 = new ArrayList<String>();
+        tab1 = new ArrayList<>();
+        tabExercise = new ArrayList<>();
         String[] tab = new String[tab1.size()];
         tab = tab1.toArray(tab);
         mAdapter = new MyAdapter(tab);
@@ -65,9 +67,9 @@ public class CustomDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialog(new MyCallback() {
+                openDialog(new ExerciseCallback() {
                     @Override
-                    public void onCallback(String value) {
+                    public void onCallback(Exercise value) {
                         newExercise(value);
                     }
                 });
@@ -78,7 +80,7 @@ public class CustomDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 String namePlan = nameInput.getText().toString();
-                myCallback.onCallback(namePlan, tab1);
+                myCallback.onCallback(namePlan, tabExercise);
                 getDialog().cancel();
             }
         });
@@ -114,14 +116,16 @@ public class CustomDialogFragment extends DialogFragment {
             dialog.getWindow().setLayout(width, height);
         }
     }
-    public void newExercise(String value) {
-        tab1.add(value);
+    public void newExercise(Exercise value) {
+        tabExercise.add(value);
+        String string = value.getName() + " " + value.getSets() + "x" + value.getReps();
+        tab1.add(string);
         String[] newTab = new String[tab1.size()];
         newTab = tab1.toArray(newTab);
         MyAdapter newAdapter = new MyAdapter(newTab);
         recyclerView.setAdapter(newAdapter);
     }
-    private void openDialog(final MyCallback callback) {
+    private void openDialog(final ExerciseCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = this.getLayoutInflater();
         View v = inflater.inflate(R.layout.addexercise_dialog, null);
@@ -131,10 +135,10 @@ public class CustomDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String name = nameInput.getText().toString();
-                String sets = setsInput.getText().toString();
-                String reps = repsInput.getText().toString();
-                String result = name + " " + sets + " x " + reps;
-                callback.onCallback(result);
+                int sets = Integer.parseInt(setsInput.getText().toString());
+                int reps = Integer.parseInt(repsInput.getText().toString());
+                Exercise newExercise = new Exercise(name,sets,reps);
+                callback.onCallback(newExercise);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

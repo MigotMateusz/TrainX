@@ -36,6 +36,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     private String mParam2;
 
     private Fragment newFragment;
+    ArrayList<TrainingPlan> trainingPlans;
 
     public PlansFragment() {
         // Required empty public constructor
@@ -65,13 +66,13 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            String name = getArguments().getString("name");
+           /* String name = getArguments().getString("name");
             String type = getArguments().getString("type");
             ArrayList<String> arrayList = getArguments().getStringArrayList("arrayOfUnits");
             Log.i("PlansData", name);
-            Log.i("PlansData", type);
-            if(name != null && type !=null) {
-                newFragment = sentData(name, type, true , arrayList);
+            Log.i("PlansData", type);*/
+            if(getArguments().getSerializable("arrayUnits") != null) {
+                newFragment = sentData((TrainingPlan) getArguments().getSerializable("arrayUnits"));
             }
         }
 
@@ -124,7 +125,10 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     }
 
     @Override
-    public Fragment sentData(String name, String type, boolean active, ArrayList<String> arrayOfUnits) {
+    public Fragment sentData(TrainingPlan trainingPlan) {
+        String name = trainingPlan.getName();
+        String type = trainingPlan.getType();
+        boolean active = trainingPlan.isActive();
         return new PlanModule(name, type, active);
     }
     public void addToView(Fragment newFragment, FragmentTransaction ft) {

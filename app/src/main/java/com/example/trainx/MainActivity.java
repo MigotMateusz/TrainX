@@ -19,13 +19,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
+    ArrayList<TrainingPlan> trainingPlans;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
-
+        trainingPlans = new ArrayList<>();
         int test = getIntent().getIntExtra("doWhat", -1);
         tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
         final TabItem tabWeek = findViewById(R.id.TWeekTab);
@@ -42,19 +43,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
 
-                String name = getIntent().getBundleExtra("BundleNewPlan").getString("name");
+                /*String name = getIntent().getBundleExtra("BundleNewPlan").getString("name");
+                boolean active = getIntent().getBundleExtra("BundleNewPlan").getBoolean("active");
                 String type = getIntent().getBundleExtra("BundleNewPlan").getString("type");
-                ArrayList<String> arrayList = getIntent().getBundleExtra("BundleNewPlan").getStringArrayList("arrayOfUnits");
-                Log.i("MainData", name);
+                ArrayList<String> arrayList = getIntent().getBundleExtra("BundleNewPlan").getStringArrayList("arrayOfUnits");*/
+                trainingPlans.add((TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits"));
+                /*Log.i("MainData", name);
                 Log.i("MainData", type);
                 for(String t : arrayList)
-                    Log.i("MainData", t);
+                    Log.i("MainData", t);*/
                 tab = tabLayout.getTabAt(2);
                 tab.select();
                 PlansFragment plansFragment = new PlansFragment();
                 plansFragment.setArguments(getIntent().getBundleExtra("BundleNewPlan"));
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.FrameLayout, plansFragment).commit();
+                test = -1;
                 break;
             case 3:
                 tab = tabLayout.getTabAt(3);
