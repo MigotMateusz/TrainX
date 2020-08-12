@@ -44,6 +44,7 @@ import static java.security.AccessController.getContext;
 
 public class NewPlanActivity extends AppCompatActivity {
     DataFromActivityToFragment data;
+    DataManager dataManager;
     public Menu navMenu;
     private ArrayList<TrainingUnit> tabUnits;
     private ArrayList<String> tab1;
@@ -61,7 +62,7 @@ public class NewPlanActivity extends AppCompatActivity {
         PlansFragment plansFragment = new PlansFragment();
         android.app.FragmentManager fm = getFragmentManager();
         data = (DataFromActivityToFragment) plansFragment;
-
+        dataManager = (DataManager) getIntent().getBundleExtra("DataManager").getSerializable("DataManager1");
 
         final MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
@@ -250,6 +251,8 @@ public class NewPlanActivity extends AppCompatActivity {
         arguments.putStringArrayList("arrayOfUnits",arrayOfUnits);*/
         TrainingPlan newTraining = new TrainingPlan(name, type, active, arrayOfUnits);
         arguments.putSerializable("arrayUnits", newTraining);
+        dataManager.addToTrainingList(newTraining);
+        arguments.putSerializable("DataManager", dataManager);
 
         intent.putExtra("BundleNewPlan", arguments);
         startActivity(intent);

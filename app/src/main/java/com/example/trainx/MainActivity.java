@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,18 +18,18 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private TabLayout tabLayout;
     public DataManager dataManager;
-    private ArrayList<TrainingPlan> trainingPlans;
+    private ArrayList<TrainingPlan> trainingPlans2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dataManager = new DataManager();
+        new Operation().execute();
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
-        trainingPlans = new ArrayList<>();
+        trainingPlans2 = new ArrayList<>();
         int test = getIntent().getIntExtra("doWhat", -1);
         tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
         final TabItem tabWeek = findViewById(R.id.TWeekTab);
@@ -59,7 +60,13 @@ public class MainActivity extends AppCompatActivity {
                 tab = tabLayout.getTabAt(2);
                 tab.select();
                 PlansFragment plansFragment = new PlansFragment();
-                plansFragment.setArguments(getIntent().getBundleExtra("BundleNewPlan"));
+
+                Bundle newBundle = getIntent().getBundleExtra("BundleNewPlan");
+                if(newBundle == null)
+                    Log.i("DataManager33", "newBundle is null");
+                newBundle.getSerializable("DataManager");
+                Log.i("DataManagerLog3", String.valueOf(dataManager.getTrainingPlans().size()));
+                plansFragment.setArguments(newBundle);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.FrameLayout, plansFragment).commit();
                 test = -1;
@@ -83,7 +90,18 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(tab.getPosition() == 2) {
                     PlansFragment plansFragment = new PlansFragment();
-                    plansFragment.setArguments(getIntent().getExtras());
+                    Bundle newBundle;
+                    if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") == null)
+                        newBundle = new Bundle();
+                    else if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") != null)
+                        newBundle = new Bundle(getIntent().getBundleExtra("BundleNewPlan"));
+                    else
+                        newBundle = new Bundle((getIntent().getExtras()));
+                    if(dataManager != null) {
+                        Log.i("DataManagerLog11", String.valueOf(dataManager.getTrainingPlans().size()));
+                        newBundle.putSerializable("DataManager", dataManager);
+                    }
+                    plansFragment.setArguments(newBundle);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.FrameLayout, plansFragment).commit();
                 }
@@ -113,5 +131,18 @@ public class MainActivity extends AppCompatActivity {
     public void visibiltyTab(){
         TabLayout tab = findViewById(R.id.TopTabLayout);
         tab.setVisibility(View.GONE);
+    }
+
+    private  class Operation extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dataManager = new DataManager();
+        }
     }
 }

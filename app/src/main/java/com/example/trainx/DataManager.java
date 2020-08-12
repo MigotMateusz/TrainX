@@ -1,5 +1,6 @@
 package com.example.trainx;
 
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DataManager {
+public class DataManager implements Serializable {
     private ArrayList<TrainingPlan> trainingPlans;
 
     public DataManager() {

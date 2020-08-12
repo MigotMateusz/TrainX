@@ -1,6 +1,7 @@
 package com.example.trainx;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -63,15 +64,15 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-           /* String name = getArguments().getString("name");
-            String type = getArguments().getString("type");
-            ArrayList<String> arrayList = getArguments().getStringArrayList("arrayOfUnits");
-            Log.i("PlansData", name);
-            Log.i("PlansData", type);*/
-            dataManager.getInstance();
+            dataManager = (DataManager) getArguments().getSerializable("DataManager");
+            if(dataManager != null)
+                Log.i("DataManagerLog2", "not null");
+                Log.i("DataManagerLog2", String.valueOf(dataManager.getTrainingPlans().size()));
+
             if(getArguments().getSerializable("arrayUnits") != null) {
                 newFragment = sentData((TrainingPlan) getArguments().getSerializable("arrayUnits"));
             }
@@ -95,6 +96,9 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
             public void onClick(View view) {
                 NewPlanActivity newPlanActivity = new NewPlanActivity();
                 Intent intent = new Intent(getContext(), newPlanActivity.getClass());
+                Bundle bundleData = new Bundle();
+                bundleData.putSerializable("DataManager1", dataManager);
+                intent.putExtra("DataManager", bundleData);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
             }
@@ -105,24 +109,24 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
 
         fm.beginTransaction();
 
-        Fragment newModule = new PlanModule("Split 1", "Split", true);
+        /*Fragment newModule = new PlanModule("Split 1", "Split", true);
         Fragment newModule1 = new PlanModule("FBW 1", "Full Body Workout", false);
         Fragment newModule2 = new PlanModule("Crossfit elements","Full Body Workout",false);
-        Fragment newModule3 = new PlanModule("After recovery workout", "Push-Pull-Legs", false);
+        Fragment newModule3 = new PlanModule("After recovery workout", "Push-Pull-Legs", false);*/
 
 
-        /*for(TrainingPlan tp : dataManager.getTrainingPlans()) {
-
-        }*/
-        ft.add(R.id.LlPlans, newModule);
+//        dataManager = (DataManager) getArguments().getSerializable("DataManager");
+        if(dataManager!=null)
+            loadPlans(dataManager, ft);
+        /*ft.add(R.id.LlPlans, newModule);
         ft.add(R.id.LlPlans, newModule1);
         ft.add(R.id.LlPlans, newModule2);
-        ft.add(R.id.LlPlans, newModule3);
+        ft.add(R.id.LlPlans, newModule3);*/
 
-        if(newFragment != null) {
+        /*if(newFragment != null) {
             addToView(newFragment, ft);
             newFragment = null;
-        }
+        }*/
 
         ft.commit();
 
@@ -139,4 +143,16 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     public void addToView(Fragment newFragment, FragmentTransaction ft) {
         ft.add(R.id.LlPlans, newFragment);
     }
+    public void loadPlans(DataManager dataManager, FragmentTransaction ft) {
+
+        for(TrainingPlan tp : dataManager.getTrainingPlans()) {
+            String title = tp.getName();
+            Log.i("PlansFragmentLog", title);
+            String type = tp.getType();
+            boolean isActive = tp.isActive();
+            Fragment newModule = new PlanModule(title, type, isActive);
+            ft.add(R.id.LlPlans, newModule);
+        }
+    }
+
 }

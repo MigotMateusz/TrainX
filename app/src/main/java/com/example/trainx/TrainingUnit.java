@@ -1,8 +1,9 @@
 package com.example.trainx;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TrainingUnit {
+public class TrainingUnit implements Serializable {
     private String name;
     private ArrayList<Exercise> exerciseArrayList;
 
