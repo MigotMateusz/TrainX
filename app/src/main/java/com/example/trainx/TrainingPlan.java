@@ -44,7 +44,7 @@ public class TrainingPlan implements Serializable {
         this.type = type;
     }
 
-    public boolean isActive() {
+    public boolean getisActive() {
         return isActive;
     }
 

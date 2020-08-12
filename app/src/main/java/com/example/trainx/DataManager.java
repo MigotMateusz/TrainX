@@ -35,12 +35,20 @@ public class DataManager implements Serializable {
                     //TrainingPlan trainingPlan = plansSnapshot.getValue(TrainingPlan.class);
                     String name = plansSnapshot.child("name").getValue(String.class);
                     String type = plansSnapshot.child("type").getValue(String.class);
-                    boolean isActive = plansSnapshot.child("isActive").getValue(boolean.class);
+                    if(plansSnapshot.child("isActive").getValue(boolean.class) == null)
+                        Log.i("Saving", "is Active is null");
+                    boolean isActive;
+                    if(plansSnapshot.child("isActive").getValue(boolean.class))
+                        isActive = true;
+                    else
+                        isActive = false;
+                    //plansSnapshot.child("active").getValue(boolean.class);
                     ArrayList<TrainingUnit> trainingUnitArrayList = new ArrayList<>();
                     if(name == null)
                         Log.i("DataManagerLog", "null");
                     else
                         Log.i("DataManagerLog", name);
+                    if(type !=null)
                     Log.i("DataManagerLog", type);
                     if(isActive == true)
                         Log.i("DataManagerLog","isActive is true");
@@ -96,6 +104,13 @@ public class DataManager implements Serializable {
 
     public void addToTrainingList(TrainingPlan tp) {
         trainingPlans.add(tp);
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = mDatabase.child("users").child("MG").child("Plans");
+        //Saving
+        //DatabaseReference newRef = ref.push();
+        Log.i("Saving", "SIze of array:" + trainingPlans.size());
+        ref.child(ref.push().getKey()).setValue(tp);
     }
 
     public void deleteFromTrainingList(TrainingPlan tp){

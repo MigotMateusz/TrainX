@@ -137,7 +137,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     public Fragment sentData(TrainingPlan trainingPlan) {
         String name = trainingPlan.getName();
         String type = trainingPlan.getType();
-        boolean active = trainingPlan.isActive();
+        boolean active = trainingPlan.getisActive();
         return new PlanModule(name, type, active);
     }
     public void addToView(Fragment newFragment, FragmentTransaction ft) {
@@ -149,7 +149,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
             String title = tp.getName();
             Log.i("PlansFragmentLog", title);
             String type = tp.getType();
-            boolean isActive = tp.isActive();
+            boolean isActive = tp.getisActive();
             Fragment newModule = new PlanModule(title, type, isActive);
             ft.add(R.id.LlPlans, newModule);
         }

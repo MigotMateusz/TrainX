@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity{
                 ArrayList<String> arrayList = getIntent().getBundleExtra("BundleNewPlan").getStringArrayList("arrayOfUnits");*/
                 TrainingPlan newTrainingPlan = (TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits");
                 //trainingPlans.add((TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits"));
-                dataManager.addToTrainingList(newTrainingPlan);
+                //dataManager.addToTrainingList(newTrainingPlan);
                 /*Log.i("MainData", name);
                 Log.i("MainData", type);
                 for(String t : arrayList)
