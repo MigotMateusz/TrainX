@@ -3,47 +3,29 @@ package com.example.trainx;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PlanStructureFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class PlanStructureFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView recyclerView;
+    private CardAdapter mAdapter;
+    ArrayList<TrainingUnit> trainingUnits;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public PlanStructureFragment() {}
 
-    public PlanStructureFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PlanStructureFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static PlanStructureFragment newInstance(String param1, String param2) {
         PlanStructureFragment fragment = new PlanStructureFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,16 +34,37 @@ public class PlanStructureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View myView =  inflater.inflate(R.layout.fragment_plan_structure, container, false);
+
+        recyclerView = (RecyclerView) myView.findViewById(R.id.cardsRecyclerView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        String title = getArguments().getString("title");
+        DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
+        Log.i("Card", title);
+        for(TrainingPlan tp : dataManager.getTrainingPlans()) {
+            if(tp.getName().equals(title)){
+                trainingUnits = tp.getUnitArrayList();
+                break;
+            }
+        }
+        mAdapter = new CardAdapter(trainingUnits);
+        recyclerView.setAdapter(mAdapter);
+        for(TrainingUnit tu : trainingUnits) {
+            Log.i("Card-UnitTitle", tu.getName());
+            for(Exercise ex : tu.getExerciseArrayList()){
+                Log.i("Card-Exercise", ex.getName() + " " + ex.getSets() + "x" + ex.getReps());
+            }
+        }
+
         return myView;
     }
 }

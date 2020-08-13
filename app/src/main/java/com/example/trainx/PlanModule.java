@@ -94,7 +94,7 @@ public class PlanModule extends Fragment implements View.OnClickListener {
         materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment();
+                ((MainActivity)getActivity()).replaceFragment(titleString);
             }
         });
         return myView;

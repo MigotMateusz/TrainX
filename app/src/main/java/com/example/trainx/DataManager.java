@@ -60,10 +60,10 @@ public class DataManager implements Serializable {
                         String planName =  pomSnapshot.child("name").getValue(String.class);
                         Log.i("DataManagerLog", planName);
                         ArrayList<Exercise> arrayListofExercises = new ArrayList<>();
-                        for(DataSnapshot pom2Snapshot : pomSnapshot.child("exerciseArray").getChildren()) {
+                        for(DataSnapshot pom2Snapshot : pomSnapshot.child("exerciseArrayList").getChildren()) {
                             String exerciseName = pom2Snapshot.child("name").getValue(String.class);
-                            int reps = pom2Snapshot.child("Reps").getValue(int.class);
-                            int sets = pom2Snapshot.child("Sets").getValue(int.class);
+                            int reps = pom2Snapshot.child("reps").getValue(int.class);
+                            int sets = pom2Snapshot.child("sets").getValue(int.class);
                             Exercise newExercise = new Exercise(exerciseName,sets,reps);
                             arrayListofExercises.add(newExercise);
                             Log.i("DataManagerLog",exerciseName);

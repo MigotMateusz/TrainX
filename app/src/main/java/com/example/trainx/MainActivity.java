@@ -122,8 +122,12 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
-    public void replaceFragment() {
+    public void replaceFragment(String titlePlan) {
         Fragment fragment = new PlanStructureFragment();
+        Bundle args = new Bundle();
+        args.putString("title", titlePlan);
+        args.putSerializable("DataManager", dataManager);
+        fragment.setArguments(args);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.FrameLayout, fragment)
                 .commit();

@@ -6,10 +6,15 @@
     tools:context=".PlanStructureFragment"
     android:id="@+id/fragment_structure">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            layout="@layout/cardrecyclerview_layout"/>
+
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>
