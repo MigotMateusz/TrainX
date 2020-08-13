@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:clickable="true"
+        android:checkable="true"
         app:cardCornerRadius="15dp"
         app:strokeWidth="1dp">
         <LinearLayout

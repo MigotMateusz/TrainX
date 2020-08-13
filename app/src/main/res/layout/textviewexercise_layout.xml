@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Test raz dwa trzy"
-    android:paddingTop="3dp"
-    android:paddingBottom="3dp"
-    android:paddingRight="3dp"
-    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="20dp"
+    android:textAppearance="?attr/textAppearanceSubtitle2"
     />

@@ -1,6 +1,7 @@
 package com.example.trainx;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 /**
@@ -95,6 +97,32 @@ public class PlanModule extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 ((MainActivity)getActivity()).replaceFragment(titleString);
+            }
+        });
+        materialCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                materialCardView.setChecked(true);
+                //@TODO
+                //ADD deleting plan handler
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("Delete Training Plan")
+                        .setMessage("Are you sure to delete selected training plan?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //dataManager.delete(titleString);
+
+                            }
+                        })
+                        .show();
+                return true;
             }
         });
         return myView;

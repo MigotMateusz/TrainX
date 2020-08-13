@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,14 +133,16 @@ public class NewPlanActivity extends AppCompatActivity {
         LinearLayout ll = (LinearLayout)findViewById(R.id.LlPlanCreator);
         MaterialTextView nameTitle = new MaterialTextView(this);
         nameTitle.setText(name);
+        nameTitle.setGravity(Gravity.CENTER_HORIZONTAL);
+        nameTitle.setTextColor(getResources().getColor(R.color.colorAccent));
+        nameTitle.setPadding(0,0,0, 20);
         nameTitle.setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline5);
-        nameTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        nameTitle.setPadding(0,0,0,10);
-        MaterialTextView typeTitle = new MaterialTextView(this);
+        //nameTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        /*MaterialTextView typeTitle = new MaterialTextView(this);
         typeTitle.setText(type);
-        typeTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        typeTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);*/
         ll.addView(nameTitle);
-        ll.addView(typeTitle);
+        //ll.addView(typeTitle);
         //end of temp layout
         createTrainingUnitTitle();
         //openDialog();
@@ -220,7 +223,7 @@ public class NewPlanActivity extends AppCompatActivity {
         return true;
     }
     private void addTrainingUnit(String name, ArrayList<Exercise> arrayList){
-        String result = name + " " + "size: " + arrayList.size();
+        String result = name + ": " + "number of exercises: " + arrayList.size();
         tab1.add(result);
         tabUnits.add(new TrainingUnit(name,arrayList));
         mAdapter.notifyItemInserted(tab1.size() - 1);

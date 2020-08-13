@@ -113,7 +113,12 @@ public class DataManager implements Serializable {
         ref.child(ref.push().getKey()).setValue(tp);
     }
 
-    public void deleteFromTrainingList(TrainingPlan tp){
-        trainingPlans.remove(tp);
+    public void deleteFromTrainingList(String title){
+        for(TrainingPlan tp : trainingPlans){
+            if(tp.getName().equals(title)){
+                trainingPlans.remove(tp);
+                break;
+            }
+        }
     }
 }

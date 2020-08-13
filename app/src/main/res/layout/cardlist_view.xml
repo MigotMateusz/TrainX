@@ -21,10 +21,10 @@
             android:text="Training Unit 1"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cardsInnerRecyclerView"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
