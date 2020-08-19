@@ -33,7 +33,6 @@ public class Exercise implements Serializable {
         this.sets = sets;
     }
 
-
     public int getReps() {
         return reps;
     }

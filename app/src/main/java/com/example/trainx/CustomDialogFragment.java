@@ -2,9 +2,7 @@ package com.example.trainx;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +20,17 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CustomDialogFragment extends DialogFragment {
     private MaterialToolbar toolbar;
     private TextInputEditText nameInput;
     private TextInputEditText repsInput;
     private TextInputEditText setsInput;
-
     private RecyclerView recyclerView;
-    private MyAdapter mAdapter;
-    ArrayList<String> tab1;
-    ArrayList<Exercise> tabExercise;
+
+    private ArrayList<String> tab1;
+    private ArrayList<Exercise> tabExercise;
 
     private TrainingUnitCallback myCallback;
 
@@ -61,37 +59,23 @@ public class CustomDialogFragment extends DialogFragment {
         tabExercise = new ArrayList<>();
         String[] tab = new String[tab1.size()];
         tab = tab1.toArray(tab);
-        mAdapter = new MyAdapter(tab);
+        MyAdapter mAdapter = new MyAdapter(tab);
         recyclerView.setAdapter(mAdapter);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog(new ExerciseCallback() {
-                    @Override
-                    public void onCallback(Exercise value) {
-                        newExercise(value);
-                    }
-                });
-            }
-        });
+        addButton.setOnClickListener(view -> openDialog(this::newExercise));
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String namePlan = nameInput.getText().toString();
-                myCallback.onCallback(namePlan, tabExercise);
-                getDialog().cancel();
-            }
+        saveButton.setOnClickListener(view -> {
+            String namePlan = Objects.requireNonNull(nameInput.getText()).toString();
+            myCallback.onCallback(namePlan, tabExercise);
+            Objects.requireNonNull(getDialog()).cancel();
         });
 
         return myView;
     }
 
-    public static CustomDialogFragment display(FragmentManager fragmentManager, TrainingUnitCallback callback) {
+    public static void display(FragmentManager fragmentManager, TrainingUnitCallback callback) {
         CustomDialogFragment customDialogFragment = new CustomDialogFragment(callback);
         customDialogFragment.show(fragmentManager, "CustomDialogFragment");
-        return customDialogFragment;
     }
 
     @Override
@@ -113,7 +97,7 @@ public class CustomDialogFragment extends DialogFragment {
         if(dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            dialog.getWindow().setLayout(width, height);
+            Objects.requireNonNull(dialog.getWindow()).setLayout(width, height);
         }
     }
     public void newExercise(Exercise value) {
@@ -131,22 +115,14 @@ public class CustomDialogFragment extends DialogFragment {
         View v = inflater.inflate(R.layout.addexercise_dialog, null);
 
         builder.setView(v);
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String name = nameInput.getText().toString();
-                int sets = Integer.parseInt(setsInput.getText().toString());
-                int reps = Integer.parseInt(repsInput.getText().toString());
-                Exercise newExercise = new Exercise(name,sets,reps);
-                callback.onCallback(newExercise);
-            }
+        builder.setPositiveButton("Add", (dialogInterface, i) -> {
+            String name = Objects.requireNonNull(nameInput.getText()).toString();
+            int sets = Integer.parseInt(Objects.requireNonNull(setsInput.getText()).toString());
+            int reps = Integer.parseInt(Objects.requireNonNull(repsInput.getText()).toString());
+            Exercise newExercise = new Exercise(name,sets,reps);
+            callback.onCallback(newExercise);
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
 
         AlertDialog dialog = builder.create();
         dialog.show();

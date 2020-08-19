@@ -1,12 +1,10 @@
 package com.example.trainx;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +14,6 @@ import java.util.ArrayList;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> {
     private ArrayList<TrainingUnit> trainingUnits;
-    private Context mContext;
 
     CardAdapter(ArrayList<TrainingUnit> tu) { trainingUnits = tu; }
 
@@ -25,8 +22,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View myView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardlist_view, parent, false);
-        MyViewHolder vh = new MyViewHolder(myView);
-        return vh;
+        return new MyViewHolder(myView);
     }
 
     @Override
@@ -35,6 +31,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(holder.titleText.getContext());
         holder.recyclerViewExercises.setLayoutManager(layoutManager);
+
         ExerciseAdapter mAdapter = new ExerciseAdapter(trainingUnits.get(position).getExerciseArrayList());
         holder.recyclerViewExercises.setAdapter(mAdapter);
     }
@@ -53,10 +50,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             super(myView);
             titleText = myView.findViewById(R.id.cardRecyclerTitle);
             recyclerViewExercises = myView.findViewById(R.id.cardsInnerRecyclerView);
-        }
-
-        public void bindData(TrainingUnit trainingUnit, Context context) {
-
         }
     }
 }

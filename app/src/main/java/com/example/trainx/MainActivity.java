@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -20,14 +23,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
     private TabLayout tabLayout;
-    public DataManager dataManager;
+    public DataManager dataManager = new DataManager();
     private ArrayList<TrainingPlan> trainingPlans2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new Operation().execute();
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
+        //ProgressDialog progressDialog = createProgressDialog(this);
+        //progressDialog.show();
+        //closeProgressDialog(progressDialog);
         setSupportActionBar(toolbar);
         trainingPlans2 = new ArrayList<>();
         int test = getIntent().getIntExtra("doWhat", -1);
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity{
                 boolean active = getIntent().getBundleExtra("BundleNewPlan").getBoolean("active");
                 String type = getIntent().getBundleExtra("BundleNewPlan").getString("type");
                 ArrayList<String> arrayList = getIntent().getBundleExtra("BundleNewPlan").getStringArrayList("arrayOfUnits");*/
-                TrainingPlan newTrainingPlan = (TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits");
+                //TrainingPlan newTrainingPlan = (TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits");
                 //trainingPlans.add((TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits"));
                 //dataManager.addToTrainingList(newTrainingPlan);
                 /*Log.i("MainData", name);
@@ -148,5 +155,39 @@ public class MainActivity extends AppCompatActivity{
         protected void onPreExecute() {
             dataManager = new DataManager();
         }
+    }
+
+    public ProgressDialog createProgressDialog(Context mContext) {
+        ProgressDialog progressDialog = new ProgressDialog(mContext);
+        progressDialog.setMessage("Loading data...");
+        progressDialog.setCancelable(false);
+        progressDialog.setInverseBackgroundForced(false);
+        closeProgressDialog(progressDialog);
+        return progressDialog;
+    }
+
+    public void closeProgressDialog(ProgressDialog pD) {
+        Handler handler = new Handler();
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    dataManager = new DataManager();
+                    while (true) {
+                        sleep(1000);
+                        Log.i("ThreadLog", String.valueOf(dataManager.getTrainingPlans().size()));
+                        if(dataManager.getTrainingPlans().size() > 0){
+                            pD.dismiss();
+                            break;
+                        }
+                        handler.post(this);
+                    }
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        thread.start();
     }
 }

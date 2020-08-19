@@ -1,5 +1,6 @@
 package com.example.trainx;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         // Required empty public constructor
     }
 
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -64,7 +67,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //new AsyncTask(getActivity(), ).execute("");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -85,7 +88,6 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
-
 
         MaterialTextView materialTextView = (MaterialTextView)myView.findViewById(R.id.NoTrainingText);
         materialTextView.setVisibility(View.GONE);
@@ -116,8 +118,11 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
 
 
 //        dataManager = (DataManager) getArguments().getSerializable("DataManager");
-        if(dataManager!=null)
+        if(dataManager!=null){
             loadPlans(dataManager, ft);
+            //progressDialog.dismiss();
+        }
+
         /*ft.add(R.id.LlPlans, newModule);
         ft.add(R.id.LlPlans, newModule1);
         ft.add(R.id.LlPlans, newModule2);

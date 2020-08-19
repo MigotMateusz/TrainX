@@ -1,8 +1,6 @@
 package com.example.trainx;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -23,8 +21,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public ExerciseAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         MaterialTextView v = (MaterialTextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.textviewexercise_layout, parent, false);
-        ExerciseAdapter.MyViewHolder vh = new ExerciseAdapter.MyViewHolder(v);
-        return vh;
+        return new ExerciseAdapter.MyViewHolder(v);
     }
 
     @Override
