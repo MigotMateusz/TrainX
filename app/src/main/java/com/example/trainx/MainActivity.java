@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabItem;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
     private TabLayout tabLayout;
-    public DataManager dataManager = new DataManager();
+    public DataManager dataManager;
     private ArrayList<TrainingPlan> trainingPlans2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,38 +135,5 @@ public class MainActivity extends AppCompatActivity{
         protected void onPreExecute() {
             dataManager = new DataManager();
         }
-    }
-
-    public ProgressDialog createProgressDialog(Context mContext) {
-        ProgressDialog progressDialog = new ProgressDialog(mContext);
-        progressDialog.setMessage("Loading data...");
-        progressDialog.setCancelable(false);
-        progressDialog.setInverseBackgroundForced(false);
-        closeProgressDialog(progressDialog);
-        return progressDialog;
-    }
-
-    public void closeProgressDialog(ProgressDialog pD) {
-        Handler handler = new Handler();
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    dataManager = new DataManager();
-                    while (true) {
-                        sleep(1000);
-                        if(dataManager.getTrainingPlans().size() > 0){
-                            pD.dismiss();
-                            break;
-                        }
-                        handler.post(this);
-                    }
-                } catch (InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        thread.start();
     }
 }

@@ -1,7 +1,11 @@
 package com.example.trainx;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Objects;
 
 public class DataManager implements Serializable {
@@ -20,8 +25,9 @@ public class DataManager implements Serializable {
         trainingPlans = new ArrayList<>();
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        DatabaseReference ref = mDatabase.child("users").child("MG").child("Plans");
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Plans");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -77,28 +83,29 @@ public class DataManager implements Serializable {
         trainingPlans.add(tp);
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = mDatabase.child("users").child("MG").child("Plans");
+        DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Plans");
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(tp);
     }
 
     public void deleteFromTrainingList(String title){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query query = ref.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Plans").orderByChild("name").equalTo(title);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    dataSnapshot.getRef().removeValue();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("DeletingError", "onCancelled", error.toException());
+            }
+        });
+
         for(TrainingPlan tp : trainingPlans){
             if(tp.getName().equals(title)){
                 trainingPlans.remove(tp);
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                Query query = ref.child("users").child("MG").child("Plans").orderByChild("title").equalTo(title);
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                            dataSnapshot.getRef().removeValue();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
                 break;
             }
         }

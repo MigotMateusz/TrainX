@@ -72,7 +72,11 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         String name = trainingPlan.getName();
         String type = trainingPlan.getType();
         boolean active = trainingPlan.getisActive();
-        return new PlanModule(name, type, active);
+        Fragment newModule = new PlanModule(name, type, active);
+        Bundle arguments = new Bundle();
+        arguments.putSerializable("DataManager", dataManager);
+        newModule.setArguments(arguments);
+        return newModule;
     }
     public void addToView(Fragment newFragment, FragmentTransaction ft) {
         ft.add(R.id.LlPlans, newFragment);
@@ -84,6 +88,9 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
             String type = tp.getType();
             boolean isActive = tp.getisActive();
             Fragment newModule = new PlanModule(title, type, isActive);
+            Bundle arguments = new Bundle();
+            arguments.putSerializable("DataManager", dataManager);
+            newModule.setArguments(arguments);
             ft.add(R.id.LlPlans, newModule);
         }
     }

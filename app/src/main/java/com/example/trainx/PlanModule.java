@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -85,8 +86,11 @@ public class PlanModule extends Fragment implements View.OnClickListener {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                                Query query = ref.child("users").child("MG").child("Plans").orderByChild("name").equalTo(titleString);
+                                DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
+                                dataManager.deleteFromTrainingList(titleString);
+                                materialCardView.setVisibility(View.GONE);
+                               /* DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                Query query = ref.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Plans").orderByChild("name").equalTo(titleString);
                                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -99,7 +103,7 @@ public class PlanModule extends Fragment implements View.OnClickListener {
                                     public void onCancelled(@NonNull DatabaseError error) {
                                         Log.e("DeletingError", "onCancelled", error.toException());
                                     }
-                                });
+                                });*/
                             }
                         })
                         .show();
