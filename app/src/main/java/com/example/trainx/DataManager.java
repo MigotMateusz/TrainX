@@ -1,7 +1,5 @@
 package com.example.trainx;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +21,6 @@ public class DataManager implements Serializable {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
         DatabaseReference ref = mDatabase.child("users").child("MG").child("Plans");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -31,30 +28,11 @@ public class DataManager implements Serializable {
                 for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
                     String name = plansSnapshot.child("name").getValue(String.class);
                     String type = plansSnapshot.child("type").getValue(String.class);
-                    if(plansSnapshot.child("isActive").getValue(boolean.class) == null)
-                        Log.i("Saving", "is Active is null");
-                    boolean isActive;
-                    if(plansSnapshot.child("isActive").getValue(boolean.class))
-                        isActive = true;
-                    else
-                        isActive = false;
-                    //plansSnapshot.child("active").getValue(boolean.class);
+                    boolean isActive = plansSnapshot.child("isActive").getValue(boolean.class);
                     ArrayList<TrainingUnit> trainingUnitArrayList = new ArrayList<>();
-                    if(name == null)
-                        Log.i("DataManagerLog", "null");
-                    else
-                        Log.i("DataManagerLog", name);
-                    if(type !=null)
-                    Log.i("DataManagerLog", type);
-                    if(isActive == true)
-                        Log.i("DataManagerLog","isActive is true");
-                    else
-                        Log.i("DataManagerLog","isActive is false");
 
-                    /*This loop is reading all saved training unit in specific training plan*/
                     for(DataSnapshot pomSnapshot : plansSnapshot.child("unitArrayList").getChildren()){
                         String planName =  pomSnapshot.child("name").getValue(String.class);
-                        Log.i("DataManagerLog", planName);
                         ArrayList<Exercise> arrayListofExercises = new ArrayList<>();
                         for(DataSnapshot pom2Snapshot : pomSnapshot.child("exerciseArrayList").getChildren()) {
                             String exerciseName = pom2Snapshot.child("name").getValue(String.class);
@@ -62,9 +40,6 @@ public class DataManager implements Serializable {
                             int sets = pom2Snapshot.child("sets").getValue(int.class);
                             Exercise newExercise = new Exercise(exerciseName,sets,reps);
                             arrayListofExercises.add(newExercise);
-                            Log.i("DataManagerLog",exerciseName);
-                            Log.i("DataManagerLog",String.valueOf(sets));
-                            Log.i("DataManagerLog",String.valueOf(reps));
                         }
                         TrainingUnit newTrainingUnit = new TrainingUnit(planName,arrayListofExercises);
                         trainingUnitArrayList.add(newTrainingUnit);

@@ -7,8 +7,6 @@ public class TrainingUnit implements Serializable {
     private String name;
     private ArrayList<Exercise> exerciseArrayList;
 
-    public TrainingUnit() {}
-
     public TrainingUnit(String name, ArrayList<Exercise> exerciseArrayList) {
         this.name = name;
         this.exerciseArrayList = exerciseArrayList;

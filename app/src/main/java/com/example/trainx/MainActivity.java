@@ -9,13 +9,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toolbar;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -32,9 +29,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         new Operation().execute();
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
-        //ProgressDialog progressDialog = createProgressDialog(this);
-        //progressDialog.show();
-        //closeProgressDialog(progressDialog);
+
         setSupportActionBar(toolbar);
         trainingPlans2 = new ArrayList<>();
         int test = getIntent().getIntExtra("doWhat", -1);
@@ -52,27 +47,12 @@ public class MainActivity extends AppCompatActivity{
                 tab.select();
                 break;
             case 2:
-
-                /*String name = getIntent().getBundleExtra("BundleNewPlan").getString("name");
-                boolean active = getIntent().getBundleExtra("BundleNewPlan").getBoolean("active");
-                String type = getIntent().getBundleExtra("BundleNewPlan").getString("type");
-                ArrayList<String> arrayList = getIntent().getBundleExtra("BundleNewPlan").getStringArrayList("arrayOfUnits");*/
-                //TrainingPlan newTrainingPlan = (TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits");
-                //trainingPlans.add((TrainingPlan) getIntent().getBundleExtra("BundleNewPlan").getSerializable("arrayUnits"));
-                //dataManager.addToTrainingList(newTrainingPlan);
-                /*Log.i("MainData", name);
-                Log.i("MainData", type);
-                for(String t : arrayList)
-                    Log.i("MainData", t);*/
                 tab = tabLayout.getTabAt(2);
                 tab.select();
                 PlansFragment plansFragment = new PlansFragment();
 
                 Bundle newBundle = getIntent().getBundleExtra("BundleNewPlan");
-                if(newBundle == null)
-                    Log.i("DataManager33", "newBundle is null");
                 newBundle.getSerializable("DataManager");
-                Log.i("DataManagerLog3", String.valueOf(dataManager.getTrainingPlans().size()));
                 plansFragment.setArguments(newBundle);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.FrameLayout, plansFragment).commit();
@@ -105,7 +85,6 @@ public class MainActivity extends AppCompatActivity{
                     else
                         newBundle = new Bundle((getIntent().getExtras()));
                     if(dataManager != null) {
-                        Log.i("DataManagerLog11", String.valueOf(dataManager.getTrainingPlans().size()));
                         newBundle.putSerializable("DataManager", dataManager);
                     }
                     plansFragment.setArguments(newBundle);
@@ -175,7 +154,6 @@ public class MainActivity extends AppCompatActivity{
                     dataManager = new DataManager();
                     while (true) {
                         sleep(1000);
-                        Log.i("ThreadLog", String.valueOf(dataManager.getTrainingPlans().size()));
                         if(dataManager.getTrainingPlans().size() > 0){
                             pD.dismiss();
                             break;

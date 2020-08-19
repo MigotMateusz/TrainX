@@ -2,21 +2,16 @@ package com.example.trainx;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,24 +19,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import static java.security.AccessController.getContext;
 
 public class NewPlanActivity extends AppCompatActivity {
     DataFromActivityToFragment data;
@@ -52,7 +40,6 @@ public class NewPlanActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MyAdapter mAdapter;
     private String namePlan;
-    private String type;
     private boolean activated;
     public NewPlanActivity() {}
     @Override
@@ -68,7 +55,7 @@ public class NewPlanActivity extends AppCompatActivity {
         final MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
         setSupportActionBar(toolbar);
 
-                String[] trainingTypes = new String[] {"Split", "Full Body Workout", "Push-Pull", "Push-Pull-Legs"};
+        String[] trainingTypes = new String[] {"Split", "Full Body Workout", "Push-Pull", "Push-Pull-Legs"};
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(NewPlanActivity.this, R.layout.dropdown_menu_popup_item, trainingTypes);
 
@@ -104,12 +91,10 @@ public class NewPlanActivity extends AppCompatActivity {
                 goNextButton.setVisibility(View.GONE);
                 extendedFloatingActionButton.setVisibility(View.VISIBLE);
 
-
                 String nameOftheTraining = textInputPlanName.getText().toString();
                 String typeOftheTraining = typeOfTraining.getText().toString();
                 boolean activeTraining = activeSwitch.isChecked();
                 namePlan = nameOftheTraining;
-                type = typeOftheTraining;
                 activated = activeTraining;
 
                 createTrainingUnitScreen(nameOftheTraining, typeOftheTraining, activeTraining);
@@ -129,7 +114,6 @@ public class NewPlanActivity extends AppCompatActivity {
     }
 
     public void createTrainingUnitScreen(String name, String type, boolean isActive) {
-        //temp layout
         LinearLayout ll = (LinearLayout)findViewById(R.id.LlPlanCreator);
         MaterialTextView nameTitle = new MaterialTextView(this);
         nameTitle.setText(name);
@@ -137,15 +121,8 @@ public class NewPlanActivity extends AppCompatActivity {
         nameTitle.setTextColor(getResources().getColor(R.color.colorAccent));
         nameTitle.setPadding(0,0,0, 20);
         nameTitle.setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline5);
-        //nameTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        /*MaterialTextView typeTitle = new MaterialTextView(this);
-        typeTitle.setText(type);
-        typeTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);*/
         ll.addView(nameTitle);
-        //ll.addView(typeTitle);
-        //end of temp layout
         createTrainingUnitTitle();
-        //openDialog();
         navMenu.findItem(R.id.saveBigPlan).setVisible(true);
         MenuItem menuItemSave = navMenu.findItem(R.id.saveBigPlan);
         menuItemSave.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -204,16 +181,7 @@ public class NewPlanActivity extends AppCompatActivity {
     }
     public void openDialog(TrainingUnitCallback callback) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        //CustomDialogFragment newFragment = new CustomDialogFragment();
         CustomDialogFragment.display(fragmentManager, callback);
-        //show as dialog
-        //newFragment.show(fragmentManager, "dialog");
-
-        //show as fullscreen
-        //FragmentTransaction transaction = fragmentManager.beginTransaction();
-        //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        //transaction.add(R.id.LlPlanCreator, newFragment).addToBackStack(null).commit();
-        //addExerciseHandler();
     }
 
     @Override
@@ -235,23 +203,17 @@ public class NewPlanActivity extends AppCompatActivity {
     public String getNamePlan() {
         return namePlan;
     }
+
     public interface DataFromActivityToFragment {
         Fragment sentData(TrainingPlan plan);
-        //String name, String type, boolean active, ArrayList<String> arrayOfUnits
     }
+
     public void goBackToMainActTab3(String name, String type, boolean active, ArrayList<TrainingUnit> arrayOfUnits) {
         MainActivity mainActivity = new MainActivity();
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("doWhat", 2);
         Bundle arguments = new Bundle();
-        /*Log.i("NewPlanActvityData", name);
-        Log.i("NewPlanActvityData", type);
-        for(String t : arrayOfUnits)
-            Log.i("NewPlanActvityData", t);
-        arguments.putString("name", name);
-        arguments.putString("type", type);
-        arguments.putBoolean("active", active);
-        arguments.putStringArrayList("arrayOfUnits",arrayOfUnits);*/
+
         TrainingPlan newTraining = new TrainingPlan(name, type, active, arrayOfUnits);
         arguments.putSerializable("arrayUnits", newTraining);
         dataManager.addToTrainingList(newTraining);
