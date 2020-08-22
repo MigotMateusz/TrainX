@@ -8,41 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ThisWeekFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textview.MaterialTextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class ThisWeekFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public ThisWeekFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ThisWeekFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ThisWeekFragment newInstance(String param1, String param2) {
         ThisWeekFragment fragment = new ThisWeekFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -50,15 +31,70 @@ public class ThisWeekFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_this_week, container, false);
+        View myView = inflater.inflate(R.layout.fragment_this_week, container, false);
+
+        setDayCard(myView,1);
+
+        return myView;
     }
+
+    public void setDayCard(View myView, int day){
+        MaterialCardView mondayCardView = myView.findViewById(R.id.mondayCard);
+        MaterialCardView tuesdayCardView = myView.findViewById(R.id.tuesdayCard);
+        MaterialCardView wednesdayCardView = myView.findViewById(R.id.wednesdayCard);
+        MaterialCardView thursdayCardView = myView.findViewById(R.id.thursdayCard);
+        MaterialCardView fridayCardView = myView.findViewById(R.id.fridayCard);
+        MaterialCardView saturdayCardView = myView.findViewById(R.id.saturdayCard);
+        MaterialCardView sundayCardView = myView.findViewById(R.id.sundayCard);
+
+        MaterialTextView mondayTextView = myView.findViewById(R.id.mondayTraining);
+        MaterialTextView tuesdayTextView = myView.findViewById(R.id.tuesdayTraining);
+        MaterialTextView wednesdayTextView = myView.findViewById(R.id.wednesdayTraining);
+        MaterialTextView thursdayTextView = myView.findViewById(R.id.thursdayTraining);
+        MaterialTextView fridayTextView = myView.findViewById(R.id.fridayTraining);
+        MaterialTextView saturdayTextView = myView.findViewById(R.id.saturdayTraining);
+        MaterialTextView sundayTextView = myView.findViewById(R.id.sundayTraining);
+
+
+        Calendar c = Calendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date;
+        date = df.format(c.getTime());
+        mondayTextView.setText(date);
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        date = df.format(c.getTime());
+        tuesdayTextView.setText(date);
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        date = df.format(c.getTime());
+        wednesdayTextView.setText(date);
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        date = df.format(c.getTime());
+        thursdayTextView.setText(date);
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        date = df.format(c.getTime());
+        fridayTextView.setText(date);
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        date = df.format(c.getTime());
+        saturdayTextView.setText(date);
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        date = df.format(c.getTime());
+        sundayTextView.setText(date);
+
+    }
+
 }

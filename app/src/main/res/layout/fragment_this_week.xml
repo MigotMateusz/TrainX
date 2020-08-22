@@ -12,8 +12,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!-- TODO: Update blank fragment layout -->
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mondayCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -37,6 +37,7 @@
                     android:text="Monday"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mondayTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -50,6 +51,7 @@
                 >
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/mondayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -59,6 +61,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/tuesdayCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -81,6 +84,7 @@
                     android:text="@string/Tuesday"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tuesdayTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -103,6 +107,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/wednesdayCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -125,6 +130,7 @@
                     android:text="@string/Wednesday"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/wednesdayTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -147,6 +153,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/thursdayCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -169,6 +176,7 @@
                     android:text="@string/Thursday"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/thursdayTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -191,6 +199,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/fridayCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -213,6 +222,7 @@
                     android:text="@string/Friday"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fridayTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -235,6 +245,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/saturdayCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -257,6 +268,7 @@
                     android:text="@string/Saturday"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/saturdayTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -279,6 +291,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/sundayCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -301,6 +314,7 @@
                     android:text="@string/Sunday"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/sundayTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
