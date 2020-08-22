@@ -1,5 +1,6 @@
 package com.example.trainx;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DateFormat;
@@ -30,9 +33,6 @@ public class ThisWeekFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -40,12 +40,26 @@ public class ThisWeekFragment extends Fragment {
                              Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_this_week, container, false);
 
-        setDayCard(myView,1);
+        setDayCard(myView);
+        ExtendedFloatingActionButton plannerButton = myView.findViewById(R.id.plannerButton);
+        plannerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), PlannerActivity.class);
+                //Bundle bundleData = new Bundle();
+                //bundleData.putSerializable("DataManager1", dataManager);
+                //intent.putExtra("DataManager", bundleData);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
+
+                Toast.makeText(getActivity(),"Test OnClick", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return myView;
     }
 
-    public void setDayCard(View myView, int day){
+    public void setDayCard(View myView){
         MaterialCardView mondayCardView = myView.findViewById(R.id.mondayCard);
         MaterialCardView tuesdayCardView = myView.findViewById(R.id.tuesdayCard);
         MaterialCardView wednesdayCardView = myView.findViewById(R.id.wednesdayCard);

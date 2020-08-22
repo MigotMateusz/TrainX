@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ThisWeekFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -338,4 +341,14 @@
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/plannerButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="16dp"
+            app:icon="@drawable/ic_baseline_calendar_today_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open training planner"/>
+    </RelativeLayout>
 </FrameLayout>
