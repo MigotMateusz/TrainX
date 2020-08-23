@@ -62,21 +62,17 @@ public class ThisWeekFragment extends Fragment {
     }
 
     public void setDayCard(View myView){
-        MaterialCardView mondayCardView = myView.findViewById(R.id.mondayCard);
-        MaterialCardView tuesdayCardView = myView.findViewById(R.id.tuesdayCard);
-        MaterialCardView wednesdayCardView = myView.findViewById(R.id.wednesdayCard);
-        MaterialCardView thursdayCardView = myView.findViewById(R.id.thursdayCard);
-        MaterialCardView fridayCardView = myView.findViewById(R.id.fridayCard);
-        MaterialCardView saturdayCardView = myView.findViewById(R.id.saturdayCard);
-        MaterialCardView sundayCardView = myView.findViewById(R.id.sundayCard);
+        DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
 
-        MaterialTextView mondayTextView = myView.findViewById(R.id.mondayTraining);
-        MaterialTextView tuesdayTextView = myView.findViewById(R.id.tuesdayTraining);
-        MaterialTextView wednesdayTextView = myView.findViewById(R.id.wednesdayTraining);
-        MaterialTextView thursdayTextView = myView.findViewById(R.id.thursdayTraining);
-        MaterialTextView fridayTextView = myView.findViewById(R.id.fridayTraining);
-        MaterialTextView saturdayTextView = myView.findViewById(R.id.saturdayTraining);
-        MaterialTextView sundayTextView = myView.findViewById(R.id.sundayTraining);
+        MaterialCardView[] weekCardView = {myView.findViewById(R.id.mondayCard),
+        myView.findViewById(R.id.tuesdayCard), myView.findViewById(R.id.wednesdayCard),
+        myView.findViewById(R.id.thursdayCard), myView.findViewById(R.id.fridayCard),
+        myView.findViewById(R.id.saturdayCard), myView.findViewById(R.id.sundayCard)};
+
+        MaterialTextView[] weekTextView = { myView.findViewById(R.id.mondayTraining),
+        myView.findViewById(R.id.tuesdayTraining), myView.findViewById(R.id.wednesdayTraining),
+        myView.findViewById(R.id.thursdayTraining), myView.findViewById(R.id.fridayTraining),
+        myView.findViewById(R.id.saturdayTraining), myView.findViewById(R.id.sundayTraining) };
 
 
         Calendar c = Calendar.getInstance();
@@ -84,32 +80,19 @@ public class ThisWeekFragment extends Fragment {
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String date;
-        date = df.format(c.getTime());
-        mondayTextView.setText(date);
 
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        date = df.format(c.getTime());
-        tuesdayTextView.setText(date);
+        for(int i = 0; i < 7; i++){
+            date = df.format(c.getTime());
+            for(TrainingExecution te : dataManager.getTrainingExecutions()){
+                if(te.getDate().equals(date)){
+                    date = date + "-" + te.getUnit();
+                    break;
+                }
 
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        date = df.format(c.getTime());
-        wednesdayTextView.setText(date);
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        date = df.format(c.getTime());
-        thursdayTextView.setText(date);
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        date = df.format(c.getTime());
-        fridayTextView.setText(date);
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        date = df.format(c.getTime());
-        saturdayTextView.setText(date);
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        date = df.format(c.getTime());
-        sundayTextView.setText(date);
+            }
+            weekTextView[i].setText(date);
+            c.add(Calendar.DAY_OF_MONTH, 1);
+        }
 
     }
 

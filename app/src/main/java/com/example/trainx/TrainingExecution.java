@@ -1,9 +1,10 @@
 package com.example.trainx;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
-public class TrainingExecution {
+public class TrainingExecution implements Serializable {
     private String date;
     private String unit;
 
