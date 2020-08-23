@@ -73,6 +73,17 @@ public class MainActivity extends AppCompatActivity{
                 else if(tab.getPosition() == 1){
                     ThisWeekFragment thisWeekFragment = new ThisWeekFragment();
                     thisWeekFragment.setArguments(getIntent().getExtras());
+                    Bundle newBundle;
+                    if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") == null)
+                        newBundle = new Bundle();
+                    else if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") != null)
+                        newBundle = new Bundle(getIntent().getBundleExtra("BundleNewPlan"));
+                    else
+                        newBundle = new Bundle((getIntent().getExtras()));
+                    if(dataManager != null) {
+                        newBundle.putSerializable("DataManager", dataManager);
+                    }
+                    thisWeekFragment.setArguments(newBundle);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.FrameLayout, thisWeekFragment).commit();
                 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +47,10 @@ public class ThisWeekFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), PlannerActivity.class);
-                //Bundle bundleData = new Bundle();
-                //bundleData.putSerializable("DataManager1", dataManager);
-                //intent.putExtra("DataManager", bundleData);
+                Bundle bundleData = getArguments();
+                if(bundleData!=null)
+                    Log.i("ThisWeekLog", "not null");
+                intent.putExtra("DataManager", bundleData);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
 

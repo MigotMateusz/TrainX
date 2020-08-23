@@ -20,9 +20,11 @@ import java.util.Objects;
 
 public class DataManager implements Serializable {
     private ArrayList<TrainingPlan> trainingPlans;
+    private ArrayList<TrainingExecution> trainingExecutions;
 
     public DataManager() {
         trainingPlans = new ArrayList<>();
+        trainingExecutions = new ArrayList<>();
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -61,6 +63,22 @@ public class DataManager implements Serializable {
             }
         });
 
+        ref = mDatabase.child("users").child(currentUser.getUid()).child("Execution");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
+                    TrainingExecution newTrainingExecution = plansSnapshot.getValue(TrainingExecution.class);
+                    trainingExecutions.add(newTrainingExecution);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                throw error.toException();
+            }
+        });
+
     }
 
     public static DataManager INSTANCE;
@@ -86,6 +104,13 @@ public class DataManager implements Serializable {
         DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Plans");
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(tp);
     }
+    public void addToTrainingExecutionList(TrainingExecution te) {
+        trainingExecutions.add(te);
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Execution");
+        ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(te);
+    }
 
     public void deleteFromTrainingList(String title){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -109,5 +134,13 @@ public class DataManager implements Serializable {
                 break;
             }
         }
+    }
+
+    public ArrayList<TrainingExecution> getTrainingExecutions() {
+        return trainingExecutions;
+    }
+
+    public void setTrainingExecutions(ArrayList<TrainingExecution> trainingExecutions) {
+        this.trainingExecutions = trainingExecutions;
     }
 }
