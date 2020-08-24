@@ -83,17 +83,50 @@ public class ThisWeekFragment extends Fragment {
 
         for(int i = 0; i < 7; i++){
             date = df.format(c.getTime());
+            String addText = ": no training";
+            setListenerNoTrainingWeekCardView(weekCardView[i]);
             for(TrainingExecution te : dataManager.getTrainingExecutions()){
+                Log.i("DataManagerLog", te.getUnit());
                 if(te.getDate().equals(date)){
-                    date = date + "-" + te.getUnit();
+                    addText = ": " + te.getUnit();
+                    //date = date + ": " + te.getUnit();
+                    onClickWeekCardView(weekCardView[i], c, dataManager);
                     break;
                 }
-
             }
-            weekTextView[i].setText(date);
+            weekTextView[i].setText(date + addText);
             c.add(Calendar.DAY_OF_MONTH, 1);
         }
 
     }
 
+    public void onClickWeekCardView(MaterialCardView cardView, Calendar calendar, DataManager dM) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date;
+        date = df.format(calendar.getTime());
+        setListenerWeekCardView(cardView, date, dM);
+        //calendar.add(Calendar.DAY_OF_MONTH, 1);
+    }
+
+    public void setListenerWeekCardView(MaterialCardView cardView, String date, DataManager dM) {
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(getContext(), TrainerActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("DataManager", dM);
+                bundle.putString("Date", date);
+                newIntent.putExtra("Bundle", bundle);
+                startActivity(newIntent);
+            }
+        });
+    }
+    public void setListenerNoTrainingWeekCardView(MaterialCardView cardView) {
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "There is no training planned on this day", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
