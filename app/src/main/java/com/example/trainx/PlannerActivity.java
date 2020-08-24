@@ -135,7 +135,7 @@ public class PlannerActivity extends AppCompatActivity {
                 c.add(Calendar.DAY_OF_MONTH, i);
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String date = df.format(c.getTime());
-                TrainingExecution newExecution = new TrainingExecution(date, dropdownMenuUnits[i].getText().toString());
+                TrainingExecution newExecution = new TrainingExecution(date, dropdownMenuUnits[i].getText().toString(), dropdownMenuPlans[i].getText().toString());
                 dataManager.addToTrainingExecutionList(newExecution);
             }
 

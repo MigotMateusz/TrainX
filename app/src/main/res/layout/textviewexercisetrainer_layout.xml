@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textviewexercisetrainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Test raz dwa trzy"
+    android:layout_marginTop="20dp"
+    android:paddingRight="10dp"
+    android:paddingVertical="5dp"
+    android:paddingLeft="50dp"
+    android:textAppearance="?attr/textAppearanceHeadline6"
+    />

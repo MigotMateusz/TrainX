@@ -1,17 +1,17 @@
 package com.example.trainx;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.util.Date;
 
 public class TrainingExecution implements Serializable {
     private String date;
     private String unit;
+    private String plan;
 
     public TrainingExecution() {}
-    public TrainingExecution(String date, String trainingUnit) {
+    public TrainingExecution(String date, String trainingUnit, String plan) {
         this.date = date;
         this.unit = trainingUnit;
+        this.plan = plan;
     }
 
     public String getDate() {
@@ -28,5 +28,13 @@ public class TrainingExecution implements Serializable {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public String getPlan() {
+        return plan;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
     }
 }

@@ -17,6 +17,11 @@
         app:navigationIcon="@drawable/ic_baseline_close_24"
         app:title="Trainer"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerExercises"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 
 
