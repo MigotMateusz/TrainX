@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DateFormat;
@@ -23,12 +24,6 @@ import java.util.Locale;
 public class ThisWeekFragment extends Fragment {
 
     public ThisWeekFragment() {
-        // Required empty public constructor
-    }
-
-    public static ThisWeekFragment newInstance(String param1, String param2) {
-        ThisWeekFragment fragment = new ThisWeekFragment();
-        return fragment;
     }
 
     @Override
@@ -75,6 +70,11 @@ public class ThisWeekFragment extends Fragment {
         myView.findViewById(R.id.saturdayTraining), myView.findViewById(R.id.sundayTraining) };
 
 
+        FloatingActionButton[] floatingActionButtons = {myView.findViewById(R.id.mondayButton),
+                myView.findViewById(R.id.tuesdayButton), myView.findViewById(R.id.wednesdayButton),
+                myView.findViewById(R.id.thursdayButton), myView.findViewById(R.id.fridayButton),
+                myView.findViewById(R.id.saturdayButton), myView.findViewById(R.id.sundayButton) };
+
         Calendar c = Calendar.getInstance();
         c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
@@ -85,11 +85,13 @@ public class ThisWeekFragment extends Fragment {
             date = df.format(c.getTime());
             String addText = ": no training";
             setListenerNoTrainingWeekCardView(weekCardView[i]);
+            setListenerNoTrainingFloatingButton(floatingActionButtons[i]);
             for(TrainingExecution te : dataManager.getTrainingExecutions()){
                 Log.i("DataManagerLog", te.getUnit());
                 if(te.getDate().equals(date)){
                     addText = ": " + te.getUnit();
                     //date = date + ": " + te.getUnit();
+                    setListenerTrainingActiveFloatingButton(floatingActionButtons[i]);
                     onClickWeekCardView(weekCardView[i], c, dataManager);
                     break;
                 }
@@ -105,7 +107,6 @@ public class ThisWeekFragment extends Fragment {
         String date;
         date = df.format(calendar.getTime());
         setListenerWeekCardView(cardView, date, dM);
-        //calendar.add(Calendar.DAY_OF_MONTH, 1);
     }
 
     public void setListenerWeekCardView(MaterialCardView cardView, String date, DataManager dM) {
@@ -129,4 +130,22 @@ public class ThisWeekFragment extends Fragment {
             }
         });
     }
+
+    public void setListenerNoTrainingFloatingButton(FloatingActionButton floatingButton) {
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "There is no training planned on this day", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void setListenerTrainingActiveFloatingButton(FloatingActionButton floatingButton){
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "O tak tak byczku, trenujemy", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

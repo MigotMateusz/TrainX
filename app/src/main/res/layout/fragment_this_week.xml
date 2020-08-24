@@ -101,6 +101,7 @@
                 >
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/tuesdayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -147,6 +148,7 @@
                 >
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/wednesdayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -193,6 +195,7 @@
                 >
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/thursdayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -239,6 +242,7 @@
                 >
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fridayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -285,6 +289,7 @@
                 >
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/saturdayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -331,6 +336,7 @@
                 >
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/sundayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
