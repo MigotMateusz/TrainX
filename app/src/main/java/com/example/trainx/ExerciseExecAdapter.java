@@ -7,10 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
-
-import java.util.ArrayList;
 
 public class ExerciseExecAdapter extends RecyclerView.Adapter<ExerciseExecAdapter.MyViewHolder>  {
     public int many;
@@ -28,10 +25,8 @@ public class ExerciseExecAdapter extends RecyclerView.Adapter<ExerciseExecAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseExecAdapter.MyViewHolder holder, int position) {
-        MyViewHolder holder1 = (MyViewHolder) holder;
+        MyViewHolder holder1 = holder;
         holder1.titleTextView.setText((position+1) + " Sets");
-        //Exercise exercise = exercises.get(position);//String text = exercise.getName() + " " + exercise.getSets() + "x" + exercise.getReps();
-        //holder.cardView.setText(text);
     }
 
     @Override

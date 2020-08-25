@@ -3,9 +3,12 @@ package com.example.trainx;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.android.material.appbar.MaterialToolbar;
+
+import java.util.ArrayList;
 
 public class TrainingExecActivity extends AppCompatActivity {
 
@@ -17,16 +20,17 @@ public class TrainingExecActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DataManager dataManager = (DataManager) getIntent().getBundleExtra("DataManager").getSerializable("DataManager");
         TrainingUnit currentTraining = prepareTrainingUnit(dataManager);
-        for(Exercise e : currentTraining.getExerciseArrayList()){
-            Log.i("TrainingExecActivityLog", e.getName());
-            ExerciseFragment exerciseFragment = new ExerciseFragment();
-            Bundle bundle = getIntent().getExtras();
-            bundle.putSerializable("Exercise", e);
-            exerciseFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frameLayoutExec, exerciseFragment).commit();
-            break;
-        }
+        int position = 0;
+        Exercise e = currentTraining.getExerciseArrayList().get(position);
+        ExerciseFragment exerciseFragment = new ExerciseFragment();
+        Bundle bundle = getIntent().getExtras();
+        bundle.putSerializable("Exercise", e);
+        bundle.putSerializable("ExerciseArray", currentTraining.getExerciseArrayList());
+        bundle.putInt("Position", position);
+        exerciseFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.frameLayoutExec, exerciseFragment).commit();
+
 
     }
 
