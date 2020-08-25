@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity{
             case 0:
                 tab = tabLayout.getTabAt(0);
                 tab.select();
+                OverviewFragment overviewFragment = new OverviewFragment();
+
+
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.FrameLayout, overviewFragment).commit();
                 break;
             case 1:
                 tab = tabLayout.getTabAt(1);
@@ -53,7 +58,6 @@ public class MainActivity extends AppCompatActivity{
                 PlansFragment plansFragment = new PlansFragment();
 
                 Bundle newBundle = getIntent().getBundleExtra("BundleNewPlan");
-                newBundle.getSerializable("DataManager");
                 plansFragment.setArguments(newBundle);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.FrameLayout, plansFragment).commit();
@@ -68,7 +72,21 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0) {
-
+                    OverviewFragment overviewFragment = new OverviewFragment();
+                    overviewFragment.setArguments(getIntent().getExtras());
+                    Bundle newBundle;
+                    if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") == null)
+                        newBundle = new Bundle();
+                    else if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") != null)
+                        newBundle = new Bundle(getIntent().getBundleExtra("BundleNewPlan"));
+                    else
+                        newBundle = new Bundle((getIntent().getExtras()));
+                    if(dataManager != null) {
+                        newBundle.putSerializable("DataManager", dataManager);
+                    }
+                    overviewFragment.setArguments(newBundle);
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.FrameLayout, overviewFragment).commit();
                 }
                 else if(tab.getPosition() == 1){
                     ThisWeekFragment thisWeekFragment = new ThisWeekFragment();
