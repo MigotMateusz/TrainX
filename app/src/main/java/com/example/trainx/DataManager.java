@@ -112,6 +112,13 @@ public class DataManager implements Serializable {
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(te);
     }
 
+    public void addSingleFinishedTraining(FinishedTraining ft) {
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Finished Trainings");
+        ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(ft);
+    }
+
     public void deleteFromTrainingList(String title){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query query = ref.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Plans").orderByChild("name").equalTo(title);

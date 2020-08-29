@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +57,15 @@ public class ExerciseFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FinishedExercise newExercise = new FinishedExercise(exercise.getName(), (ArrayList<FinishedSet>) mAdapter.retrieveData());
+                FinishedTraining currentFinishedTraining = (FinishedTraining) getArguments().getSerializable("FinishedTraining");
+                currentFinishedTraining.getExercises().add(newExercise);
                 if(nextPosition < arrayExercises.size()){
                 Bundle bundle = getArguments();
                 Exercise nextExercise = arrayExercises.get(nextPosition);
                 bundle.putSerializable("Exercise", nextExercise);
+                bundle.putSerializable("DataManager", getArguments().getSerializable("DataManager"));
+                bundle.putSerializable("FinishedTraining", currentFinishedTraining);
                 bundle.putSerializable("ExerciseArray", arrayExercises);
                 bundle.putInt("Position", nextPosition);
                 ExerciseFragment exerciseFragment = new ExerciseFragment();
@@ -77,6 +83,18 @@ public class ExerciseFragment extends Fragment {
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.setCustomAnimations(R.anim.pull_in_left, R.anim.pull_out_right);
                     ft.add(R.id.frameLayoutExec, finishedTrainingFragment).commit();
+
+
+                    /*Log.i("FinishedTraining", currentFinishedTraining.getName());
+                    for(FinishedExercise ex : currentFinishedTraining.getExercises()){
+                        Log.i("FinishedTraining", ex.getName());
+                        for(FinishedSet set : ex.getSets()){
+                            Log.i("FinishedTraining", set.getReps() + " " +set.getWeight());
+                        }
+                    }*/
+                    DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
+                    dataManager.addSingleFinishedTraining(currentFinishedTraining);
+
                 }
             }
         });

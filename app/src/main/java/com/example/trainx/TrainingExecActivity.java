@@ -22,9 +22,14 @@ public class TrainingExecActivity extends AppCompatActivity {
         TrainingUnit currentTraining = prepareTrainingUnit(dataManager);
         int position = 0;
         Exercise e = currentTraining.getExerciseArrayList().get(position);
+        FinishedTraining currentFinishedTraining = new FinishedTraining();
+        currentFinishedTraining.setName(currentTraining.getName());
+        currentFinishedTraining.setExercises(new ArrayList<>());
         ExerciseFragment exerciseFragment = new ExerciseFragment();
         Bundle bundle = getIntent().getExtras();
         bundle.putSerializable("Exercise", e);
+        bundle.putSerializable("DataManager", dataManager);
+        bundle.putSerializable("FinishedTraining", currentFinishedTraining);
         bundle.putSerializable("ExerciseArray", currentTraining.getExerciseArrayList());
         bundle.putInt("Position", position);
         exerciseFragment.setArguments(bundle);
