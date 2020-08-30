@@ -14,17 +14,24 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DataManager implements Serializable {
     private ArrayList<TrainingPlan> trainingPlans;
     private ArrayList<TrainingExecution> trainingExecutions;
+    private ArrayList<FinishedTraining> finishedTrainings;
 
     public DataManager() {
         trainingPlans = new ArrayList<>();
         trainingExecutions = new ArrayList<>();
+        finishedTrainings = new ArrayList<>();
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -70,6 +77,23 @@ public class DataManager implements Serializable {
                 for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
                     TrainingExecution newTrainingExecution = plansSnapshot.getValue(TrainingExecution.class);
                     trainingExecutions.add(newTrainingExecution);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                throw error.toException();
+            }
+        });
+
+
+        ref = mDatabase.child("users").child(currentUser.getUid()).child("Finished Trainings");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
+                    FinishedTraining newTrainingExecution = plansSnapshot.getValue(FinishedTraining.class);
+                    finishedTrainings.add(newTrainingExecution);
                 }
             }
 
@@ -149,5 +173,24 @@ public class DataManager implements Serializable {
 
     public void setTrainingExecutions(ArrayList<TrainingExecution> trainingExecutions) {
         this.trainingExecutions = trainingExecutions;
+    }
+
+    public boolean isTrainingDone() {
+        Date currentDate = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = df.format(currentDate);
+
+        for(FinishedTraining te : this.getFinishedTrainings()){
+            if(te.getTrainingExecution().getDate().equals(date))
+                return true;
+        }
+        return false;
+    }
+
+    public void setFinishedTrainings(ArrayList<FinishedTraining> finishedTrainings) {
+        this.finishedTrainings = finishedTrainings;
+    }
+    public ArrayList<FinishedTraining> getFinishedTrainings() {
+        return finishedTrainings;
     }
 }

@@ -8,7 +8,12 @@ import android.util.Log;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class TrainingExecActivity extends AppCompatActivity {
 
@@ -20,10 +25,11 @@ public class TrainingExecActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DataManager dataManager = (DataManager) getIntent().getBundleExtra("DataManager").getSerializable("DataManager");
         TrainingUnit currentTraining = prepareTrainingUnit(dataManager);
+        TrainingExecution currentTrainingExecution = prepareTrainingExecution(dataManager);
         int position = 0;
         Exercise e = currentTraining.getExerciseArrayList().get(position);
         FinishedTraining currentFinishedTraining = new FinishedTraining();
-        currentFinishedTraining.setName(currentTraining.getName());
+        currentFinishedTraining.setTrainingExecution(currentTrainingExecution);
         currentFinishedTraining.setExercises(new ArrayList<>());
         ExerciseFragment exerciseFragment = new ExerciseFragment();
         Bundle bundle = getIntent().getExtras();
@@ -40,8 +46,11 @@ public class TrainingExecActivity extends AppCompatActivity {
     }
 
     public TrainingUnit prepareTrainingUnit(DataManager dataManager){
+        Date currentDate = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = df.format(currentDate);
         for(TrainingExecution te : dataManager.getTrainingExecutions()) {
-            if(te.getDate().equals("2020-08-25")){
+            if(te.getDate().equals(date)){
                 for(TrainingPlan tp : dataManager.getTrainingPlans()){
                     if(tp.getName().equals(te.getPlan())){
                         for(TrainingUnit tu : tp.getUnitArrayList()){
@@ -55,5 +64,25 @@ public class TrainingExecActivity extends AppCompatActivity {
             }
         }
     return null;
+    }
+    public TrainingExecution prepareTrainingExecution(DataManager dataManager){
+        Date currentDate = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = df.format(currentDate);
+        for(TrainingExecution te : dataManager.getTrainingExecutions()) {
+            if(te.getDate().equals(date)){
+                for(TrainingPlan tp : dataManager.getTrainingPlans()){
+                    if(tp.getName().equals(te.getPlan())){
+                        for(TrainingUnit tu : tp.getUnitArrayList()){
+                            if(tu.getName().equals(te.getUnit())){
+                                Log.i("TrainingExecActivityLog", tu.getName());
+                                return te;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

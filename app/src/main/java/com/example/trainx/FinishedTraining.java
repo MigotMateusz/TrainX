@@ -4,23 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class FinishedTraining implements Serializable {
-    private String name;
+    private TrainingExecution trainingExecution;
     private ArrayList<FinishedExercise> exercises;
 
     public FinishedTraining() {}
 
-    public FinishedTraining(String n, ArrayList<FinishedExercise> e) {
-        this.name = n;
+    public FinishedTraining(TrainingExecution n, ArrayList<FinishedExercise> e) {
+        this.trainingExecution = n;
         this.exercises = e;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ArrayList<FinishedExercise> getExercises() {
@@ -29,5 +20,13 @@ public class FinishedTraining implements Serializable {
 
     public void setExercises(ArrayList<FinishedExercise> exercises) {
         this.exercises = exercises;
+    }
+
+    public TrainingExecution getTrainingExecution() {
+        return trainingExecution;
+    }
+
+    public void setTrainingExecution(TrainingExecution trainingExecution) {
+        this.trainingExecution = trainingExecution;
     }
 }

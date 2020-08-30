@@ -94,6 +94,7 @@ public class ExerciseFragment extends Fragment {
                     }*/
                     DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
                     dataManager.addSingleFinishedTraining(currentFinishedTraining);
+                    //dataManager
 
                 }
             }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,16 @@ public class OverviewFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), TrainingExecActivity.class);
-                Bundle bundle = getArguments();
-                intent.putExtra("DataManager", bundle);
-                startActivity(intent);
+                DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
+                if(dataManager.isTrainingDone())
+                    Toast.makeText(getActivity(), "Training is done already", Toast.LENGTH_SHORT).show();
+                else {
+                    Intent intent = new Intent(getContext(), TrainingExecActivity.class);
+                    Bundle bundle = getArguments();
+                    intent.putExtra("DataManager", bundle);
+                    startActivity(intent);
+                }
+
             }
         });
         return myView;
