@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity{
 
         setSupportActionBar(toolbar);
         trainingPlans2 = new ArrayList<>();
-        int test = getIntent().getIntExtra("doWhat", -1);
+        int test = getIntent().getIntExtra("doWhat", 3);
         tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
         final TabItem tabWeek = findViewById(R.id.TWeekTab);
         TabLayout.Tab tab;

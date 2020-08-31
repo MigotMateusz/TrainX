@@ -1,5 +1,7 @@
 package com.example.trainx;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,7 +20,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -192,5 +193,16 @@ public class DataManager implements Serializable {
     }
     public ArrayList<FinishedTraining> getFinishedTrainings() {
         return finishedTrainings;
+    }
+
+    public boolean isTrainingToday() {
+        Date currentDate = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = df.format(currentDate);
+        for(TrainingExecution te : this.getTrainingExecutions()) {
+            if(te.getDate().equals(date))
+                return true;
+            }
+        return false;
     }
 }

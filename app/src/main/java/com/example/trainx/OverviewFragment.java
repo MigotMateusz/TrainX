@@ -1,8 +1,11 @@
 package com.example.trainx;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,6 +15,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class OverviewFragment extends Fragment {
 
@@ -28,21 +42,94 @@ public class OverviewFragment extends Fragment {
 
         View myView = inflater.inflate(R.layout.fragment_overview, container, false);
         MaterialButton button = myView.findViewById(R.id.startTrainingButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
-                if(dataManager.isTrainingDone())
-                    Toast.makeText(getActivity(), "Training is done already", Toast.LENGTH_SHORT).show();
-                else {
-                    Intent intent = new Intent(getContext(), TrainingExecActivity.class);
-                    Bundle bundle = getArguments();
-                    intent.putExtra("DataManager", bundle);
-                    startActivity(intent);
+        int day = getDays();
+        MaterialTextView dayTextView = myView.findViewById(R.id.dayText);
+        dayTextView.setText(String.valueOf(day));
+        DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
+        if(dataManager != null)
+            if(dataManager.isTrainingToday() == false){
+                button.setVisibility(View.GONE);
+                ArrayList<TrainingExecution> exec = thisWeekTrainings(dataManager);
+                if(exec.size() == 0){
+                    MaterialTextView yourText = myView.findViewById(R.id.yourText);
+                    MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
+                    nextText.setText("You can make a plan for this week in \"this week\" tab");
+                    yourText.setText("There is no planned trainings this week!");
                 }
 
             }
-        });
+            else {
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (dataManager.isTrainingDone())
+                            Toast.makeText(getActivity(), "Training is done already", Toast.LENGTH_SHORT).show();
+                        else {
+                            Intent intent = new Intent(getContext(), TrainingExecActivity.class);
+                            Bundle bundle = getArguments();
+                            intent.putExtra("DataManager", bundle);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+            }
         return myView;
+    }
+
+    private int getDays() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("name", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int days = sharedPreferences.getInt("days", 0);
+        int next_day;
+        if(isLastLoggedDayYesterday() == true)
+            next_day = days + 1;
+        else
+            next_day = 1;
+        editor.putInt("days", next_day);
+        editor.commit();
+
+        return next_day;
+    }
+
+    private boolean isLastLoggedDayYesterday(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("name", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Date lastDate = new Date(sharedPreferences.getLong("time", 0));
+
+        Date today = new Date(System.currentTimeMillis());
+
+        long millis1 = today.getTime() - lastDate.getTime();
+        long daysBetween = TimeUnit.DAYS.convert(millis1, TimeUnit.MILLISECONDS);
+        long millis = today.getTime();
+        editor.putLong("time", millis).apply();
+        if(daysBetween == 1)
+            return true;
+        else
+            return false;
+    }
+
+    private ArrayList<TrainingExecution> thisWeekTrainings(DataManager dataManager) {
+        ArrayList<TrainingExecution> trainingExecutions = new ArrayList<>();
+        Date dateNow = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date;
+        for(int i = 0; i < 7; i++){
+            date = df.format(c.getTime());
+            for(TrainingExecution te : dataManager.getTrainingExecutions()){
+                Log.i("DataManagerLog", te.getUnit());
+                if(te.getDate().equals(date)){
+                    trainingExecutions.add(te);
+                    break;
+                }
+            }
+            c.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return trainingExecutions;
     }
 }
