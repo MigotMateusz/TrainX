@@ -6,9 +6,12 @@ import androidx.fragment.app.FragmentManager;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity{
     private TabLayout tabLayout;
     public DataManager dataManager;
     private ArrayList<TrainingPlan> trainingPlans2;
+    private Menu optionMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -30,8 +34,15 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         new Operation().execute();
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
-
-        setSupportActionBar(toolbar);
+        toolbar.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent intent = new Intent(MainActivity.this, MySettingsActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        //setSupportActionBar(toolbar);
         trainingPlans2 = new ArrayList<>();
         int test = getIntent().getIntExtra("doWhat", 3);
         tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
@@ -164,5 +175,12 @@ public class MainActivity extends AppCompatActivity{
         protected void onPreExecute() {
             dataManager = new DataManager();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        optionMenu = menu;
+        return super.onCreateOptionsMenu(menu);
     }
 }

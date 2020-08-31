@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/icon_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".MySettingsActivity"></activity>
         <activity android:name=".TrainingExecActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
