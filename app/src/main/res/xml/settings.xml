@@ -1,9 +1,36 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <SwitchPreferenceCompat
+        app:key="darkmode"
+        app:title="Dark mode"
+        app:enabled="true"
+        />
+    <SwitchPreferenceCompat
         app:key="notifications"
         app:title="Enable message notifications"/>
-    <Preference
+    <!--<Preference
         app:key="feedback"
-        app:title="Send feedback"/>
+        app:title="Send feedback"/>-->
+    <PreferenceCategory
+        app:key="Account"
+        app:title="Account"/>
+    <Preference
+        app:title="Change Email"
+        app:key="Email"/>
+    <Preference
+        app:title="Log Out"
+        app:key="LogOut"/>
+    <PreferenceCategory
+        app:key="About"
+        app:title="About"/>
+    <Preference
+        app:title="Version"
+        app:key="Version"
+        app:summary="v1.0"/>
+    <Preference
+        app:title="About application"
+        app:key="appInfo"/>
+    <Preference
+        app:key="Author"
+        app:title="See author's website"/>
 </PreferenceScreen>
