@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity{
                 tab = tabLayout.getTabAt(0);
                 tab.select();
                 OverviewFragment overviewFragment = new OverviewFragment();
-
-
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.FrameLayout, overviewFragment).commit();
                 break;

@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -53,12 +54,27 @@ public class OverviewFragment extends Fragment {
         if(dataManager != null)
             if(dataManager.isTrainingToday() == false){
                 button.setVisibility(View.GONE);
-                ArrayList<TrainingExecution> exec = thisWeekTrainings(dataManager);
+                ArrayList<TrainingExecution> exec = null;
+                try {
+                    exec = thisWeekTrainings(dataManager);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                MaterialTextView yourText = myView.findViewById(R.id.yourText);
+                MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
                 if(exec.size() == 0){
-                    MaterialTextView yourText = myView.findViewById(R.id.yourText);
-                    MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
                     nextText.setText("You can make a plan for this week in \"this week\" tab");
                     yourText.setText("There is no planned trainings this week!");
+                }
+                else {
+                    String date = exec.get(0).getDate();
+                    for(int i = 1; i < exec.size(); i++) {
+                        if(exec.get(i).after(exec.get(i-1)))
+                            date = exec.get(i).getDate();
+                    }
+                    nextText.setText(date);
+                    yourText.setText("Your next training is on");
                 }
 
             }
@@ -92,7 +108,10 @@ public class OverviewFragment extends Fragment {
         if(isLastLoggedDayYesterday() == true)
             next_day = days + 1;
         else
-            next_day = 1;
+            if(isLastLoggedDayToday() == false)
+                next_day = 1;
+            else
+                next_day = days;
         editor.putInt("days", next_day);
         editor.commit();
 
@@ -116,6 +135,24 @@ public class OverviewFragment extends Fragment {
         else
             return false;
     }
+    private boolean isLastLoggedDayToday(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("name", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Date lastDate = new Date(sharedPreferences.getLong("time", 0));
+
+        Date today = new Date(System.currentTimeMillis());
+
+        long millis1 = today.getTime() - lastDate.getTime();
+        long daysBetween = TimeUnit.DAYS.convert(millis1, TimeUnit.MILLISECONDS);
+        long millis = today.getTime();
+        editor.putLong("time", millis).apply();
+        if(daysBetween == 0)
+            return true;
+        else
+            return false;
+    }
+
     private void prepareWeightTextView(View myView, DataManager dataManager){
         MaterialTextView weightTextView = myView.findViewById(R.id.weightTextView);
         if(dataManager.getWeightsUser().size() != 0){
@@ -127,7 +164,7 @@ public class OverviewFragment extends Fragment {
             weightTextView.setText("no saved data");
     }
 
-    private ArrayList<TrainingExecution> thisWeekTrainings(DataManager dataManager) {
+    private ArrayList<TrainingExecution> thisWeekTrainings(DataManager dataManager) throws ParseException {
         ArrayList<TrainingExecution> trainingExecutions = new ArrayList<>();
         Date dateNow = new Date();
         Calendar c = Calendar.getInstance();
@@ -139,6 +176,8 @@ public class OverviewFragment extends Fragment {
             date = df.format(c.getTime());
             for(TrainingExecution te : dataManager.getTrainingExecutions()){
                 Log.i("DataManagerLog", te.getUnit());
+                Date now = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                Date trainingDate = new SimpleDateFormat("yyyy-MM-dd").parse(te.getDate());
                 if(te.getDate().equals(date)){
                     trainingExecutions.add(te);
                     break;
@@ -148,6 +187,7 @@ public class OverviewFragment extends Fragment {
         }
         return trainingExecutions;
     }
+
     private void prepareUpdateButton(View myView, DataManager dataManager) {
         MaterialButton updateButton = (MaterialButton) myView.findViewById(R.id.updateWeightButton);
         updateButton.setOnClickListener(new View.OnClickListener() {
@@ -179,4 +219,5 @@ public class OverviewFragment extends Fragment {
             }
         });
     }
+
 }
