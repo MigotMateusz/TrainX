@@ -28,11 +28,13 @@ public class DataManager implements Serializable {
     private ArrayList<TrainingPlan> trainingPlans;
     private ArrayList<TrainingExecution> trainingExecutions;
     private ArrayList<FinishedTraining> finishedTrainings;
+    private ArrayList<Weight> weightsUser;
 
     public DataManager() {
         trainingPlans = new ArrayList<>();
         trainingExecutions = new ArrayList<>();
         finishedTrainings = new ArrayList<>();
+        weightsUser = new ArrayList<>();
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -104,6 +106,23 @@ public class DataManager implements Serializable {
             }
         });
 
+
+        ref = mDatabase.child("users").child(currentUser.getUid()).child("Weight");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
+                    Weight newWeight = plansSnapshot.getValue(Weight.class);
+                    weightsUser.add(newWeight);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                throw error.toException();
+            }
+        });
+
     }
 
     public static DataManager INSTANCE;
@@ -142,6 +161,14 @@ public class DataManager implements Serializable {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Finished Trainings");
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(ft);
+    }
+
+    public void addNewWeight(Weight newWeight){
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Weight");
+        ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(newWeight);
+        weightsUser.add(newWeight);
     }
 
     public void deleteFromTrainingList(String title){
@@ -204,5 +231,13 @@ public class DataManager implements Serializable {
                 return true;
             }
         return false;
+    }
+
+    public ArrayList<Weight> getWeightsUser() {
+        return weightsUser;
+    }
+
+    public void setWeightsUser(ArrayList<Weight> weightsUser) {
+        this.weightsUser = weightsUser;
     }
 }

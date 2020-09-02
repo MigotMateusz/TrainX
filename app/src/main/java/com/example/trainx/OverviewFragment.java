@@ -1,5 +1,7 @@
 package com.example.trainx;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -8,10 +10,12 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -74,6 +78,8 @@ public class OverviewFragment extends Fragment {
                     }
                 });
             }
+            prepareWeightTextView(myView,dataManager);
+            prepareUpdateButton(myView, dataManager);
         return myView;
     }
 
@@ -110,6 +116,16 @@ public class OverviewFragment extends Fragment {
         else
             return false;
     }
+    private void prepareWeightTextView(View myView, DataManager dataManager){
+        MaterialTextView weightTextView = myView.findViewById(R.id.weightTextView);
+        if(dataManager.getWeightsUser().size() != 0){
+            double w = dataManager.getWeightsUser().get(dataManager.getWeightsUser().size()-1).getWeight();
+            weightTextView.setText(w + " kg");
+        }
+
+        else
+            weightTextView.setText("no saved data");
+    }
 
     private ArrayList<TrainingExecution> thisWeekTrainings(DataManager dataManager) {
         ArrayList<TrainingExecution> trainingExecutions = new ArrayList<>();
@@ -131,5 +147,36 @@ public class OverviewFragment extends Fragment {
             c.add(Calendar.DAY_OF_MONTH, 1);
         }
         return trainingExecutions;
+    }
+    private void prepareUpdateButton(View myView, DataManager dataManager) {
+        MaterialButton updateButton = (MaterialButton) myView.findViewById(R.id.updateWeightButton);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Update your weight");
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                builder.setView(input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        double w = Double.parseDouble(input.getText().toString());
+                        Date currentDate = Calendar.getInstance().getTime();
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        String date = df.format(currentDate);
+                        dataManager.addNewWeight(new Weight(w, date));
+                        prepareWeightTextView(myView, dataManager);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 }
