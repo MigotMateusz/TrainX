@@ -50,52 +50,58 @@ public class OverviewFragment extends Fragment {
         int day = getDays();
         MaterialTextView dayTextView = myView.findViewById(R.id.dayText);
         dayTextView.setText(String.valueOf(day));
-        DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
-        if(dataManager != null)
-            if(dataManager.isTrainingToday() == false){
-                button.setVisibility(View.GONE);
-                ArrayList<TrainingExecution> exec = null;
-                try {
-                    exec = thisWeekTrainings(dataManager);
+        try {
+            DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                MaterialTextView yourText = myView.findViewById(R.id.yourText);
-                MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
-                if(exec.size() == 0){
-                    nextText.setText("You can make a plan for this week in \"this week\" tab");
-                    yourText.setText("There is no planned trainings this week!");
+            if(dataManager != null)
+                if(dataManager.isTrainingToday() == false){
+                    button.setVisibility(View.GONE);
+                    ArrayList<TrainingExecution> exec = null;
+                    try {
+                        exec = thisWeekTrainings(dataManager);
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    MaterialTextView yourText = myView.findViewById(R.id.yourText);
+                    MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
+                    if(exec.size() == 0){
+                        nextText.setText("You can make a plan for this week in \"this week\" tab");
+                        yourText.setText("There is no planned trainings this week!");
+                    }
+                    else {
+                        String date = exec.get(0).getDate();
+                        for(int i = 1; i < exec.size(); i++) {
+                            if(exec.get(i).after(exec.get(i-1)))
+                                date = exec.get(i).getDate();
+                        }
+                        nextText.setText(date);
+                        yourText.setText("Your next training is on");
+                    }
+
                 }
                 else {
-                    String date = exec.get(0).getDate();
-                    for(int i = 1; i < exec.size(); i++) {
-                        if(exec.get(i).after(exec.get(i-1)))
-                            date = exec.get(i).getDate();
-                    }
-                    nextText.setText(date);
-                    yourText.setText("Your next training is on");
-                }
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (dataManager.isTrainingDone())
+                                Toast.makeText(getActivity(), "Training is done already", Toast.LENGTH_SHORT).show();
+                            else {
+                                Intent intent = new Intent(getContext(), TrainingExecActivity.class);
+                                Bundle bundle = getArguments();
+                                intent.putExtra("DataManager", bundle);
+                                startActivity(intent);
+                            }
 
-            }
-            else {
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (dataManager.isTrainingDone())
-                            Toast.makeText(getActivity(), "Training is done already", Toast.LENGTH_SHORT).show();
-                        else {
-                            Intent intent = new Intent(getContext(), TrainingExecActivity.class);
-                            Bundle bundle = getArguments();
-                            intent.putExtra("DataManager", bundle);
-                            startActivity(intent);
                         }
-
-                    }
-                });
-            }
+                    });
+                }
             prepareWeightTextView(myView,dataManager);
             prepareUpdateButton(myView, dataManager);
+        } catch(NullPointerException exception) {
+            Toast.makeText(getActivity(), "Couldn't load data", Toast.LENGTH_SHORT).show();
+        }
+
         return myView;
     }
 

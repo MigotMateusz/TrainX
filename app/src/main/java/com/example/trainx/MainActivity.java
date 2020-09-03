@@ -20,20 +20,23 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity{
-    private TabLayout tabLayout;
     public DataManager dataManager;
-    private ArrayList<TrainingPlan> trainingPlans2;
-    private Menu optionMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        //dataManager = (DataManager) getIntent().getBundleExtra("dataBundle").getSerializable("dataManager");
+        dataManager = new DataManager();
         super.onCreate(savedInstanceState);
+        if(dataManager != null)
         setContentView(R.layout.activity_main);
-        new Operation().execute();
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
+
         toolbar.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -43,9 +46,9 @@ public class MainActivity extends AppCompatActivity{
             }
         });
         //setSupportActionBar(toolbar);
-        trainingPlans2 = new ArrayList<>();
-        int test = getIntent().getIntExtra("doWhat", 3);
-        tabLayout = (TabLayout)findViewById(R.id.TopTabLayout);
+        ArrayList<TrainingPlan> trainingPlans2 = new ArrayList<>();
+        int test = getIntent().getIntExtra("doWhat", 0);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.TopTabLayout);
         final TabItem tabWeek = findViewById(R.id.TWeekTab);
         TabLayout.Tab tab;
         switch(test) {
@@ -162,23 +165,10 @@ public class MainActivity extends AppCompatActivity{
         tab.setVisibility(View.GONE);
     }
 
-    private  class Operation extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            dataManager = new DataManager();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        optionMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 }
