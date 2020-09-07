@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/icon_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoaderActivity"></activity>
+        <activity android:name=".ShuffleActivity"></activity>
         <activity android:name=".MySettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

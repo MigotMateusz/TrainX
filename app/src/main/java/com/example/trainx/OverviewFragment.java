@@ -55,7 +55,6 @@ public class OverviewFragment extends Fragment {
 
             if(dataManager != null)
                 if(dataManager.isTrainingToday() == false){
-                    button.setVisibility(View.GONE);
                     ArrayList<TrainingExecution> exec = null;
                     try {
                         exec = thisWeekTrainings(dataManager);
@@ -70,6 +69,7 @@ public class OverviewFragment extends Fragment {
                         yourText.setText("There is no planned trainings this week!");
                     }
                     else {
+                        button.setVisibility(View.VISIBLE);
                         String date = exec.get(0).getDate();
                         for(int i = 1; i < exec.size(); i++) {
                             if(exec.get(i).after(exec.get(i-1)))
@@ -98,6 +98,7 @@ public class OverviewFragment extends Fragment {
                 }
             prepareWeightTextView(myView,dataManager);
             prepareUpdateButton(myView, dataManager);
+            prepareShuffleButton(myView, dataManager);
         } catch(NullPointerException exception) {
             Toast.makeText(getActivity(), "Couldn't load data", Toast.LENGTH_SHORT).show();
         }
@@ -222,6 +223,20 @@ public class OverviewFragment extends Fragment {
                     }
                 });
                 builder.show();
+            }
+        });
+    }
+
+    private void prepareShuffleButton(View myView, DataManager dataManager) {
+        MaterialButton shuffleButton = (MaterialButton) myView.findViewById(R.id.shuffleButton);
+        shuffleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                Intent intent = new Intent(getActivity(), ShuffleActivity.class);
+                bundle.putSerializable("dataManager", dataManager);
+                intent.putExtra("bundle", bundle);
+                startActivity(intent);
             }
         });
     }

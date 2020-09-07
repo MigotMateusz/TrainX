@@ -32,7 +32,7 @@ public class DataManager implements Serializable {
     private ArrayList<FinishedTraining> finishedTrainings;
     private ArrayList<Weight> weightsUser;
 
-    public DataManager() {
+    public DataManager(MainActivity activity) {
         trainingPlans = new ArrayList<>();
         trainingExecutions = new ArrayList<>();
         finishedTrainings = new ArrayList<>();
@@ -83,6 +83,7 @@ public class DataManager implements Serializable {
                     TrainingExecution newTrainingExecution = plansSnapshot.getValue(TrainingExecution.class);
                     trainingExecutions.add(newTrainingExecution);
                 }
+                activity.display();
             }
 
             @Override
@@ -117,6 +118,7 @@ public class DataManager implements Serializable {
                     Weight newWeight = plansSnapshot.getValue(Weight.class);
                     weightsUser.add(newWeight);
                 }
+
             }
 
             @Override
@@ -125,14 +127,6 @@ public class DataManager implements Serializable {
             }
         });
 
-    }
-
-    public static DataManager INSTANCE;
-
-    public static DataManager getInstance() {
-        if(INSTANCE == null)
-            INSTANCE = new DataManager();
-        return INSTANCE;
     }
 
     public ArrayList<TrainingPlan> getTrainingPlans() {

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".shuffleFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOUNTAIN CLIMBERS"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/counterText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
+            android:text="00:30"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:text="Next exercise:"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nextExerciseText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WALL SIT"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
+
+
+    </LinearLayout>
+
+</FrameLayout>

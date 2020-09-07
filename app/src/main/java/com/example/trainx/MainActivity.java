@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //dataManager = (DataManager) getIntent().getBundleExtra("dataBundle").getSerializable("dataManager");
-        dataManager = new DataManager();
         super.onCreate(savedInstanceState);
-        if(dataManager != null)
         setContentView(R.layout.activity_main);
+        dataManager = new DataManager(this);
+
         MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.topAppBarMain);
 
         toolbar.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -47,6 +47,31 @@ public class MainActivity extends AppCompatActivity{
         });
         //setSupportActionBar(toolbar);
         ArrayList<TrainingPlan> trainingPlans2 = new ArrayList<>();
+        //display();
+    }
+    public void replaceFragment(String titlePlan) {
+        Fragment fragment = new PlanStructureFragment();
+        Bundle args = new Bundle();
+        args.putString("title", titlePlan);
+        args.putSerializable("DataManager", dataManager);
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.FrameLayout, fragment)
+                .commit();
+    }
+    public void visibiltyTab(){
+        TabLayout tab = findViewById(R.id.TopTabLayout);
+        tab.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void display() {
         int test = getIntent().getIntExtra("doWhat", 0);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.TopTabLayout);
         final TabItem tabWeek = findViewById(R.id.TWeekTab);
@@ -149,26 +174,5 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
-    }
-    public void replaceFragment(String titlePlan) {
-        Fragment fragment = new PlanStructureFragment();
-        Bundle args = new Bundle();
-        args.putString("title", titlePlan);
-        args.putSerializable("DataManager", dataManager);
-        fragment.setArguments(args);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.FrameLayout, fragment)
-                .commit();
-    }
-    public void visibiltyTab(){
-        TabLayout tab = findViewById(R.id.TopTabLayout);
-        tab.setVisibility(View.GONE);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 }

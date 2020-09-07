@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OverviewFragment">
-
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:gravity="center"
         android:orientation="vertical"
@@ -62,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:text="today"/>
+                    android:text=" -- -- --"/>
 
 
                 <com.google.android.material.button.MaterialButton
@@ -71,7 +73,8 @@
                     android:layout_height="wrap_content"
                     android:text="Start training"
                     android:layout_gravity="center"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -89,13 +92,15 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Current Weight"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/weightTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="82kg"
+                    android:layout_gravity="center"
+                    android:text="-- kg"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/updateWeightButton"
@@ -105,5 +110,29 @@
                     android:text="Update your weight"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ABS Shuffle"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/shuffleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start training"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
+</androidx.core.widget.NestedScrollView>
 </FrameLayout>
