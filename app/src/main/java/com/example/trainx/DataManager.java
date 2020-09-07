@@ -127,6 +127,28 @@ public class DataManager implements Serializable {
             }
         });
 
+        ref = mDatabase.child("users").child(currentUser.getUid()).child("Shuffle");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
+                    ShuffleTraining newTraining = new ShuffleTraining();
+                    for(DataSnapshot pomSnapshot : plansSnapshot.getChildren()){
+                        for(DataSnapshot exerciseSnapshot : pomSnapshot.getChildren()){
+                            ShuffleExercise newExercise = exerciseSnapshot.getValue(ShuffleExercise.class);
+                            Log.i("ShuffleLog", newExercise.getName() + " " + newExercise.getAthlete());
+                        }
+
+                    }
+
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                throw error.toException();
+            }
+        });
     }
 
     public ArrayList<TrainingPlan> getTrainingPlans() {
