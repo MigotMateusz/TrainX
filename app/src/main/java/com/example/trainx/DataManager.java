@@ -32,11 +32,22 @@ public class DataManager implements Serializable {
     private ArrayList<FinishedTraining> finishedTrainings;
     private ArrayList<Weight> weightsUser;
 
+    public ArrayList<ShuffleTraining> getShuffleTrainings() {
+        return shuffleTrainings;
+    }
+
+    public void setShuffleTrainings(ArrayList<ShuffleTraining> shuffleTrainings) {
+        this.shuffleTrainings = shuffleTrainings;
+    }
+
+    private ArrayList<ShuffleTraining> shuffleTrainings;
+
     public DataManager(MainActivity activity) {
         trainingPlans = new ArrayList<>();
         trainingExecutions = new ArrayList<>();
         finishedTrainings = new ArrayList<>();
         weightsUser = new ArrayList<>();
+        shuffleTrainings = new ArrayList<>();
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -136,11 +147,11 @@ public class DataManager implements Serializable {
                     for(DataSnapshot pomSnapshot : plansSnapshot.getChildren()){
                         for(DataSnapshot exerciseSnapshot : pomSnapshot.getChildren()){
                             ShuffleExercise newExercise = exerciseSnapshot.getValue(ShuffleExercise.class);
-                            Log.i("ShuffleLog", newExercise.getName() + " " + newExercise.getAthlete());
+                            newTraining.add(newExercise);
                         }
 
                     }
-
+                    shuffleTrainings.add(newTraining);
                 }
 
             }

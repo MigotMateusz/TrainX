@@ -12,6 +12,14 @@
         android:gravity="center">
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/readyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get ready:"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:visibility="gone"/>
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/nameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +44,7 @@
             android:id="@+id/nextExerciseText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WALL SIT"
+            android:text=""
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
 
 
