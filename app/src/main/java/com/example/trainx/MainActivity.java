@@ -103,6 +103,11 @@ public class MainActivity extends AppCompatActivity{
             case 3:
                 tab = tabLayout.getTabAt(3);
                 tab.select();
+                DataFragment dataFragment = new DataFragment();
+                Bundle bundle = getIntent().getBundleExtra("BundleNewPlan");
+                dataFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.FrameLayout, dataFragment).commit();
                 break;
         }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -159,7 +164,20 @@ public class MainActivity extends AppCompatActivity{
                             .add(R.id.FrameLayout, plansFragment).commit();
                 }
                 else {
-
+                    DataFragment dataFragment = new DataFragment();
+                    Bundle newBundle;
+                    if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") == null)
+                        newBundle = new Bundle();
+                    else if(getIntent().getExtras()==null && getIntent().getBundleExtra("BundleNewPlan") != null)
+                        newBundle = new Bundle(getIntent().getBundleExtra("BundleNewPlan"));
+                    else
+                        newBundle = new Bundle((getIntent().getExtras()));
+                    if(dataManager != null) {
+                        newBundle.putSerializable("DataManager", dataManager);
+                    }
+                    dataFragment.setArguments(newBundle);
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.FrameLayout, dataFragment).commit();
                 }
             }
 
