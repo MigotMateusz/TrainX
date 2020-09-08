@@ -5,8 +5,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.InputType;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +19,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,9 +38,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class DataFragment extends Fragment {
+    private boolean isExpanded = false;
 
     public DataFragment() {
-        // Required empty public constructor
     }
 
 
@@ -55,6 +60,8 @@ public class DataFragment extends Fragment {
             e.printStackTrace();
         }
         updateWeight(myView,dataManager);
+        prepareExpandButton(myView);
+        prepareRecyclerView(myView, dataManager);
         return myView;
     }
     private void setWeightChart(View myView, ArrayList<Weight> weights) throws ParseException {
@@ -113,6 +120,42 @@ public class DataFragment extends Fragment {
                 builder.show();
             }
         });
+    }
+    private void prepareExpandButton(View myView) {
+        MaterialButton expandButton = myView.findViewById(R.id.expandButton);
+        expandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MaterialButton expandButton = myView.findViewById(R.id.expandButton);
+                //MaterialTextView textView = myView.findViewById(R.id.testExpandText);
+                RecyclerView recyclerView = (RecyclerView) myView.findViewById(R.id.dataWeightRecycler);
+                MaterialCardView cardView = myView.findViewById(R.id.weightCard);
+                TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                if(isExpanded){
+                    //textView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
+                    expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_down_24);
+                    isExpanded = false;
+                } else {
+                    //textView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_up_24);
+                    isExpanded = true;
+                }
+            }
+        });
+
+    }
+    private void prepareRecyclerView(View myView, DataManager dataManager){
+        ArrayList<Weight> weights = dataManager.getWeightsUser();
+        RecyclerView recyclerView = (RecyclerView) myView.findViewById(R.id.dataWeightRecycler);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        WeightAdapter mAdapter = new WeightAdapter(weights);
+        recyclerView.setAdapter(mAdapter);
     }
 
     private class MyAXisFormatter extends ValueFormatter {
