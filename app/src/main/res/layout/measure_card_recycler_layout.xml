@@ -19,7 +19,7 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:text="Weight"/>
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/weightChart"
+                android:id="@+id/measureChart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"/>
             <LinearLayout
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/updateWeightButtonData"
+                    android:id="@+id/updateMeasureButtonData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -46,7 +46,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/dataWeightRecycler"
+                android:id="@+id/dataMeasureRecycler"
                 android:visibility="gone"/>
         </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -127,8 +127,6 @@ public class DataFragment extends Fragment {
         expandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MaterialButton expandButton = myView.findViewById(R.id.expandButton);
-                //MaterialTextView textView = myView.findViewById(R.id.testExpandText);
                 RecyclerView recyclerView = (RecyclerView) myView.findViewById(R.id.dataWeightRecycler);
                 MaterialCardView cardView = myView.findViewById(R.id.weightCard);
                 TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
@@ -166,9 +164,21 @@ public class DataFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-
-        MeasurementsAdapter mAdapter = new MeasurementsAdapter(names);
+        ArrayList<ArrayList<Measure>> measures = new ArrayList<>();
+        addToMeasuresArray(measures, dataManager);
+        MeasurementsAdapter mAdapter = new MeasurementsAdapter(names, measures);
         recyclerView.setAdapter(mAdapter);
+    }
+    private void addToMeasuresArray(ArrayList<ArrayList<Measure>> measures, DataManager dataManager) {
+        measures.add(dataManager.getMeasurements().getNeckMeasurements());
+        measures.add(dataManager.getMeasurements().getShouldersMeasurements());
+        measures.add(dataManager.getMeasurements().getBicepsMeasurements());
+        measures.add(dataManager.getMeasurements().getForearmMeasurements());
+        measures.add(dataManager.getMeasurements().getChestMeasurements());
+        measures.add(dataManager.getMeasurements().getWaistMeasurements());
+        measures.add(dataManager.getMeasurements().getCalvesMeasurements());
+        measures.add(dataManager.getMeasurements().getHipsMeasurements());
+        measures.add(dataManager.getMeasurements().getThighsMeasurements());
     }
 
     private class MyAXisFormatter extends ValueFormatter {
