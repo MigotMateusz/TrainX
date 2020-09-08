@@ -62,6 +62,7 @@ public class DataFragment extends Fragment {
         updateWeight(myView,dataManager);
         prepareExpandButton(myView);
         prepareRecyclerView(myView, dataManager);
+        prepareMeasureRecyclerView(myView, dataManager);
         return myView;
     }
     private void setWeightChart(View myView, ArrayList<Weight> weights) throws ParseException {
@@ -155,6 +156,18 @@ public class DataFragment extends Fragment {
 
 
         WeightAdapter mAdapter = new WeightAdapter(weights);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    private void prepareMeasureRecyclerView(View myView, DataManager dataManager){
+        String[] names = {"Neck", "Shoulders", "Biceps", "Forearm", "Chest", "Waist", "Calves", "Hips", "Thighs"};
+        RecyclerView recyclerView = (RecyclerView) myView.findViewById(R.id.recyclerMeasureCards);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        MeasurementsAdapter mAdapter = new MeasurementsAdapter(names);
         recyclerView.setAdapter(mAdapter);
     }
 

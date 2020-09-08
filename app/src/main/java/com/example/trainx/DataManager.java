@@ -31,6 +31,7 @@ public class DataManager implements Serializable {
     private ArrayList<TrainingExecution> trainingExecutions;
     private ArrayList<FinishedTraining> finishedTrainings;
     private ArrayList<Weight> weightsUser;
+    private Measurements measurements;
 
     public ArrayList<ShuffleTraining> getShuffleTrainings() {
         return shuffleTrainings;
@@ -43,6 +44,7 @@ public class DataManager implements Serializable {
     private ArrayList<ShuffleTraining> shuffleTrainings;
 
     public DataManager(MainActivity activity) {
+        measurements = new Measurements();
         trainingPlans = new ArrayList<>();
         trainingExecutions = new ArrayList<>();
         finishedTrainings = new ArrayList<>();
@@ -268,5 +270,13 @@ public class DataManager implements Serializable {
 
     public void setWeightsUser(ArrayList<Weight> weightsUser) {
         this.weightsUser = weightsUser;
+    }
+
+    public Measurements getMeasurements() {
+        return measurements;
+    }
+
+    public void setMeasurements(Measurements measurements) {
+        this.measurements = measurements;
     }
 }
