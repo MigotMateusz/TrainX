@@ -62,64 +62,25 @@ public class ShuffleActivity extends AppCompatActivity {
         });
     }
 
-    private void refreshLayout(LEVEL level) {
+    public void refreshLayout(LEVEL level) {
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frameShuffle);
-        //int i = 0;
-        /*for(ShuffleExercise exercise : dataManager.getShuffleTrainings().get(0).getShuffleTrainings()) {
-            while (previousTimerActive);
-            Fragment newShuffle = new shuffleFragment();
-            Bundle exerciseBundle = new Bundle();
-            exerciseBundle.putSerializable("exercise", exercise);
-            Log.i("refreshLog", exercise.getName());
-            exerciseBundle.putSerializable("Level", level);
-            if(i + 1 < dataManager.getShuffleTrainings().get(0).getShuffleTrainings().size())
-                exerciseBundle.putSerializable("nextExercise", dataManager.getShuffleTrainings().get(0).getShuffleTrainings().get(i + 1));
-            newShuffle.setArguments(exerciseBundle);
-            Log.i("refreshLog", "removeAllViews");
-            frameLayout.removeAllViews();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frameShuffle, newShuffle).commit();
-            previousTimerActive = true;
-        }*/
-        for(int i = 0; i < dataManager.getShuffleTrainings().get(0).getShuffleTrainings().size(); i++) {
-            frameLayout.removeAllViews();
-            int next_index = i + 1;
-            ShuffleExercise currentExercise = dataManager.getShuffleTrainings().get(0).getShuffleTrainings().get(i);
-            mHandler = new Handler();
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    shuffleFragment newShuffle = new shuffleFragment();
-                    Bundle exerciseBundle = new Bundle();
-                    exerciseBundle.putSerializable("exercise", currentExercise);
-                    Log.i("refreshLog", currentExercise.getName());
-                    exerciseBundle.putSerializable("Level", level);
-                    if(next_index < dataManager.getShuffleTrainings().get(0).getShuffleTrainings().size())
-                        exerciseBundle.putSerializable("nextExercise", dataManager.getShuffleTrainings().get(0).getShuffleTrainings().get(next_index));
-                    newShuffle.setArguments(exerciseBundle);
-                    //frameLayout.removeAllViews();
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.popBackStack();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frameShuffle, newShuffle);
-                    fragmentTransaction.addToBackStack("StartShuffleFragment");
-                    fragmentTransaction.commit();
-                    //getSupportFragmentManager().beginTransaction()
-                    //       .replace(R.id.frameShuffle, newShuffle).commit();
-                }
-            });
-            synchronized (isComplete) {
-                try {
-                    Log.i("refreshLog", "Waiting for fragment");
-                    isComplete.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.i("refreshLog", "Got signal from fragment");
-        }
-    }
+        frameLayout.removeAllViews();
+        int next_index = 1;
+        ShuffleExercise currentExercise = dataManager.getShuffleTrainings().get(0).getShuffleTrainings().get(0);
+        shuffleFragment newShuffle = new shuffleFragment();
+        Bundle exerciseBundle = new Bundle();
+        exerciseBundle.putSerializable("exercise", currentExercise);
+        exerciseBundle.putSerializable("exerciseArray", dataManager.getShuffleTrainings().get(0).getShuffleTrainings());
+        exerciseBundle.putInt("position", 0);
+        exerciseBundle.putSerializable("Level", level);
+        if(next_index < dataManager.getShuffleTrainings().get(0).getShuffleTrainings().size())
+            exerciseBundle.putSerializable("nextExercise", dataManager.getShuffleTrainings().get(0).getShuffleTrainings().get(next_index));
+        newShuffle.setArguments(exerciseBundle);
+        getSupportFragmentManager().beginTransaction()
+               .replace(R.id.frameShuffle, newShuffle).commit();
 
+
+    }
 
     public enum LEVEL {
         BEGINNER, INTERMEDIATE, ATHLETE;

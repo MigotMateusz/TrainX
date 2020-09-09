@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FinishedShuffleFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:text="Congrats! You finished ABS Shuffle Training"
+            android:gravity="center"
+            android:layout_marginBottom="30dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/goBackMainScreenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go back to main screen" />
+
+    </LinearLayout>
+
+</FrameLayout>

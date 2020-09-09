@@ -155,7 +155,6 @@ public class DataManager implements Serializable {
                     }
                     shuffleTrainings.add(newTraining);
                 }
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

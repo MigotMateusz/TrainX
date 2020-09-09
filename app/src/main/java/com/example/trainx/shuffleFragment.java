@@ -5,15 +5,22 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.google.android.material.textview.MaterialTextView;
+
+import java.util.ArrayList;
 
 public class shuffleFragment extends Fragment {
     private String exerciseName;
     private String nextExerciseName;
+    private int position;
+    private ShuffleActivity.LEVEL level;
+    private ArrayList<ShuffleExercise> shuffleExercises;
     public shuffleFragment() {}
 
     @Override
@@ -27,7 +34,11 @@ public class shuffleFragment extends Fragment {
         View myView = inflater.inflate(R.layout.fragment_shuffle, container, false);
         ShuffleExercise exercise = (ShuffleExercise) getArguments().getSerializable("exercise");
         ShuffleExercise nextExercise = (ShuffleExercise) getArguments().getSerializable("nextExercise");
-        ShuffleActivity.LEVEL level = (ShuffleActivity.LEVEL) getArguments().getSerializable("Level");
+        level = (ShuffleActivity.LEVEL) getArguments().getSerializable("Level");
+        position = getArguments().getInt("position");
+        position++;
+        shuffleExercises = (ArrayList<ShuffleExercise>) getArguments().getSerializable("exerciseArray");
+        Log.i("ShuffleLog", String.valueOf(position));
         MaterialTextView nameText = (MaterialTextView)myView.findViewById(R.id.nameText);
         MaterialTextView nextExerciseText = (MaterialTextView)myView.findViewById(R.id.nextExerciseText);
         MaterialTextView counterText = (MaterialTextView)myView.findViewById(R.id.counterText);
@@ -38,16 +49,10 @@ public class shuffleFragment extends Fragment {
 
         if(level == ShuffleActivity.LEVEL.BEGINNER)
             getReadyCounter(nameText, nextExerciseText, counterText, exercise.getBeginner());
-            //counter(counterText, exercise.getBeginner());
-            //counterText.setText(String.valueOf(exercise.getBeginner()));
         else if(level == ShuffleActivity.LEVEL.INTERMEDIATE)
             getReadyCounter(nameText, nextExerciseText, counterText, exercise.getIntermediate());
-            //counter(counterText, exercise.getIntermediate());
-            //counterText.setText(String.valueOf(exercise.getIntermediate()));
         else
             getReadyCounter(nameText, nextExerciseText, counterText, exercise.getAthlete());
-            //counter(counterText, exercise.getAthlete());
-            //counterText.setText(String.valueOf(exercise.getAthlete()));
 
         return myView;
     }
@@ -73,11 +78,35 @@ public class shuffleFragment extends Fragment {
             }
             public void onFinish(){
                 counterText.setText("Finished");
-                synchronized (ShuffleActivity.isComplete) {
-                    ShuffleActivity.isComplete.notify();
-                }
+                refreshLayout();
             }
         }.start();
+    }
+
+    private void refreshLayout(){
+        FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.frameShuffle);
+        frameLayout.removeAllViews();
+        int next_index = position + 1;
+        ShuffleExercise currentExercise;
+        if(position < shuffleExercises.size()){
+            currentExercise = shuffleExercises.get(position);
+            shuffleFragment newShuffle = new shuffleFragment();
+            Bundle exerciseBundle = new Bundle();
+            exerciseBundle.putSerializable("exercise", currentExercise);
+            exerciseBundle.putSerializable("exerciseArray", shuffleExercises);
+            exerciseBundle.putInt("position", position);
+            exerciseBundle.putSerializable("Level", level);
+            if(next_index < shuffleExercises.size())
+                exerciseBundle.putSerializable("nextExercise", shuffleExercises.get(next_index));
+            newShuffle.setArguments(exerciseBundle);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameShuffle, newShuffle).commit();
+        } else {
+            FinishedShuffleFragment finishedShuffleFragment = new FinishedShuffleFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameShuffle, finishedShuffleFragment).commit();
+        }
+
     }
 
 }
