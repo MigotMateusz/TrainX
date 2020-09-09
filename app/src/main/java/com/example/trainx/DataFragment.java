@@ -166,7 +166,7 @@ public class DataFragment extends Fragment {
 
         ArrayList<ArrayList<Measure>> measures = new ArrayList<>();
         addToMeasuresArray(measures, dataManager);
-        MeasurementsAdapter mAdapter = new MeasurementsAdapter(names, measures);
+        MeasurementsAdapter mAdapter = new MeasurementsAdapter(names, measures, getActivity());
         recyclerView.setAdapter(mAdapter);
     }
     private void addToMeasuresArray(ArrayList<ArrayList<Measure>> measures, DataManager dataManager) {

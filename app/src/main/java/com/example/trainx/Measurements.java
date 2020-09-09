@@ -74,7 +74,7 @@ public class Measurements implements Serializable {
         });
     }
 
-    public void addToMeasurementsList(ArrayList<Measure> measures, String name, Measure measure) {
+    public static void addToMeasurementsList(ArrayList<Measure> measures, String name, Measure measure) {
         measures.add(measure);
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
