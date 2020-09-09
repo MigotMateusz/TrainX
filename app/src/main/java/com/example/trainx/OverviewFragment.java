@@ -40,16 +40,26 @@ public class OverviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View myView = inflater.inflate(R.layout.fragment_overview, container, false);
         MaterialButton button = myView.findViewById(R.id.startTrainingButton);
-        int day = getDays();
         MaterialTextView dayTextView = myView.findViewById(R.id.dayText);
-        dayTextView.setText(String.valueOf(day));
+        MaterialTextView yourText = myView.findViewById(R.id.yourText);
+        MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
+        MaterialTextView weightTextView = myView.findViewById(R.id.weightTextView);
+        DataManager.loadOverviewData(new OnOverviewDataReceive() {
+            @Override
+            public void onDataReceived(String date, double weight, int strike) {
+                dayTextView.setText(String.valueOf(strike));
+                nextText.setText(date);
+                weightTextView.setText(String.valueOf(weight));
+            }
+        });
+        //int day = getDays();
+        //dayTextView.setText(String.valueOf(day));
         try {
             DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
 
@@ -62,8 +72,7 @@ public class OverviewFragment extends Fragment {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    MaterialTextView yourText = myView.findViewById(R.id.yourText);
-                    MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
+
                     if(exec.size() == 0){
                         nextText.setText("You can make a plan for this week in \"this week\" tab");
                         yourText.setText("There is no planned trainings this week!");

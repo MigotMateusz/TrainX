@@ -278,4 +278,27 @@ public class DataManager implements Serializable {
     public void setMeasurements(Measurements measurements) {
         this.measurements = measurements;
     }
+
+    public static void loadOverviewData(OnOverviewDataReceive callback) {
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("OverviewInfo");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String date = snapshot.child("nextTraining").getValue(String.class);
+                int dayStrike = snapshot.child("daysStrike").getValue(Integer.class);
+                double currentWeight = snapshot.child("currentWeight").getValue(Double.class);
+                Log.i("OverviewInfo", date);
+                Log.i("OverviewInfo", String.valueOf(dayStrike));
+                Log.i("OverviewInfo", String.valueOf(currentWeight));
+                callback.onDataReceived(date, currentWeight, dayStrike);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }
