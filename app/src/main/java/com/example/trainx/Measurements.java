@@ -13,7 +13,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Objects;
 
 public class Measurements implements Serializable {
@@ -65,6 +70,7 @@ public class Measurements implements Serializable {
                     Log.i("MeasureLog", newMeasure.getDate() + " " + newMeasure.getValue());
                     measures.add(newMeasure);
                 }
+                Collections.sort(measures, new CustomComparator());
             }
 
             @Override
@@ -155,4 +161,18 @@ public class Measurements implements Serializable {
         this.calvesMeasurements = calvesMeasurements;
     }
 
+    public static class CustomComparator implements Comparator<Measure> {
+
+        @Override
+        public int compare(Measure measure, Measure t1) {
+            try {
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(measure.getDate());
+                Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(t1.getDate());
+                return date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return -1;
+        }
+    }
 }

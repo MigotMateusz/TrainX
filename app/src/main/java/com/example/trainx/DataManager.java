@@ -19,9 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -96,6 +99,7 @@ public class DataManager implements Serializable {
                     TrainingExecution newTrainingExecution = plansSnapshot.getValue(TrainingExecution.class);
                     trainingExecutions.add(newTrainingExecution);
                 }
+                Collections.sort(trainingExecutions, new CustomExecutionComparator());
                 activity.display();
             }
 
@@ -131,7 +135,7 @@ public class DataManager implements Serializable {
                     Weight newWeight = plansSnapshot.getValue(Weight.class);
                     weightsUser.add(newWeight);
                 }
-
+                Collections.sort(weightsUser, new CustomWeightComparator());
             }
 
             @Override
@@ -184,6 +188,7 @@ public class DataManager implements Serializable {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Execution");
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(te);
+        Collections.sort(trainingExecutions, new CustomExecutionComparator());
     }
 
     public void addSingleFinishedTraining(FinishedTraining ft) {
@@ -199,6 +204,7 @@ public class DataManager implements Serializable {
         DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Weight");
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(newWeight);
         weightsUser.add(newWeight);
+        Collections.sort(weightsUser, new CustomWeightComparator());
     }
 
     public void deleteFromTrainingList(String title){
@@ -279,6 +285,7 @@ public class DataManager implements Serializable {
         this.measurements = measurements;
     }
 
+
     public static void loadOverviewData(OnOverviewDataReceive callback) {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -300,5 +307,33 @@ public class DataManager implements Serializable {
 
             }
         });
+    }
+    public static class CustomWeightComparator implements Comparator<Weight> {
+
+        @Override
+        public int compare(Weight weight, Weight t1) {
+            try {
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(weight.getDate());
+                Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(t1.getDate());
+                return date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return -1;
+        }
+    }
+    public static class CustomExecutionComparator implements Comparator<TrainingExecution> {
+
+        @Override
+        public int compare(TrainingExecution trainingExecution, TrainingExecution t1) {
+            try {
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(trainingExecution.getDate());
+                Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(t1.getDate());
+                return date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return -1;
+        }
     }
 }

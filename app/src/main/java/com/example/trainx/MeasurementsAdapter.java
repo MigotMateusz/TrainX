@@ -34,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -180,6 +181,8 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
                         double value = Double.parseDouble(valueInput.getText().toString());
                         String date = dateInput.getText().toString();
                         Measure newMeasure = new Measure(date, value);
+                        measures.get(position).add(newMeasure);
+                        Collections.sort(measures.get(position), new Measurements.CustomComparator());
                         Measurements.addToMeasurementsList(measures.get(position), names[position], newMeasure);
                         try {
                             setMeasureChart(lineChart, measures.get(position));
