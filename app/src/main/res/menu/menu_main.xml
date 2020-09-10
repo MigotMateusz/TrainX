@@ -1,14 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.trainx.NewPlanActivity"
+    tools:context="com.example.trainx.activities.NewPlanActivity"
     tools:showIn="nav_view"
     android:id="@+id/nav_view">
     <item
         android:id="@+id/saveBigPlan"
         android:icon="@drawable/ic_baseline_check_24"
-        android:title="Save"
-        app:showAsAction="always"
+        android:title="@string/save"
+        app:showAsAction="ifRoom"
         android:visible="false"
         />
     <item

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".PlansFragment">
+    tools:context=".fragments.PlansFragment">
 
    <RelativeLayout
        android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:name="com.example.trainx.PlanModule"/>-->
+                    android:name="com.example.trainx.fragments.PlanModule"/>-->
             </LinearLayout>
        </androidx.core.widget.NestedScrollView>
        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

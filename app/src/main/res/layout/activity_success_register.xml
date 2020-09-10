@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SuccessRegisterActivity"
+    tools:context=".activities.SuccessRegisterActivity"
     android:id="@+id/generallayout"
     android:orientation="vertical"
     android:gravity="top|center">

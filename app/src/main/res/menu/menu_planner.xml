@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.trainx.PlannerActivity"
+    tools:context="com.example.trainx.activities.PlannerActivity"
     android:id="@+id/planner_view">
     <item
         android:id="@+id/saveWeek"
         android:icon="@drawable/ic_baseline_check_24"
-        android:title="Save"
-        app:showAsAction="always"
+        android:title="@string/save"
+        app:showAsAction="ifRoom"
         android:visible="true"
         />
     <item

@@ -25,7 +25,7 @@
        <item name="android:windowBackground">@drawable/splash</item>
     </style>
     <style name="TextLabelLogin" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
@@ -35,7 +35,7 @@
 
     </style>
     <style name="TextLabelEmail" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
@@ -47,21 +47,21 @@
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="android:textColorHint">#eee</item>
         <item name="android:paddingLeft">30dp</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:paddingRight">30dp </item>
         <item name="android:hint">@string/HintPassword </item>
         <item name="android:radius">20dp</item>
     </style>
     <style name="LoginButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:text">@string/HintLogin</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
     </style>
     <style name="RegisterButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:text">@string/RegisterMe</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_marginTop">30dp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:paddingLeft">30dp</item>
@@ -69,7 +69,7 @@
     </style>
     <style name="ForogotButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:text">@string/Continue</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_marginTop">30dp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:paddingLeft">30dp</item>

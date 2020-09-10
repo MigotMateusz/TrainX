@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">TrainX</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="HintLogin">Login</string>
@@ -23,18 +21,7 @@
     <string name="Continue">Continue</string>
     <string name="SuccessRegiser">Successful Registration</string>
     <string name="ThankyouRegiser">Thank you for your registration</string>
-    <string name="Ok">Ok</string>
-    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dui magna, tincidunt nec accumsan ac, interdum ac purus. Vestibulum eleifend efficitur molestie. Sed dapibus sodales pellentesque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam gravida odio convallis congue elementum. Donec eget lobortis justo, ac hendrerit lectus. Nunc sit amet posuere tellus, in volutpat est. In at pharetra justo. Phasellus volutpat non mauris et sodales. Praesent pretium ipsum eget placerat volutpat. Sed pulvinar, ipsum non placerat molestie, dolor felis dignissim nibh, cursus tincidunt arcu dolor consectetur ante.
-
-Nulla facilisi. Curabitur interdum leo velit, vitae malesuada sapien venenatis in. Nunc iaculis pellentesque neque, nec ultricies nulla ultricies id. Vestibulum faucibus ligula ipsum, a rhoncus odio tempus ac. Donec viverra, turpis et sollicitudin blandit, lectus lectus vestibulum sem, et auctor turpis sapien in velit. Vestibulum placerat, diam sed euismod tincidunt, sem eros varius sapien, at vulputate urna sapien ut ex. Ut maximus purus id quam vehicula laoreet eu varius felis. In hac habitasse platea dictumst. Fusce aliquet urna enim, ac eleifend nisi porttitor in. Etiam pulvinar facilisis turpis nec condimentum. Nam porta dictum erat, sit amet posuere augue tempor in. Praesent dictum ligula ut mi iaculis consectetur. Vestibulum maximus, sem at porta sodales, nisl ipsum sodales tellus, vel volutpat metus tellus quis neque. Curabitur a faucibus quam. Sed lobortis non felis ut laoreet. Etiam bibendum maximus nisl, ac pretium nulla pulvinar ac.
-
-Etiam mattis est auctor faucibus vehicula. Mauris mollis odio at consequat dapibus. Proin egestas ex non massa volutpat, vitae vulputate dolor blandit. In elementum mauris eget urna laoreet, quis ultrices nisi facilisis. Fusce interdum enim mi, eu aliquet enim malesuada at. Phasellus pulvinar augue eu enim consequat, sagittis gravida justo convallis. Nullam maximus dolor sit amet mi scelerisque mollis.
-
-Duis bibendum justo laoreet, sodales dolor vitae, aliquam tortor. Fusce congue est vitae justo consectetur malesuada. Nunc eleifend efficitur interdum. Etiam finibus, tellus eu porta ullamcorper, neque neque fringilla massa, porttitor pulvinar neque magna at sem. Suspendisse potenti. Suspendisse potenti. Suspendisse a quam sit amet lorem pellentesque imperdiet. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis hendrerit eget ante nec sodales.
-
-Pellentesque neque odio, viverra sit amet lectus at, vulputate vulputate mi. Nullam id urna in dui eleifend maximus. Proin pretium sapien vel orci auctor dictum. Vestibulum vel nunc nec purus pharetra porta sed eu nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse vestibulum euismod massa, non lobortis risus consequat non. Fusce pulvinar tempus nulla et posuere. Curabitur commodo turpis sodales nunc mollis elementum. Duis aliquet eros ac sem blandit, eget placerat ligula ornare. In sit amet ullamcorper enim. Nunc ut ex ac enim laoreet pulvinar.
-    Pellentesque neque odio, viverra sit amet lectus at, vulputate vulputate mi. Nullam id urna in dui eleifend maximus. Proin pretium sapien vel orci auctor dictum. Vestibulum vel nunc nec purus pharetra porta sed eu nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse vestibulum euismod massa, non lobortis risus consequat non. Fusce pulvinar tempus nulla et posuere. Curabitur commodo turpis sodales nunc mollis elementum. Duis aliquet eros ac sem blandit, eget placerat ligula ornare. In sit amet ullamcorper enim. Nunc ut ex ac enim laoreet pulvinar.</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Ok">OK</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Monday">Monday</string>
     <string name="Tuesday">Tuesday</string>
@@ -44,4 +31,5 @@ Pellentesque neque odio, viverra sit amet lectus at, vulputate vulputate mi. Nul
     <string name="Saturday">Saturday</string>
     <string name="Sunday">Sunday</string>
     <string name="Training">Training: Gym(Chest + Biceps)</string>
+    <string name="save">Save</string>
 </resources>
