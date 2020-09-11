@@ -28,16 +28,23 @@ public class TrainingExecActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_exec);
+
+        DataManager dataManager = (DataManager) getIntent().getBundleExtra("DataManager").getSerializable("DataManager");
+
         MaterialToolbar toolbar = findViewById(R.id.trainerExecToolbar);
         setSupportActionBar(toolbar);
-        DataManager dataManager = (DataManager) getIntent().getBundleExtra("DataManager").getSerializable("DataManager");
+
+
         TrainingUnit currentTraining = prepareTrainingUnit(dataManager);
         TrainingExecution currentTrainingExecution = prepareTrainingExecution(dataManager);
+
         int position = 0;
         Exercise e = currentTraining.getExerciseArrayList().get(position);
+
         FinishedTraining currentFinishedTraining = new FinishedTraining();
         currentFinishedTraining.setTrainingExecution(currentTrainingExecution);
         currentFinishedTraining.setExercises(new ArrayList<>());
+
         ExerciseFragment exerciseFragment = new ExerciseFragment();
         Bundle bundle = getIntent().getExtras();
         bundle.putSerializable("Exercise", e);
@@ -62,7 +69,6 @@ public class TrainingExecActivity extends AppCompatActivity {
                     if(tp.getName().equals(te.getPlan())){
                         for(TrainingUnit tu : tp.getUnitArrayList()){
                             if(tu.getName().equals(te.getUnit())){
-                                Log.i("TrainingExecActivityLog", tu.getName());
                                 return tu;
                             }
                         }
@@ -82,7 +88,6 @@ public class TrainingExecActivity extends AppCompatActivity {
                     if(tp.getName().equals(te.getPlan())){
                         for(TrainingUnit tu : tp.getUnitArrayList()){
                             if(tu.getName().equals(te.getUnit())){
-                                Log.i("TrainingExecActivityLog", tu.getName());
                                 return te;
                             }
                         }

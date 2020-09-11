@@ -3,14 +3,12 @@ package com.example.trainx.adapters;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,14 +36,16 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapter.MyViewHolder>  {
     Context context;
-    boolean isExpanded;
-    String[] names;
+    boolean isCardExpanded;
+    String[] measurementNames;
     ArrayList<ArrayList<Measure>> measures;
     public MeasurementsAdapter(String[] dataSet, ArrayList<ArrayList<Measure>> me, Context context) {
-        this.names = dataSet;
+        this.measurementNames = dataSet;
         this.measures = me;
         this.context = context;
     }
@@ -60,40 +60,35 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MeasurementsAdapter.MyViewHolder holder, int position) {
-        holder.nameMeasureText.setText(names[position]);
-
+        holder.nameMeasureText.setText(measurementNames[position]);
         try {
             setMeasureChart(holder.lineChart, measures.get(position));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        holder.updateMeasureButtonData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createDialog(position, holder.lineChart);
-            }
-        });
-        holder.expandButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                prepareRecyclerView(view, holder.recyclerView, measures.get(position));
-                TransitionManager.beginDelayedTransition(holder.cardView, new AutoTransition());
-                if(isExpanded){
-                    holder.recyclerView.setVisibility(View.GONE);
-                    holder.expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_down_24);
-                    isExpanded = false;
-                } else {
-                    holder.recyclerView.setVisibility(View.VISIBLE);
-                    holder.expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_up_24);
-                    isExpanded = true;
-                }
-            }
-        });
+        holder.updateMeasureButtonData.setOnClickListener(view -> createDialog(position, holder.lineChart));
+
+        holder.expandButton.setOnClickListener(view -> expandCard(view, holder, position));
+    }
+
+
+    private void expandCard(View view, MeasurementsAdapter.MyViewHolder holder, int position) {
+        prepareRecyclerView(view, holder.recyclerView, measures.get(position));
+        TransitionManager.beginDelayedTransition(holder.cardView, new AutoTransition());
+        if(isCardExpanded){
+            holder.recyclerView.setVisibility(View.GONE);
+            holder.expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_down_24);
+            isCardExpanded = false;
+        } else {
+            holder.recyclerView.setVisibility(View.VISIBLE);
+            holder.expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_up_24);
+            isCardExpanded = true;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return names.length;
+        return measurementNames.length;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -117,15 +112,14 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
     private void setMeasureChart(LineChart lineChart, ArrayList<Measure> measures) throws ParseException {
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        ValueFormatter dateFormat = new MeasurementsAdapter.MyAXisFormatter();
+        ValueFormatter dateFormat = new MyAXisFormatter();
         xAxis.setValueFormatter(dateFormat);
-        int i = 1;
         List<Entry> entries = new ArrayList<>();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         for(Measure m : measures) {
             Date date = format.parse(m.getDate());
+            assert date != null;
             entries.add(new Entry((long) date.getTime(), (float) m.getValue()));
-            i++;
         }
         LineDataSet dataSet = new LineDataSet(entries, "Label");
         LineData lineData = new LineData(dataSet);
@@ -134,16 +128,15 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
         lineChart.notifyDataSetChanged();
         lineChart.invalidate();
     }
-    private class MyAXisFormatter extends ValueFormatter {
+    private static class MyAXisFormatter extends ValueFormatter {
         @Override
         public String getFormattedValue(float value) {
             Date date = new Date((long)value);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             return sdf.format(date);
         }
     }
     private void prepareRecyclerView(View view, RecyclerView recyclerView, ArrayList<Measure> measures){
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -152,60 +145,46 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
     }
 
     private void createDialog(int position, LineChart lineChart){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.updatecustondialog,null);
         TextInputEditText valueInput = (TextInputEditText) dialogView.findViewById(R.id.valueInputEdit);
         TextInputEditText dateInput = (TextInputEditText) dialogView.findViewById(R.id.dateInputEdit);
         final Calendar myCalendar = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                myCalendar.set(Calendar.YEAR, i);
-                myCalendar.set(Calendar.MONTH, i1);
-                myCalendar.set(Calendar.DAY_OF_MONTH, i2);
-                updateLabel(dateInput, myCalendar);
-            }
+        DatePickerDialog.OnDateSetListener date = (datePicker, i, i1, i2) -> {
+            myCalendar.set(Calendar.YEAR, i);
+            myCalendar.set(Calendar.MONTH, i1);
+            myCalendar.set(Calendar.DAY_OF_MONTH, i2);
+            updateLabel(dateInput, myCalendar);
         };
-        dateInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new DatePickerDialog(view.getContext(),date,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
+        dateInput.setOnClickListener(view -> new DatePickerDialog(view.getContext(),date,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show());
+
         builder.setView(dialogView)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        double value = Double.parseDouble(valueInput.getText().toString());
-                        String date = dateInput.getText().toString();
-                        Measure newMeasure = new Measure(date, value);
-                        measures.get(position).add(newMeasure);
-                        Collections.sort(measures.get(position), new Measurements.CustomComparator());
-                        Measurements.addToMeasurementsList(measures.get(position), names[position], newMeasure);
-                        try {
-                            setMeasureChart(lineChart, measures.get(position));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                .setPositiveButton("Save", (dialogInterface, i) -> {
+                    double value = Double.parseDouble(Objects.requireNonNull(valueInput.getText()).toString());
+                    String date1 = Objects.requireNonNull(dateInput.getText()).toString();
+                    Measure newMeasure = new Measure(date1, value);
+                    measures.get(position).add(newMeasure);
+                    Collections.sort(measures.get(position), new Measurements.CustomComparator());
+                    Measurements.addToMeasurementsList(measures.get(position), measurementNames[position], newMeasure);
+                    try {
+                        setMeasureChart(lineChart, measures.get(position));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {});
         AlertDialog dialog = builder.create();
         dialog.show();
 
     }
     private void updateLabel(TextInputEditText editText,Calendar calendar){
         String myFormat="yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
         editText.setText(sdf.format(calendar.getTime()));
     }
+
+
 
 }

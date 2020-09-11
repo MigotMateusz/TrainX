@@ -18,12 +18,8 @@ import com.example.trainx.models.TrainingPlan;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.ArrayList;
-
-
 public class PlansFragment extends Fragment implements NewPlanActivity.DataFromActivityToFragment {
     DataManager dataManager;
-    ArrayList<TrainingPlan> trainingPlans;
 
     public PlansFragment() {
     }
@@ -41,32 +37,11 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
                              Bundle savedInstanceState) {
         final View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
 
-        MaterialTextView materialTextView = (MaterialTextView)myView.findViewById(R.id.NoTrainingText);
-        materialTextView.setVisibility(View.GONE);
+        prepareUIElement(myView);
 
-        ExtendedFloatingActionButton newPlanButton = (ExtendedFloatingActionButton) myView.findViewById(R.id.PlanFloatingButton) ;
-        newPlanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NewPlanActivity newPlanActivity = new NewPlanActivity();
-                Intent intent = new Intent(getContext(), newPlanActivity.getClass());
-                Bundle bundleData = new Bundle();
-                bundleData.putSerializable("DataManager1", dataManager);
-                intent.putExtra("DataManager", bundleData);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
-            }
-        });
-
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-
-        fm.beginTransaction();
-
-        if(dataManager!=null){
-            loadPlans(dataManager, ft);
+        if(dataManager != null){
+            loadPlans(dataManager);
         }
-        ft.commit();
 
         return myView;
     }
@@ -82,10 +57,11 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         newModule.setArguments(arguments);
         return newModule;
     }
-    public void addToView(Fragment newFragment, FragmentTransaction ft) {
-        ft.add(R.id.LlPlans, newFragment);
-    }
-    public void loadPlans(DataManager dataManager, FragmentTransaction ft) {
+
+    private void loadPlans(DataManager dataManager) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        fm.beginTransaction();
 
         for(TrainingPlan tp : dataManager.getTrainingPlans()) {
             String title = tp.getName();
@@ -97,6 +73,24 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
             newModule.setArguments(arguments);
             ft.add(R.id.LlPlans, newModule);
         }
+
+        ft.commit();
+    }
+
+    private void prepareUIElement(View myView) {
+        MaterialTextView materialTextView = myView.findViewById(R.id.NoTrainingText);
+        materialTextView.setVisibility(View.GONE);
+
+        ExtendedFloatingActionButton newPlanButton = myView.findViewById(R.id.PlanFloatingButton) ;
+        newPlanButton.setOnClickListener(view -> {
+            NewPlanActivity newPlanActivity = new NewPlanActivity();
+            Intent intent = new Intent(getContext(), newPlanActivity.getClass());
+            Bundle bundleData = new Bundle();
+            bundleData.putSerializable("DataManager1", dataManager);
+            intent.putExtra("DataManager", bundleData);
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
+        });
     }
 
 }

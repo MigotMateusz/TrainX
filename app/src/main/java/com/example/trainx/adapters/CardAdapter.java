@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> {
     private ArrayList<TrainingUnit> trainingUnits;
-
     public CardAdapter(ArrayList<TrainingUnit> tu) { trainingUnits = tu; }
 
     @NonNull

@@ -1,7 +1,5 @@
 package com.example.trainx.models;
 
-import com.example.trainx.models.TrainingUnit;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

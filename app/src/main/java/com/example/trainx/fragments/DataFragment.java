@@ -135,12 +135,10 @@ public class DataFragment extends Fragment {
                 MaterialCardView cardView = myView.findViewById(R.id.weightCard);
                 TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                 if(isExpanded){
-                    //textView.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.GONE);
                     expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_down_24);
                     isExpanded = false;
                 } else {
-                    //textView.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
                     expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_up_24);
                     isExpanded = true;
@@ -173,6 +171,7 @@ public class DataFragment extends Fragment {
         MeasurementsAdapter mAdapter = new MeasurementsAdapter(names, measures, getActivity());
         recyclerView.setAdapter(mAdapter);
     }
+
     private void addToMeasuresArray(ArrayList<ArrayList<Measure>> measures, DataManager dataManager) {
         measures.add(dataManager.getMeasurements().getNeckMeasurements());
         measures.add(dataManager.getMeasurements().getShouldersMeasurements());
@@ -185,12 +184,13 @@ public class DataFragment extends Fragment {
         measures.add(dataManager.getMeasurements().getThighsMeasurements());
     }
 
-    private class MyAXisFormatter extends ValueFormatter {
+    private static class MyAXisFormatter extends ValueFormatter {
         @Override
         public String getFormattedValue(float value) {
             Date date = new Date((long)value);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             return sdf.format(date);
         }
     }
+
 }

@@ -48,13 +48,9 @@ public class ThisWeekFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), PlannerActivity.class);
                 Bundle bundleData = getArguments();
-                if(bundleData!=null)
-                    Log.i("ThisWeekLog", "not null");
                 intent.putExtra("DataManager", bundleData);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
-
-                Toast.makeText(getActivity(),"Test OnClick", Toast.LENGTH_SHORT).show();
             }
         });
 

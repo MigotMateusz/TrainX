@@ -3,8 +3,6 @@ package com.example.trainx.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.trainx.R;
@@ -14,54 +12,35 @@ import com.example.trainx.models.ShuffleExercise;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Objects;
+
 public class ShuffleActivity extends AppCompatActivity {
     private DataManager dataManager;
-    public static Boolean isComplete = new Boolean(true);
-    private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shuffle);
-        dataManager = (DataManager)getIntent().getBundleExtra("bundle").getSerializable("dataManager");
-        MaterialToolbar toolbar = findViewById(R.id.toolbarShuffle);
-        setSupportActionBar(toolbar);
-        prepareBeginnerLevel();
-        prepareIntermediateLevel();
-        prepareAthleteLevel();
+        dataManager = (DataManager) Objects.requireNonNull(getIntent().getBundleExtra("bundle")).getSerializable("dataManager");
+        prepareUI();
     }
 
     private void prepareBeginnerLevel() {
-        MaterialButton beginnerButton = (MaterialButton) findViewById(R.id.beginnerButton);
-        beginnerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refreshLayout(LEVEL.BEGINNER);
-            }
-        });
+        MaterialButton beginnerButton = findViewById(R.id.beginnerButton);
+        beginnerButton.setOnClickListener(view -> refreshLayout(LEVEL.BEGINNER));
     }
 
     private void prepareIntermediateLevel() {
-        MaterialButton intermediateButton = (MaterialButton) findViewById(R.id.intermediateButton);
-        intermediateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refreshLayout(LEVEL.INTERMEDIATE);
-            }
-        });
+        MaterialButton intermediateButton = findViewById(R.id.intermediateButton);
+        intermediateButton.setOnClickListener(view -> refreshLayout(LEVEL.INTERMEDIATE));
     }
 
     private void prepareAthleteLevel() {
-        MaterialButton athleteButton = (MaterialButton) findViewById(R.id.athleteButton);
-        athleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refreshLayout(LEVEL.ATHLETE);
-            }
-        });
+        MaterialButton athleteButton = findViewById(R.id.athleteButton);
+        athleteButton.setOnClickListener(view -> refreshLayout(LEVEL.ATHLETE));
     }
 
     public void refreshLayout(LEVEL level) {
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frameShuffle);
+        FrameLayout frameLayout = findViewById(R.id.frameShuffle);
         frameLayout.removeAllViews();
         int next_index = 1;
         ShuffleExercise currentExercise = dataManager.getShuffleTrainings().get(0).getShuffleTrainings().get(0);
@@ -76,11 +55,17 @@ public class ShuffleActivity extends AppCompatActivity {
         newShuffle.setArguments(exerciseBundle);
         getSupportFragmentManager().beginTransaction()
                .replace(R.id.frameShuffle, newShuffle).commit();
+    }
 
-
+    private void prepareUI() {
+        MaterialToolbar toolbar = findViewById(R.id.toolbarShuffle);
+        setSupportActionBar(toolbar);
+        prepareBeginnerLevel();
+        prepareIntermediateLevel();
+        prepareAthleteLevel();
     }
 
     public enum LEVEL {
-        BEGINNER, INTERMEDIATE, ATHLETE;
+        BEGINNER, INTERMEDIATE, ATHLETE
     }
 }

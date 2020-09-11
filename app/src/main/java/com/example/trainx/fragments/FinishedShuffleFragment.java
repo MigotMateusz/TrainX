@@ -26,14 +26,14 @@ public class FinishedShuffleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View myView =  inflater.inflate(R.layout.fragment_finished_shuffle, container, false);
-        MaterialButton goBackButton = (MaterialButton) myView.findViewById(R.id.goBackMainScreenButton);
-        goBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        prepareButton(myView);
         return myView;
+    }
+    private void prepareButton(View view) {
+        MaterialButton goBackButton = (MaterialButton) view.findViewById(R.id.goBackMainScreenButton);
+        goBackButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        });
     }
 }

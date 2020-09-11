@@ -1,7 +1,5 @@
 package com.example.trainx.models;
 
-import android.util.Log;
-
 import java.io.Serializable;
 
 public class Exercise implements Serializable {
@@ -39,11 +37,6 @@ public class Exercise implements Serializable {
 
     public void setReps(int reps) {
         this.reps = reps;
-    }
-
-    public void print() {
-        String msg = this.name + " " + this.sets + "x" + this.reps;
-        Log.i("ExerciseClass", msg);
     }
 
 }

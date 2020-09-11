@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.trainx.R;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.ArrayList;
-
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private String[] mDataset;
+    private String[] mDataSet;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public MaterialTextView textView;
@@ -22,8 +20,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(String[] myDataset) {
-        mDataset = myDataset;
+    public MyAdapter(String[] myDataSet) {
+        mDataSet = myDataSet;
     }
 
     @NonNull
@@ -31,22 +29,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         MaterialTextView v = (MaterialTextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.textview_layout, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.textView.setText(mDataset[position]);
+        holder.textView.setText(mDataSet[position]);
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
-    }
-
-    public void addData(ArrayList<String> list, String newData) {
-        list.add(newData);
-        this.notifyDataSetChanged();
+        return mDataSet.length;
     }
 }

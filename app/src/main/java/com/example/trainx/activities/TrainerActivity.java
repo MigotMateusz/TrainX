@@ -30,31 +30,31 @@ public class TrainerActivity extends AppCompatActivity {
     }
 
     private void setToolbar() {
-        MaterialToolbar toolbar = (MaterialToolbar) findViewById(R.id.trainerToolbar);
+        MaterialToolbar toolbar = findViewById(R.id.trainerToolbar);
         setSupportActionBar(toolbar);
     }
 
     private void getBundle() {
         Bundle bundle = getIntent().getBundleExtra("Bundle");
+        assert bundle != null;
         dataManager = (DataManager) bundle.getSerializable("DataManager");
         date = bundle.getString("Date");
     }
 
     private void prepareRecyclerView(){
         TrainingUnit unit = getTrainingUnit();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerExercises);
+        RecyclerView recyclerView = findViewById(R.id.recyclerExercises);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ArrayList<Exercise> tabExercise = new ArrayList<>();
-
-        for(Exercise e : unit.getExerciseArrayList())
-            tabExercise.add(e);
+        assert unit != null;
+        ArrayList<Exercise> tabExercise = new ArrayList<>(unit.getExerciseArrayList());
 
         ExerciseTrainerAdapter mAdapter = new ExerciseTrainerAdapter(tabExercise);
         recyclerView.setAdapter(mAdapter);
     }
+
     private TrainingUnit getTrainingUnit(){
         String nameUnit = null;
         String namePlan = null;

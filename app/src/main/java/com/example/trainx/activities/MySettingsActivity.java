@@ -9,7 +9,6 @@ import com.example.trainx.fragments.MySettingsFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class MySettingsActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Measurements implements Serializable {
@@ -169,6 +170,7 @@ public class Measurements implements Serializable {
             try {
                 Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(measure.getDate());
                 Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(t1.getDate());
+                assert date1 != null;
                 return date1.compareTo(date2);
             } catch (ParseException e) {
                 e.printStackTrace();

@@ -84,10 +84,9 @@ public class OverviewFragment extends Fragment {
                         button.setVisibility(View.VISIBLE);
                         String date = exec.get(0).getDate();
                         for(int i = 1; i < exec.size(); i++) {
-                            if(exec.get(i).after(exec.get(i-1)))
-                                date = exec.get(i).getDate();
+                                //date = exec.get(i).getDate();
                         }
-                        nextText.setText(date);
+                        //nextText.setText(date);
                         yourText.setText("Your next training is on");
                     }
 

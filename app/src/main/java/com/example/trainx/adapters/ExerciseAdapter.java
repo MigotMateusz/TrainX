@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyViewHolder> {
     public ArrayList<Exercise> exercises;
-    public ExerciseAdapter(ArrayList<Exercise> myDataset) {
-        exercises = myDataset;
+    public ExerciseAdapter(ArrayList<Exercise> myDataSet) {
+        exercises = myDataSet;
     }
 
     @NonNull

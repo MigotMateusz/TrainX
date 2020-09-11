@@ -13,7 +13,6 @@ public class Measure implements Serializable {
         this.value = v;
     }
 
-
     public String getDate() {
         return date;
     }

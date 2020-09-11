@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class MeasureAdapter extends RecyclerView.Adapter<MeasureAdapter.MyViewHolder> {
 
     public ArrayList<Measure> measures;
-    public MeasureAdapter(ArrayList<Measure> myDataset) {
-        measures = myDataset;
+    public MeasureAdapter(ArrayList<Measure> myDataSet) {
+        measures = myDataSet;
     }
 
     @NonNull
@@ -26,8 +26,7 @@ public class MeasureAdapter extends RecyclerView.Adapter<MeasureAdapter.MyViewHo
     public MeasureAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v =  LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.weightdatalayout, parent, false);
-        MyViewHolder vh = new MyViewHolder((LinearLayout)v);
-        return vh;
+        return new MyViewHolder((LinearLayout)v);
     }
 
     @Override
@@ -49,8 +48,8 @@ public class MeasureAdapter extends RecyclerView.Adapter<MeasureAdapter.MyViewHo
         public MaterialTextView dateText;
         public MyViewHolder(LinearLayout v) {
             super(v);
-            valueText = (MaterialTextView) v.findViewById(R.id.valueText);
-            dateText = (MaterialTextView) v.findViewById(R.id.dateText);
+            valueText = v.findViewById(R.id.valueText);
+            dateText = v.findViewById(R.id.dateText);
         }
     }
 }

@@ -1,13 +1,13 @@
 package com.example.trainx.models;
 
-import com.example.trainx.models.Exercise;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TrainingUnit implements Serializable {
     private String name;
     private ArrayList<Exercise> exerciseArrayList;
+
+    public TrainingUnit() {}
 
     public TrainingUnit(String name, ArrayList<Exercise> exerciseArrayList) {
         this.name = name;

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class PlanStructureFragment extends Fragment {
 
-    ArrayList<TrainingUnit> trainingUnits;
+    private ArrayList<TrainingUnit> trainingUnits;
 
     public PlanStructureFragment() {}
 
@@ -34,11 +34,12 @@ public class PlanStructureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View myView =  inflater.inflate(R.layout.fragment_plan_structure, container, false);
+        initTrainingUnitsArray();
+        prepareRecyclerView(myView);
+        return myView;
+    }
 
-        RecyclerView recyclerView = (RecyclerView) myView.findViewById(R.id.cardsRecyclerView);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
+    private void initTrainingUnitsArray(){
         String title = getArguments().getString("title");
         DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
         for(TrainingPlan tp : dataManager.getTrainingPlans()) {
@@ -47,9 +48,14 @@ public class PlanStructureFragment extends Fragment {
                 break;
             }
         }
+    }
+    private void prepareRecyclerView(View myView){
+        RecyclerView recyclerView = myView.findViewById(R.id.cardsRecyclerView);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
         CardAdapter mAdapter = new CardAdapter(trainingUnits);
         recyclerView.setAdapter(mAdapter);
-
-        return myView;
     }
 }

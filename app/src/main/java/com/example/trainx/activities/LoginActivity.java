@@ -1,22 +1,16 @@
 package com.example.trainx.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.trainx.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -38,38 +32,25 @@ public class LoginActivity extends AppCompatActivity {
         final TextInputEditText loginInput = findViewById(R.id.LoginInput);
         final TextInputEditText passInput = findViewById(R.id.PasswordInput);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TextInputLayout loginfield = findViewById(R.id.LoginField);
-                TextInputLayout passwordField = findViewById(R.id.passwordField);
-                loginfield.setError(null);
-                passwordField.setError(null);
-                String login = loginInput.getText().toString();
-                if(login.matches("")){
-                    loginfield.setError("This field cannot be empty!");
-                }
-                String password = passInput.getText().toString();
-                if(password.matches("")){
-                    passwordField.setError("This field cannot be empty!");
-                }
-                if(!password.matches("") && !login.matches(""))
-                    signIn(login, password);
+        loginButton.setOnClickListener(view -> {
+            TextInputLayout loginField = findViewById(R.id.LoginField);
+            TextInputLayout passwordField = findViewById(R.id.passwordField);
+            loginField.setError(null);
+            passwordField.setError(null);
+            String login = loginInput.getText().toString();
+            if(login.matches("")){
+                loginField.setError("This field cannot be empty!");
             }
+            String password = passInput.getText().toString();
+            if(password.matches("")){
+                passwordField.setError("This field cannot be empty!");
+            }
+            if(!password.matches("") && !login.matches(""))
+                signIn(login, password);
         });
 
-        SignUpButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                changeActivity(RegisterActivity.class);
-            }
-        });
-        ForgetPassButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                changeActivity(ForgotPasswordActivity.class);
-            }
-        });
+        SignUpButton.setOnClickListener(view -> changeActivity(RegisterActivity.class));
+        ForgetPassButton.setOnClickListener(view -> changeActivity(ForgotPasswordActivity.class));
 
     }
 
@@ -88,18 +69,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Log.d("TAG", "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            changeActivity(MainActivity.class);
-                        } else {
-                            Log.w("TAG", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if(task.isSuccessful()) {
+                        changeActivity(MainActivity.class);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }

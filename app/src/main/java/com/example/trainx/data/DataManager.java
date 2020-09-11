@@ -4,14 +4,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.trainx.models.Exercise;
 import com.example.trainx.models.FinishedTraining;
 import com.example.trainx.models.Measurements;
 import com.example.trainx.models.ShuffleExercise;
 import com.example.trainx.models.ShuffleTraining;
 import com.example.trainx.models.TrainingExecution;
 import com.example.trainx.models.TrainingPlan;
-import com.example.trainx.models.TrainingUnit;
 import com.example.trainx.models.Weight;
 import com.example.trainx.activities.MainActivity;
 import com.example.trainx.interfaces.OnOverviewDataReceive;
@@ -54,40 +52,35 @@ public class DataManager implements Serializable {
     private ArrayList<ShuffleTraining> shuffleTrainings;
 
     public DataManager(MainActivity activity) {
+        initArrays();
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        readTrainingPlansData(mDatabase, currentUser);
+        readExecutionTrainingsData(mDatabase, currentUser, activity);
+        readFinishedTrainingsData(mDatabase, currentUser);
+        readWeightData(mDatabase, currentUser);
+        readShuffleData(mDatabase, currentUser);
+    }
+
+    private void initArrays() {
         measurements = new Measurements();
         trainingPlans = new ArrayList<>();
         trainingExecutions = new ArrayList<>();
         finishedTrainings = new ArrayList<>();
         weightsUser = new ArrayList<>();
         shuffleTrainings = new ArrayList<>();
-        DatabaseReference mDatabase;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+    }
+
+    private void readTrainingPlansData(DatabaseReference mDatabase, FirebaseUser currentUser) {
         DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Plans");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
-                    String name = plansSnapshot.child("name").getValue(String.class);
-                    String type = plansSnapshot.child("type").getValue(String.class);
-                    boolean isActive = plansSnapshot.child("isActive").getValue(boolean.class);
-                    ArrayList<TrainingUnit> trainingUnitArrayList = new ArrayList<>();
-
-                    for(DataSnapshot pomSnapshot : plansSnapshot.child("unitArrayList").getChildren()){
-                        String planName =  pomSnapshot.child("name").getValue(String.class);
-                        ArrayList<Exercise> arrayListofExercises = new ArrayList<>();
-                        for(DataSnapshot pom2Snapshot : pomSnapshot.child("exerciseArrayList").getChildren()) {
-                            String exerciseName = pom2Snapshot.child("name").getValue(String.class);
-                            int reps = pom2Snapshot.child("reps").getValue(int.class);
-                            int sets = pom2Snapshot.child("sets").getValue(int.class);
-                            Exercise newExercise = new Exercise(exerciseName,sets,reps);
-                            arrayListofExercises.add(newExercise);
-                        }
-                        TrainingUnit newTrainingUnit = new TrainingUnit(planName,arrayListofExercises);
-                        trainingUnitArrayList.add(newTrainingUnit);
-                    }
-                    TrainingPlan newTrainingPlan = new TrainingPlan(name,type,isActive,trainingUnitArrayList);
+                    TrainingPlan newTrainingPlan = plansSnapshot.getValue(TrainingPlan.class);
                     trainingPlans.add(newTrainingPlan);
                 }
             }
@@ -97,8 +90,10 @@ public class DataManager implements Serializable {
                 throw error.toException();
             }
         });
+    }
 
-        ref = mDatabase.child("users").child(currentUser.getUid()).child("Execution");
+    private void readExecutionTrainingsData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity){
+        DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Execution");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -116,8 +111,10 @@ public class DataManager implements Serializable {
             }
         });
 
+    }
 
-        ref = mDatabase.child("users").child(currentUser.getUid()).child("Finished Trainings");
+    private void readFinishedTrainingsData(DatabaseReference mDatabase, FirebaseUser currentUser) {
+        DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Finished Trainings");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -132,9 +129,10 @@ public class DataManager implements Serializable {
                 throw error.toException();
             }
         });
+    }
 
-
-        ref = mDatabase.child("users").child(currentUser.getUid()).child("Weight");
+    private void readWeightData(DatabaseReference mDatabase, FirebaseUser currentUser) {
+        DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Weight");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -150,8 +148,10 @@ public class DataManager implements Serializable {
                 throw error.toException();
             }
         });
+    }
 
-        ref = mDatabase.child("users").child(currentUser.getUid()).child("Shuffle");
+    private void readShuffleData(DatabaseReference mDatabase, FirebaseUser currentUser) {
+        DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Shuffle");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -162,7 +162,6 @@ public class DataManager implements Serializable {
                             ShuffleExercise newExercise = exerciseSnapshot.getValue(ShuffleExercise.class);
                             newTraining.add(newExercise);
                         }
-
                     }
                     shuffleTrainings.add(newTraining);
                 }
@@ -310,18 +309,17 @@ public class DataManager implements Serializable {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-    public static class CustomWeightComparator implements Comparator<Weight> {
 
+    public static class CustomWeightComparator implements Comparator<Weight> {
         @Override
         public int compare(Weight weight, Weight t1) {
             try {
-                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(weight.getDate());
-                Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(t1.getDate());
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).parse(weight.getDate());
+                Date date2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(t1.getDate());
+                assert date1 != null;
                 return date1.compareTo(date2);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -329,13 +327,14 @@ public class DataManager implements Serializable {
             return -1;
         }
     }
-    public static class CustomExecutionComparator implements Comparator<TrainingExecution> {
 
+    public static class CustomExecutionComparator implements Comparator<TrainingExecution> {
         @Override
         public int compare(TrainingExecution trainingExecution, TrainingExecution t1) {
             try {
-                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(trainingExecution.getDate());
-                Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(t1.getDate());
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(trainingExecution.getDate());
+                Date date2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(t1.getDate());
+                assert date1 != null;
                 return date1.compareTo(date2);
             } catch (ParseException e) {
                 e.printStackTrace();

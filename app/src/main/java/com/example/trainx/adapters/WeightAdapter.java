@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.MyViewHolder> {
 
     public ArrayList<Weight> weights;
-    public WeightAdapter(ArrayList<Weight> myDataset) {
-        weights = myDataset;
+    public WeightAdapter(ArrayList<Weight> myDataSet) {
+        weights = myDataSet;
     }
 
     @NonNull
@@ -26,8 +26,7 @@ public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.MyViewHold
     public WeightAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v =  LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.weightdatalayout, parent, false);
-        MyViewHolder vh = new MyViewHolder((LinearLayout)v);
-        return vh;
+        return new MyViewHolder((LinearLayout)v);
     }
 
     @Override
@@ -49,8 +48,8 @@ public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.MyViewHold
         public MaterialTextView dateText;
         public MyViewHolder(LinearLayout v) {
             super(v);
-            valueText = (MaterialTextView) v.findViewById(R.id.valueText);
-            dateText = (MaterialTextView) v.findViewById(R.id.dateText);
+            valueText = v.findViewById(R.id.valueText);
+            dateText = v.findViewById(R.id.dateText);
         }
     }
 }

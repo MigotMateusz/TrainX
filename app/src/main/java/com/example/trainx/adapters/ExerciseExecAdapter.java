@@ -2,7 +2,6 @@ package com.example.trainx.adapters;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +21,9 @@ import java.util.List;
 public class ExerciseExecAdapter extends RecyclerView.Adapter<ExerciseExecAdapter.MyViewHolder>  {
     public int many;
     private List<FinishedSet> _retData;
-    public ExerciseExecAdapter(int myDataset) {
-        many = myDataset;
-        Log.i("AdapterLog", "Size: " + myDataset);
-        _retData = new ArrayList<FinishedSet>(myDataset);
+    public ExerciseExecAdapter(int myDataSet) {
+        many = myDataSet;
+        _retData = new ArrayList<>(myDataSet);
     }
 
     @NonNull
@@ -38,9 +36,7 @@ public class ExerciseExecAdapter extends RecyclerView.Adapter<ExerciseExecAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseExecAdapter.MyViewHolder holder, int position) {
-        MyViewHolder holder1 = holder;
-        holder1.titleTextView.setText((position+1) + " Sets");
-        Log.i("AdapterLog", holder1.getRepsInput());
+        holder.titleTextView.setText((position+1) + " set");
         _retData.add(position, new FinishedSet());
         holder.editTextReps.addTextChangedListener(new TextWatcher() {
             @Override
@@ -48,7 +44,6 @@ public class ExerciseExecAdapter extends RecyclerView.Adapter<ExerciseExecAdapte
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.i("AdapterLog", charSequence.toString());
                 _retData.get(position).setReps(Integer.parseInt(charSequence.toString()));
             }
 
@@ -61,7 +56,6 @@ public class ExerciseExecAdapter extends RecyclerView.Adapter<ExerciseExecAdapte
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.i("AdapterLog", charSequence.toString());
                 _retData.get(position).setWeight(Integer.parseInt(charSequence.toString()));
             }
 

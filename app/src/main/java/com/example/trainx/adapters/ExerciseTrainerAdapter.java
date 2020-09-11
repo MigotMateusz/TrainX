@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class ExerciseTrainerAdapter extends RecyclerView.Adapter<ExerciseTrainerAdapter.MyViewHolder> {
     public ArrayList<Exercise> exercises;
-    public ExerciseTrainerAdapter(ArrayList<Exercise> myDataset) {
-        exercises = myDataset;
+    public ExerciseTrainerAdapter(ArrayList<Exercise> myDataSet) {
+        exercises = myDataSet;
     }
 
     @NonNull
@@ -29,7 +29,7 @@ public class ExerciseTrainerAdapter extends RecyclerView.Adapter<ExerciseTrainer
     @Override
     public void onBindViewHolder(@NonNull ExerciseTrainerAdapter.MyViewHolder holder, int position) {
         Exercise exercise = exercises.get(position);
-        String text = exercise.getName() + " " + exercise.getSets() + "x" + exercise.getReps();
+        String text = exercise.getName() + " " + exercise.getSets() + " x " + exercise.getReps();
         holder.textView.setText(text);
     }
 

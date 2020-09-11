@@ -1,13 +1,10 @@
 package com.example.trainx.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trainx.R;
 import com.example.trainx.data.DataManager;
@@ -22,9 +19,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class PlannerActivity extends AppCompatActivity {
-    DataManager dataManager;
+    private DataManager dataManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +30,7 @@ public class PlannerActivity extends AppCompatActivity {
 
         readDataManager();
         prepareToolbar();
-        loadDropdowns();
+        loadDropDowns();
 
     }
     public void setListener(AutoCompleteTextView autoCompleteTextView, int position){
@@ -42,43 +40,35 @@ public class PlannerActivity extends AppCompatActivity {
                         findViewById(R.id.dropdownTrainingUnitsFriday), findViewById(R.id.dropdownTrainingUnitsSaturday),
                         findViewById(R.id.dropdownTrainingUnitsSunday)};
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                dropdownMenuUnits[position].setEnabled(true);
-                ArrayList<String> trainingUnits = new ArrayList<>();
-                for(TrainingPlan tp :  dataManager.getTrainingPlans()){
-                    if(tp.getName().equals(autoCompleteTextView.getText().toString())){
-                        for(TrainingUnit tu : tp.getUnitArrayList())
-                            trainingUnits.add(tu.getName());
-                        break;
-                    }
+        autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
+            dropdownMenuUnits[position].setEnabled(true);
+            ArrayList<String> trainingUnits = new ArrayList<>();
+            for(TrainingPlan tp :  dataManager.getTrainingPlans()){
+                if(tp.getName().equals(autoCompleteTextView.getText().toString())){
+                    for(TrainingUnit tu : tp.getUnitArrayList())
+                        trainingUnits.add(tu.getName());
+                    break;
                 }
-                ArrayAdapter<String> adapterUnits =
-                        new ArrayAdapter<String>(PlannerActivity.this, R.layout.dropdown_menu_popup_item, trainingUnits);
-
-                dropdownMenuUnits[position].setAdapter(adapterUnits);
-                dropdownMenuUnits[position].setInputType(0);
             }
+            ArrayAdapter<String> adapterUnits =
+                    new ArrayAdapter<>(PlannerActivity.this, R.layout.dropdown_menu_popup_item, trainingUnits);
+
+            dropdownMenuUnits[position].setAdapter(adapterUnits);
+            dropdownMenuUnits[position].setInputType(0);
         });
 
     }
     private void prepareToolbar(){
-        final MaterialToolbar toolbar = (MaterialToolbar)findViewById(R.id.toolbarPlanner);
+        final MaterialToolbar toolbar = findViewById(R.id.toolbarPlanner);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         prepareSaveButton();
     }
 
     private void prepareSaveButton() {
-        FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveToolbar);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveWeekPlan();
-            }
-        });
+        FloatingActionButton saveButton = findViewById(R.id.saveToolbar);
+        saveButton.setOnClickListener(view -> saveWeekPlan());
     }
 
     private void readDataManager(){
@@ -86,14 +76,15 @@ public class PlannerActivity extends AppCompatActivity {
             dataManager = (DataManager) getIntent().getBundleExtra("DataManager").getSerializable("DataManager");
     }
 
-    private void loadDropdowns(){
+    private void loadDropDowns(){
         ArrayList<String> trainingPlans = new ArrayList<>();
 
         for(TrainingPlan tp : dataManager.getTrainingPlans()){
             trainingPlans.add(tp.getName());
         }
+
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(PlannerActivity.this, R.layout.dropdown_menu_popup_item, trainingPlans);
+                new ArrayAdapter<>(PlannerActivity.this, R.layout.dropdown_menu_popup_item, trainingPlans);
 
         AutoCompleteTextView[] dropdownMenuPlans =
                 {findViewById(R.id.dropdownTrainingPlansMonday), findViewById(R.id.dropdownTrainingPlansTuesday),
@@ -125,15 +116,14 @@ public class PlannerActivity extends AppCompatActivity {
 
         for(int i = 0; i < 7; i++) {
             if(!dropdownMenuPlans[i].getText().toString().equals("") && !dropdownMenuUnits[i].getText().toString().equals("")){
-                Log.i("PlannerLog", String.valueOf(i) + ": " + dropdownMenuPlans[i].getText().toString() +
-                        " " + dropdownMenuUnits[i].getText().toString());
                 Calendar c = Calendar.getInstance();
                 c.setFirstDayOfWeek(Calendar.MONDAY);
                 c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
                 c.add(Calendar.DAY_OF_MONTH, i);
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String date = df.format(c.getTime());
-                TrainingExecution newExecution = new TrainingExecution(date, dropdownMenuUnits[i].getText().toString(), dropdownMenuPlans[i].getText().toString());
+                TrainingExecution newExecution = new TrainingExecution(date, dropdownMenuUnits[i].getText().toString(),
+                        dropdownMenuPlans[i].getText().toString());
                 dataManager.addToTrainingExecutionList(newExecution);
             }
 
