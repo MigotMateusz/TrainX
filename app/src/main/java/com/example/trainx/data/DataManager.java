@@ -208,6 +208,8 @@ public class DataManager implements Serializable {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Weight");
+        DatabaseReference refOverview = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("OverviewInfo");
+        refOverview.child("currentWeight").setValue(newWeight.getWeight());
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(newWeight);
         weightsUser.add(newWeight);
         Collections.sort(weightsUser, new CustomWeightComparator());
@@ -300,12 +302,15 @@ public class DataManager implements Serializable {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String date = snapshot.child("nextTraining").getValue(String.class);
-                int dayStrike = snapshot.child("daysStrike").getValue(Integer.class);
+                int dayStrike = snapshot.child("daysInARow").getValue(Integer.class);
                 double currentWeight = snapshot.child("currentWeight").getValue(Double.class);
-                Log.i("OverviewInfo", date);
-                Log.i("OverviewInfo", String.valueOf(dayStrike));
-                Log.i("OverviewInfo", String.valueOf(currentWeight));
-                callback.onDataReceived(date, currentWeight, dayStrike);
+                String lastDate = snapshot.child("lastLoggedDate").getValue(String.class);
+                Log.i("OverviewInfo", lastDate);
+                try {
+                    callback.onDataReceived(date, currentWeight, dayStrike, lastDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -341,5 +346,12 @@ public class DataManager implements Serializable {
             }
             return -1;
         }
+    }
+    public static void updateDaysInARow(int days, String todayDate) {
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("OverviewInfo");
+        ref.child("daysInARow").setValue(days);
+        ref.child("lastLoggedDate").setValue(todayDate);
     }
 }

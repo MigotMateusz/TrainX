@@ -1,10 +1,12 @@
 package com.example.trainx.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -139,5 +141,10 @@ public class MainActivity extends AppCompatActivity{
         fragment.setArguments(newBundle);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.FrameLayout, fragment).commit();
+    }
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+
     }
 }

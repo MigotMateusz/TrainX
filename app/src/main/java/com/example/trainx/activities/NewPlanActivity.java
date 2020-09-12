@@ -124,7 +124,7 @@ public class NewPlanActivity extends AppCompatActivity {
         navMenu.findItem(R.id.saveBigPlan).setVisible(true);
         MenuItem menuItemSave = navMenu.findItem(R.id.saveBigPlan);
         menuItemSave.setOnMenuItemClickListener(menuItem -> {
-            new MaterialAlertDialogBuilder(NewPlanActivity.this)
+            new MaterialAlertDialogBuilder(NewPlanActivity.this, R.style.AlertDialogSavePlan)
                     .setTitle("Saving new plan")
                     .setMessage("Are you sure to save this plan?")
                     .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
@@ -175,7 +175,7 @@ public class NewPlanActivity extends AppCompatActivity {
         return true;
     }
     private void addTrainingUnit(String name, ArrayList<Exercise> arrayList){
-        String result = name + ": " + "number of exercises: " + arrayList.size();
+        String result = name;
         tab1.add(result);
         tabUnits.add(new TrainingUnit(name,arrayList));
         mAdapter.notifyItemInserted(tab1.size() - 1);

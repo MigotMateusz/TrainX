@@ -3,6 +3,7 @@ package com.example.trainx.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +127,7 @@ public class CustomDialogFragment extends DialogFragment {
     }
 
     private void openDialog(final ExerciseCallback callback) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogChangeEmail);
         LayoutInflater inflater = this.getLayoutInflater();
         View v = inflater.inflate(R.layout.addexercise_dialog, null);
 

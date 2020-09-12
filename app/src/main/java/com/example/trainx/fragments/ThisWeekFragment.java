@@ -40,7 +40,6 @@ public class ThisWeekFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_this_week, container, false);
-
         setDayCard(myView);
         ExtendedFloatingActionButton plannerButton = myView.findViewById(R.id.plannerButton);
         plannerButton.setOnClickListener(new View.OnClickListener() {

@@ -1,9 +1,14 @@
 package com.example.trainx.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trainx.R;
@@ -12,6 +17,7 @@ import com.example.trainx.models.TrainingExecution;
 import com.example.trainx.models.TrainingPlan;
 import com.example.trainx.models.TrainingUnit;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
@@ -68,6 +74,7 @@ public class PlannerActivity extends AppCompatActivity {
 
     private void prepareSaveButton() {
         FloatingActionButton saveButton = findViewById(R.id.saveToolbar);
+        saveButton.setColorFilter(R.color.white);
         saveButton.setOnClickListener(view -> saveWeekPlan());
     }
 
@@ -128,6 +135,14 @@ public class PlannerActivity extends AppCompatActivity {
             }
 
         }
+        Intent intent = new Intent(PlannerActivity.this, MainActivity.class);
+        //intent.putExtra("doWhat", 0);
+        startActivity(intent);
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
 
     }
 }

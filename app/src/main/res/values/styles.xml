@@ -50,18 +50,27 @@
         <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
     </style>
 
+    <style name="AlertDialogSavePlan" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/material_grey_900</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:windowTitleStyle">@style/TitleUpdateWeight</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+
     <style name="ButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">@color/greenBeginner</item>
+        <item name="android:textColor">@color/greenBeginner</item>
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">@color/redHard</item>
+        <item name="android:textColor">@color/redHard</item>
         <item name="android:layout_marginRight">5dp</item>
     </style>
 

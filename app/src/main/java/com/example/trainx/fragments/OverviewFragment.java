@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
@@ -29,6 +31,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +39,9 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class OverviewFragment extends Fragment {
+    MaterialTextView yourText;
+    MaterialTextView nextText;
+    MaterialTextView dayTextView;
 
     public OverviewFragment() {}
 
@@ -49,120 +55,88 @@ public class OverviewFragment extends Fragment {
 
         View myView = inflater.inflate(R.layout.fragment_overview, container, false);
         MaterialButton button = myView.findViewById(R.id.startTrainingButton);
-        MaterialTextView dayTextView = myView.findViewById(R.id.dayText);
-        MaterialTextView yourText = myView.findViewById(R.id.yourText);
-        MaterialTextView nextText = myView.findViewById(R.id.nextTrainingDayText);
+        dayTextView = myView.findViewById(R.id.dayText);
+        yourText = myView.findViewById(R.id.yourText);
+        nextText = myView.findViewById(R.id.nextTrainingDayText);
         MaterialTextView weightTextView = myView.findViewById(R.id.weightTextView);
         DataManager.loadOverviewData(new OnOverviewDataReceive() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onDataReceived(String date, double weight, int strike) {
-                dayTextView.setText(String.valueOf(strike));
-                nextText.setText(date);
+            public void onDataReceived(String date, double weight, int strike, String lastDate) throws ParseException {
+                setDaysInARow(strike, lastDate);
                 weightTextView.setText(String.valueOf(weight));
             }
         });
-        //int day = getDays();
-        //dayTextView.setText(String.valueOf(day));
+
         try {
             DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
 
             if(dataManager != null)
-                if(dataManager.isTrainingToday() == false){
-                    ArrayList<TrainingExecution> exec = null;
-                    try {
-                        exec = thisWeekTrainings(dataManager);
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    if(exec.size() == 0){
-                        nextText.setText("You can make a plan for this week in \"this week\" tab");
-                        yourText.setText("There is no planned trainings this week!");
-                    }
-                    else {
-                        button.setVisibility(View.VISIBLE);
-                        String date = exec.get(0).getDate();
-                        for(int i = 1; i < exec.size(); i++) {
-                                //date = exec.get(i).getDate();
-                        }
-                        yourText.setText("Your next training is on");
-                    }
-
-                }
-                else {
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (dataManager.isTrainingDone())
-                                Toast.makeText(getActivity(), "Training is done already", Toast.LENGTH_SHORT).show();
-                            else {
-                                Intent intent = new Intent(getContext(), TrainingExecActivity.class);
-                                Bundle bundle = getArguments();
-                                intent.putExtra("DataManager", bundle);
-                                startActivity(intent);
-                            }
-
+                if(dataManager.isTrainingToday() == true){
+                    button.setVisibility(View.VISIBLE);
+                    yourText.setText("You have training planned today");
+                    nextText.setVisibility(View.GONE);
+                    button.setOnClickListener(view -> {
+                        if (dataManager.isTrainingDone())
+                            Toast.makeText(getActivity(), "Training is done already", Toast.LENGTH_SHORT).show();
+                        else {
+                            Intent intent = new Intent(getContext(), TrainingExecActivity.class);
+                            Bundle bundle = getArguments();
+                            intent.putExtra("DataManager", bundle);
+                            startActivity(intent);
                         }
                     });
                 }
+                else {
+                    Date currentDate = Calendar.getInstance().getTime();
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String date = df.format(currentDate);
+                    for(int i = 0; i < dataManager.getTrainingExecutions().size(); i++) {
+                        Date today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(date);
+                        Date executionDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                                dataManager.getTrainingExecutions().get(i).getDate());
+                        if(executionDate.after(today)) {
+                            Log.i("OverviewLog", dataManager.getTrainingExecutions().get(i).getDate());
+                            nextText.setText(dataManager.getTrainingExecutions().get(i).getDate());
+                            break;
+                        }
+                    }
+                }
+
+
+
             prepareWeightTextView(myView,dataManager);
             prepareUpdateButton(myView, dataManager);
             prepareShuffleButton(myView, dataManager);
-        } catch(NullPointerException exception) {
+        } catch(NullPointerException | ParseException exception) {
             Toast.makeText(getActivity(), "Couldn't load data", Toast.LENGTH_SHORT).show();
         }
 
         return myView;
     }
 
-    private int getDays() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("name", 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        int days = sharedPreferences.getInt("days", 0);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setDaysInARow(int days, String date) throws ParseException {
+        Date currentDate = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String todayDate = df.format(currentDate);
+        Date today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(todayDate);
+        Date lastDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(date);
         int next_day;
-        if(isLastLoggedDayYesterday() == true)
-            next_day = days + 1;
-        else
-            if(isLastLoggedDayToday() == false)
-                next_day = 1;
+        if(today.equals(lastDate))
+            next_day = days;
+        else {
+            long daysBetween = (today.getTime() - lastDate.getTime()) / (1000*60*60*24);
+            if(daysBetween == 1)
+                next_day = days + 1;
             else
-                next_day = days;
-        editor.putInt("days", next_day);
-        editor.commit();
+                next_day = 1;
 
-        return next_day;
+        }
+        dayTextView.setText(String.valueOf(next_day));
+        DataManager.updateDaysInARow(next_day, todayDate);
     }
 
-    private boolean isLastLoggedDayYesterday(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("name", 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        Date lastDate = new Date(sharedPreferences.getLong("time", 0));
-
-        Date today = new Date(System.currentTimeMillis());
-
-        long millis1 = today.getTime() - lastDate.getTime();
-        long daysBetween = TimeUnit.DAYS.convert(millis1, TimeUnit.MILLISECONDS);
-        long millis = today.getTime();
-        editor.putLong("time", millis).apply();
-        return daysBetween == 1;
-    }
-    private boolean isLastLoggedDayToday(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("name", 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        Date lastDate = new Date(sharedPreferences.getLong("time", 0));
-
-        Date today = new Date(System.currentTimeMillis());
-
-        long millis1 = today.getTime() - lastDate.getTime();
-        long daysBetween = TimeUnit.DAYS.convert(millis1, TimeUnit.MILLISECONDS);
-        long millis = today.getTime();
-        editor.putLong("time", millis).apply();
-        return daysBetween == 0;
-    }
 
     private void prepareWeightTextView(View myView, DataManager dataManager){
         MaterialTextView weightTextView = myView.findViewById(R.id.weightTextView);
@@ -175,29 +149,7 @@ public class OverviewFragment extends Fragment {
             weightTextView.setText("no saved data");
     }
 
-    private ArrayList<TrainingExecution> thisWeekTrainings(DataManager dataManager) throws ParseException {
-        ArrayList<TrainingExecution> trainingExecutions = new ArrayList<>();
-        Date dateNow = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setFirstDayOfWeek(Calendar.MONDAY);
-        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String date;
-        for(int i = 0; i < 7; i++){
-            date = df.format(c.getTime());
-            for(TrainingExecution te : dataManager.getTrainingExecutions()){
-                Log.i("DataManagerLog", te.getUnit());
-                Date now = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-                Date trainingDate = new SimpleDateFormat("yyyy-MM-dd").parse(te.getDate());
-                if(te.getDate().equals(date)){
-                    trainingExecutions.add(te);
-                    break;
-                }
-            }
-            c.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        return trainingExecutions;
-    }
+
 
     private void prepareUpdateButton(View myView, DataManager dataManager) {
         MaterialButton updateButton = myView.findViewById(R.id.updateWeightButton);
