@@ -62,7 +62,7 @@ public class NewPlanActivity extends AppCompatActivity {
 
         setToolbar();
         prepareDropDownMenu();
-        
+
         final SwitchMaterial activeSwitch = findViewById(R.id.ActivePlanSwitch);
 
         final TextInputEditText textInputPlanName = findViewById(R.id.PlanNameInput);

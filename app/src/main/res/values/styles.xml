@@ -1,7 +1,5 @@
 <resources>
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar" >
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
@@ -9,11 +7,67 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="BeginnerButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/greenBeginner</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="IntermediateButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/yellowIntermediate</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AthleteButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/redHard</item>
+        <item name="backgroundTint">@color/redHard</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AlertDialogUpdateWeight" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/material_grey_900</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:windowTitleStyle">@style/TitleUpdateWeight</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/ButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/ButtonStyle</item>
+    </style>
+
+    <style name="AlertDialogChangeEmail" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/material_grey_900</item>
+        <item name="android:windowTitleStyle">@style/TitleUpdateWeight</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/greenBeginner</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/redHard</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="TitleUpdateWeight">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

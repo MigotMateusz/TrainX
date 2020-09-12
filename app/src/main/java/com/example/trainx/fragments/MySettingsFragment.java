@@ -20,6 +20,7 @@ import com.example.trainx.R;
 import com.example.trainx.activities.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MySettingsFragment extends PreferenceFragmentCompat {
     private String password = "";
+    private String newEmail;
+    TextInputEditText passwordInput;
+    TextInputEditText newEmailInput;
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
@@ -135,32 +139,26 @@ public class MySettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://mateuszmigot.pl/"));
-                startActivity(browserIntent);
+                //startActivity(browserIntent);
+                Toast.makeText(getActivity(), "Author's website is in construction", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
     }
 
     private void openPasswordDialog(FirebaseUser user) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogChangeEmail);
         builder.setTitle("Confirm email change");
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(input);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                password = input.getText().toString();
-                updateUserEmail(user);
-            }
+        builder.setView(R.layout.newemaillayout);
+        builder.setPositiveButton("OK", (dialogInterface, i) -> {
+            password = passwordInput.getText().toString();
+            newEmail = newEmailInput.getText().toString();
+            updateUserEmail(user);
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        builder.show();
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
+        AlertDialog dialog = builder.show();
+        passwordInput = dialog.findViewById(R.id.passwordTextChangeEmail);
+        newEmailInput = dialog.findViewById(R.id.newEmailTextChangeEmail);
     }
     private void updateUserEmail(FirebaseUser user){
         AuthCredential credential = EmailAuthProvider
@@ -171,7 +169,7 @@ public class MySettingsFragment extends PreferenceFragmentCompat {
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d("TAG", "User re-authenticated.");
                         FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
-                        user1.updateEmail("text@gmail.com")
+                        user1.updateEmail(newEmail)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

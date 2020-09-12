@@ -31,6 +31,8 @@
             android:id="@+id/beginnerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/greenBeginner"
+            android:textColor="@color/white"
             android:text="Beginner"/>
 
         <com.google.android.material.button.MaterialButton
@@ -38,6 +40,8 @@
             android:id="@+id/intermediateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/yellowIntermediate"
+            android:textColor="@color/white"
             android:text="Intermediate"/>
 
         <com.google.android.material.button.MaterialButton
@@ -46,6 +50,8 @@
             android:id="@+id/athleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/redHard"
+            android:textColor="@color/white"
             android:text="Athlete"/>
         </LinearLayout>
     </FrameLayout>

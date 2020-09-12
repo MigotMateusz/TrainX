@@ -19,6 +19,7 @@ import com.example.trainx.models.Measure;
 import com.example.trainx.models.Measurements;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -69,8 +70,13 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
         holder.updateMeasureButtonData.setOnClickListener(view -> createDialog(position, holder.lineChart));
 
         holder.expandButton.setOnClickListener(view -> expandCard(view, holder, position));
+
     }
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
 
     private void expandCard(View view, MeasurementsAdapter.MyViewHolder holder, int position) {
         prepareRecyclerView(view, holder.recyclerView, measures.get(position));
@@ -79,6 +85,7 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
             holder.recyclerView.setVisibility(View.GONE);
             holder.expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_down_24);
             isCardExpanded = false;
+
         } else {
             holder.recyclerView.setVisibility(View.VISIBLE);
             holder.expandButton.setIconResource(R.drawable.ic_baseline_arrow_drop_up_24);
@@ -111,6 +118,8 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
 
     private void setMeasureChart(LineChart lineChart, ArrayList<Measure> measures) throws ParseException {
         XAxis xAxis = lineChart.getXAxis();
+        YAxis yAxis = lineChart.getAxisLeft();
+        YAxis yAxis2 = lineChart.getAxisRight();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         ValueFormatter dateFormat = new MyAXisFormatter();
         xAxis.setValueFormatter(dateFormat);
@@ -124,6 +133,14 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
         LineDataSet dataSet = new LineDataSet(entries, "Label");
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
+        lineChart.getLegend().setEnabled(false);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setGridBackgroundColor(context.getResources().getColor(R.color.white));
+        dataSet.setValueTextColor(context.getResources().getColor(R.color.white));
+        dataSet.setValueTextSize(10);
+        xAxis.setTextColor(context.getResources().getColor(R.color.white));
+        yAxis.setTextColor(context.getResources().getColor(R.color.white));
+        yAxis2.setTextColor(context.getResources().getColor(R.color.white));
         lineData.notifyDataChanged();
         lineChart.notifyDataSetChanged();
         lineChart.invalidate();
@@ -145,7 +162,7 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
     }
 
     private void createDialog(int position, LineChart lineChart){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogUpdateWeight);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.updatecustondialog,null);
         TextInputEditText valueInput = (TextInputEditText) dialogView.findViewById(R.id.valueInputEdit);

@@ -86,7 +86,6 @@ public class OverviewFragment extends Fragment {
                         for(int i = 1; i < exec.size(); i++) {
                                 //date = exec.get(i).getDate();
                         }
-                        //nextText.setText(date);
                         yourText.setText("Your next training is on");
                     }
 
@@ -148,10 +147,7 @@ public class OverviewFragment extends Fragment {
         long daysBetween = TimeUnit.DAYS.convert(millis1, TimeUnit.MILLISECONDS);
         long millis = today.getTime();
         editor.putLong("time", millis).apply();
-        if(daysBetween == 1)
-            return true;
-        else
-            return false;
+        return daysBetween == 1;
     }
     private boolean isLastLoggedDayToday(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("name", 0);
@@ -165,10 +161,7 @@ public class OverviewFragment extends Fragment {
         long daysBetween = TimeUnit.DAYS.convert(millis1, TimeUnit.MILLISECONDS);
         long millis = today.getTime();
         editor.putLong("time", millis).apply();
-        if(daysBetween == 0)
-            return true;
-        else
-            return false;
+        return daysBetween == 0;
     }
 
     private void prepareWeightTextView(View myView, DataManager dataManager){
@@ -207,11 +200,11 @@ public class OverviewFragment extends Fragment {
     }
 
     private void prepareUpdateButton(View myView, DataManager dataManager) {
-        MaterialButton updateButton = (MaterialButton) myView.findViewById(R.id.updateWeightButton);
+        MaterialButton updateButton = myView.findViewById(R.id.updateWeightButton);
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogUpdateWeight);
                 builder.setTitle("Update your weight");
                 final EditText input = new EditText(getContext());
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -239,7 +232,7 @@ public class OverviewFragment extends Fragment {
     }
 
     private void prepareShuffleButton(View myView, DataManager dataManager) {
-        MaterialButton shuffleButton = (MaterialButton) myView.findViewById(R.id.shuffleButton);
+        MaterialButton shuffleButton = myView.findViewById(R.id.shuffleButton);
         shuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

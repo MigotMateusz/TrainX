@@ -24,7 +24,9 @@ import com.example.trainx.R;
 import com.example.trainx.models.Weight;
 import com.example.trainx.adapters.WeightAdapter;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -72,6 +74,8 @@ public class DataFragment extends Fragment {
     private void setWeightChart(View myView, ArrayList<Weight> weights) throws ParseException {
         LineChart weightLineChart = (LineChart) myView.findViewById(R.id.weightChart);
         XAxis xAxis = weightLineChart.getXAxis();
+        YAxis yAxis = weightLineChart.getAxisLeft();
+        YAxis yAxis2 = weightLineChart.getAxisRight();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         ValueFormatter dateFormat = new MyAXisFormatter();
         xAxis.setValueFormatter(dateFormat);
@@ -85,7 +89,16 @@ public class DataFragment extends Fragment {
         }
         LineDataSet dataSet = new LineDataSet(entries, "Label");
         LineData lineData = new LineData(dataSet);
+        Legend legend = weightLineChart.getLegend();
+        legend.setEnabled(false);
+        weightLineChart.getDescription().setEnabled(false);
         weightLineChart.setData(lineData);
+        weightLineChart.setGridBackgroundColor(getResources().getColor(R.color.white));
+        dataSet.setValueTextColor(getResources().getColor(R.color.white));
+        dataSet.setValueTextSize(10);
+        xAxis.setTextColor(getResources().getColor(R.color.white));
+        yAxis.setTextColor(getResources().getColor(R.color.white));
+        yAxis2.setTextColor(getResources().getColor(R.color.white));
         lineData.notifyDataChanged();
         weightLineChart.notifyDataSetChanged();
         weightLineChart.invalidate();
@@ -96,7 +109,7 @@ public class DataFragment extends Fragment {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogUpdateWeight);
                 builder.setTitle("Update your weight");
                 final EditText input = new EditText(getContext());
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);

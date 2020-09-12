@@ -7,4 +7,9 @@
     <color name="colorBackgroundLighter">#545454</color>
     <color name="colorBackgroundDarker">#fff</color>
     <color name="AcceptGreen">#00ff00</color>
+    <color name="white">#ffffff</color>
+    <color name="greenBeginner">#4caf50</color>
+    <color name="yellowIntermediate">#ffeb3b</color>
+    <color name="redHard">#e53935</color>
+    <color name="materialGrey">#1b1b1b</color>
 </resources>

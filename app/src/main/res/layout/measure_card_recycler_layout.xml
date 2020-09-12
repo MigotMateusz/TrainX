@@ -25,20 +25,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="1">
                 <Button
                     android:id="@+id/updateMeasureButtonData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:text="Update data"
+                    android:textColor="@color/white"
+                    android:layout_weight="0.5"
                     />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/expandButton"
                     android:gravity="right"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:textColor="@color/white"
                     android:text="Expand data"
                     app:icon="@drawable/ic_baseline_arrow_drop_down_24"
                     app:iconGravity="end"/>
