@@ -195,6 +195,41 @@ public class DataManager implements Serializable {
         DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Execution");
         ref.child(Objects.requireNonNull(ref.push().getKey())).setValue(te);
         Collections.sort(trainingExecutions, new CustomExecutionComparator());
+        updateNextTrainingIfNecessary(te);
+    }
+
+    public void updateNextTrainingIfNecessary(TrainingExecution te) {
+        Date currentDate = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String currentDateText = df.format(currentDate);
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("OverviewInfo");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String date = snapshot.child("nextTraining").getValue(String.class);
+                try {
+                    Date today = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateText);
+                    Date oldDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                    Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(te.getDate());
+                    if(oldDate.before(today) && newDate.after(today))
+                        ref.child("nextTraining").setValue(te.getDate());
+                    else
+                        if(newDate.after(today) && newDate.before(oldDate))
+                            ref.child("nextTraining").setValue(te.getDate());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        ref.child("nextTraining").setValue(te.getDate());
     }
 
     public void addSingleFinishedTraining(FinishedTraining ft) {
@@ -298,7 +333,7 @@ public class DataManager implements Serializable {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("OverviewInfo");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String date = snapshot.child("nextTraining").getValue(String.class);

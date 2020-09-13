@@ -65,6 +65,7 @@ public class OverviewFragment extends Fragment {
             public void onDataReceived(String date, double weight, int strike, String lastDate) throws ParseException {
                 setDaysInARow(strike, lastDate);
                 weightTextView.setText(String.valueOf(weight));
+                nextText.setText(date);
             }
         });
 

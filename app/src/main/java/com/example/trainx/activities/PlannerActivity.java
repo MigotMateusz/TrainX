@@ -135,9 +135,9 @@ public class PlannerActivity extends AppCompatActivity {
             }
 
         }
-        Intent intent = new Intent(PlannerActivity.this, MainActivity.class);
+        //Intent intent = new Intent(PlannerActivity.this, MainActivity.class);
         //intent.putExtra("doWhat", 0);
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     @SuppressLint("MissingSuperCall")
