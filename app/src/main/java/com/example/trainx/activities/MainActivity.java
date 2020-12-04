@@ -147,4 +147,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onSaveInstanceState(@NonNull Bundle outState) {
 
     }
+
+    public DataManager getDataManager() {
+        return dataManager;
+    }
 }

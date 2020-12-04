@@ -3,6 +3,7 @@ package com.example.trainx.data;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.trainx.models.FinishedTraining;
 import com.example.trainx.models.Measurements;
@@ -35,6 +36,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class DataManager implements Serializable {
+    private int numberOfLoads = 0;
     private ArrayList<TrainingPlan> trainingPlans;
     private ArrayList<TrainingExecution> trainingExecutions;
     private ArrayList<FinishedTraining> finishedTrainings;
@@ -58,11 +60,11 @@ public class DataManager implements Serializable {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        readTrainingPlansData(mDatabase, currentUser);
+        readTrainingPlansData(mDatabase, currentUser, activity);
         readExecutionTrainingsData(mDatabase, currentUser, activity);
-        readFinishedTrainingsData(mDatabase, currentUser);
-        readWeightData(mDatabase, currentUser);
-        readShuffleData(mDatabase, currentUser);
+        readFinishedTrainingsData(mDatabase, currentUser, activity);
+        readWeightData(mDatabase, currentUser, activity);
+        readShuffleData(mDatabase, currentUser, activity);
     }
 
     private void initArrays() {
@@ -74,22 +76,38 @@ public class DataManager implements Serializable {
         shuffleTrainings = new ArrayList<>();
     }
 
-    private void readTrainingPlansData(DatabaseReference mDatabase, FirebaseUser currentUser) {
+    private void readTrainingPlansData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity) {
         DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Plans");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
-                    TrainingPlan newTrainingPlan = plansSnapshot.getValue(TrainingPlan.class);
-                    trainingPlans.add(newTrainingPlan);
+        if(ref != null) {
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
+                        TrainingPlan newTrainingPlan = plansSnapshot.getValue(TrainingPlan.class);
+                        trainingPlans.add(newTrainingPlan);
+                    }
+                    numberOfLoads++;
+                    numberOfLoads++;
+                    Log.v("numberOfLoads", "training plans: " + numberOfLoads);
+                    if(numberOfLoads == 5) {
+                        activity.display();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                throw error.toException();
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    throw error.toException();
+                }
+            });
+        } else {
+            numberOfLoads++;
+            Log.v("numberOfLoads", "training plans: " + numberOfLoads);
+            if(numberOfLoads == 5) {
+                activity.display();
             }
-        });
+        }
+
+
     }
 
     private void readExecutionTrainingsData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity){
@@ -102,7 +120,13 @@ public class DataManager implements Serializable {
                     trainingExecutions.add(newTrainingExecution);
                 }
                 Collections.sort(trainingExecutions, new CustomExecutionComparator());
-                activity.display();
+                numberOfLoads++;
+                Log.v("numberOfLoads", "execution: " + numberOfLoads);
+                if(numberOfLoads == 5) {
+
+                    activity.display();
+                }
+
             }
 
             @Override
@@ -113,7 +137,7 @@ public class DataManager implements Serializable {
 
     }
 
-    private void readFinishedTrainingsData(DatabaseReference mDatabase, FirebaseUser currentUser) {
+    private void readFinishedTrainingsData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity) {
         DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Finished Trainings");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,6 +145,13 @@ public class DataManager implements Serializable {
                 for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
                     FinishedTraining newTrainingExecution = plansSnapshot.getValue(FinishedTraining.class);
                     finishedTrainings.add(newTrainingExecution);
+                }
+
+                numberOfLoads++;
+                Log.v("numberOfLoads", "finished: " + numberOfLoads);
+                if(numberOfLoads == 5) {
+
+                    activity.display();
                 }
             }
 
@@ -131,7 +162,7 @@ public class DataManager implements Serializable {
         });
     }
 
-    private void readWeightData(DatabaseReference mDatabase, FirebaseUser currentUser) {
+    private void readWeightData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity) {
         DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Weight");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -141,6 +172,12 @@ public class DataManager implements Serializable {
                     weightsUser.add(newWeight);
                 }
                 Collections.sort(weightsUser, new CustomWeightComparator());
+                numberOfLoads++;
+                Log.v("numberOfLoads", "weight: " + numberOfLoads);
+                if(numberOfLoads == 5) {
+
+                    activity.display();
+                }
             }
 
             @Override
@@ -150,25 +187,34 @@ public class DataManager implements Serializable {
         });
     }
 
-    private void readShuffleData(DatabaseReference mDatabase, FirebaseUser currentUser) {
+    private void readShuffleData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity) {
+        boolean exists = false;
         DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Shuffle");
+        Log.v("shuffle ref", "shuffle: " + ref);
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot plansSnapshot : snapshot.getChildren()) {
                     ShuffleTraining newTraining = new ShuffleTraining();
+
                     for(DataSnapshot pomSnapshot : plansSnapshot.getChildren()){
                         for(DataSnapshot exerciseSnapshot : pomSnapshot.getChildren()){
                             ShuffleExercise newExercise = exerciseSnapshot.getValue(ShuffleExercise.class);
                             newTraining.add(newExercise);
+
                         }
                     }
                     shuffleTrainings.add(newTraining);
+                    if(numberOfLoads == 5) {
+                        activity.display();
+                    }
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 throw error.toException();
+
             }
         });
     }
@@ -336,10 +382,26 @@ public class DataManager implements Serializable {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String date = snapshot.child("nextTraining").getValue(String.class);
-                int dayStrike = snapshot.child("daysInARow").getValue(Integer.class);
-                double currentWeight = snapshot.child("currentWeight").getValue(Double.class);
-                String lastDate = snapshot.child("lastLoggedDate").getValue(String.class);
+                String date;
+                int dayStrike;
+                double currentWeight;
+                String lastDate;
+                if(snapshot.child("nextTraining").getValue(String.class) != null)
+                    date = snapshot.child("nextTraining").getValue(String.class);
+                else
+                    date = "not specified";
+                if(snapshot.child("daysInARow").getValue(Integer.class) != null)
+                    dayStrike = snapshot.child("daysInARow").getValue(Integer.class);
+                else
+                    dayStrike = 0;
+                if(snapshot.child("currentWeight").getValue(Double.class) != null)
+                    currentWeight = snapshot.child("currentWeight").getValue(Double.class);
+                else
+                    currentWeight = 0;
+                if(snapshot.child("lastLoggedDate").getValue(String.class) != null)
+                    lastDate = snapshot.child("lastLoggedDate").getValue(String.class);
+                else
+                    lastDate = "1970-01-01";
                 Log.i("OverviewInfo", lastDate);
                 try {
                     callback.onDataReceived(date, currentWeight, dayStrike, lastDate);

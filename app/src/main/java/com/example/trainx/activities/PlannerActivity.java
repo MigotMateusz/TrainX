@@ -51,8 +51,10 @@ public class PlannerActivity extends AppCompatActivity {
             ArrayList<String> trainingUnits = new ArrayList<>();
             for(TrainingPlan tp :  dataManager.getTrainingPlans()){
                 if(tp.getName().equals(autoCompleteTextView.getText().toString())){
-                    for(TrainingUnit tu : tp.getUnitArrayList())
-                        trainingUnits.add(tu.getName());
+                    if(tp.getUnitArrayList() != null && tp.getUnitArrayList().size() > 0) {
+                        for(TrainingUnit tu : tp.getUnitArrayList())
+                            trainingUnits.add(tu.getName());
+                    }
                     break;
                 }
             }

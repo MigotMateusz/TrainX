@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.trainx.R;
+import com.example.trainx.activities.MainActivity;
 import com.example.trainx.activities.ShuffleActivity;
 import com.example.trainx.activities.TrainingExecActivity;
 import com.example.trainx.data.DataManager;
@@ -70,7 +71,7 @@ public class OverviewFragment extends Fragment {
         });
 
         try {
-            DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
+            DataManager dataManager = ((MainActivity)getActivity()).getDataManager();//(DataManager) getArguments().getSerializable("DataManager");
 
             if(dataManager != null)
                 if(dataManager.isTrainingToday() == true){
