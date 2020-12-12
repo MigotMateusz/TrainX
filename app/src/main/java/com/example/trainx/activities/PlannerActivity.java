@@ -137,6 +137,7 @@ public class PlannerActivity extends AppCompatActivity {
             }
 
         }
+        this.finish();
         //Intent intent = new Intent(PlannerActivity.this, MainActivity.class);
         //intent.putExtra("doWhat", 0);
         //startActivity(intent);

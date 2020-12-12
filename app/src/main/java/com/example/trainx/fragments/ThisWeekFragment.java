@@ -32,6 +32,12 @@ public class ThisWeekFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setDayCard(getView());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -57,6 +63,7 @@ public class ThisWeekFragment extends Fragment {
     }
 
     public void setDayCard(View myView){
+
         DataManager dataManager = (DataManager) getArguments().getSerializable("DataManager");
 
         MaterialCardView[] weekCardView = {myView.findViewById(R.id.mondayCard),

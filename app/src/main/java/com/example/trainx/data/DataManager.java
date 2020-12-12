@@ -36,6 +36,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class DataManager implements Serializable {
+    private static DataManager INSTANCE;
     private int numberOfLoads = 0;
     private ArrayList<TrainingPlan> trainingPlans;
     private ArrayList<TrainingExecution> trainingExecutions;
@@ -53,7 +54,7 @@ public class DataManager implements Serializable {
 
     private ArrayList<ShuffleTraining> shuffleTrainings;
 
-    public DataManager(MainActivity activity) {
+    private DataManager(MainActivity activity) {
         initArrays();
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -65,6 +66,17 @@ public class DataManager implements Serializable {
         readFinishedTrainingsData(mDatabase, currentUser, activity);
         readWeightData(mDatabase, currentUser, activity);
         readShuffleData(mDatabase, currentUser, activity);
+    }
+
+    public static DataManager getInstance(MainActivity mainActivity) {
+        if(INSTANCE == null) {
+            INSTANCE = new DataManager(mainActivity);
+        }
+        return INSTANCE;
+    }
+
+    public static DataManager getInstance() {
+        return INSTANCE;
     }
 
     private void initArrays() {

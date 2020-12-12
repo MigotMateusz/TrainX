@@ -1,12 +1,10 @@
 package com.example.trainx.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -28,7 +26,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dataManager = new DataManager(this);
+        dataManager = DataManager.getInstance(this);
+        if(dataManager != null)
+            this.display();
         prepareToolbar();
     }
 
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity{
     }
     private void setTab(){
         int test = getIntent().getIntExtra("doWhat", 0);
+
         switch(test) {
             case 0:
                 OverviewFragment overviewFragment = new OverviewFragment();
@@ -141,11 +142,6 @@ public class MainActivity extends AppCompatActivity{
         fragment.setArguments(newBundle);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.FrameLayout, fragment).commit();
-    }
-    @SuppressLint("MissingSuperCall")
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-
     }
 
     public DataManager getDataManager() {

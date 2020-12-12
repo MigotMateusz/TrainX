@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.trainx.activities.NewPlanActivity;
 import com.example.trainx.R;
@@ -38,10 +40,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
         final View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
 
         prepareUIElement(myView);
-
-        if(dataManager != null){
-            loadPlans(dataManager);
-        }
+        loadPlans(dataManager);
 
         return myView;
     }
@@ -59,20 +58,23 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     }
 
     private void loadPlans(DataManager dataManager) {
+        FrameLayout fL = getActivity().findViewById(R.id.FrameLayout);
+        fL.removeAllViews();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         fm.beginTransaction();
-
-        for(TrainingPlan tp : dataManager.getTrainingPlans()) {
-            String title = tp.getName();
-            String type = tp.getType();
-            boolean isActive = tp.getisActive();
-            Fragment newModule = new PlanModule(title, type, isActive);
-            Bundle arguments = new Bundle();
-            arguments.putSerializable("DataManager", dataManager);
-            newModule.setArguments(arguments);
-            ft.add(R.id.LlPlans, newModule);
-        }
+        if(dataManager != null)
+            for(TrainingPlan tp : dataManager.getTrainingPlans()) {
+                String title = tp.getName();
+                Log.v("Checker: ", title);
+                String type = tp.getType();
+                boolean isActive = tp.getisActive();
+                Fragment newModule = new PlanModule(title, type, isActive);
+                Bundle arguments = new Bundle();
+                arguments.putSerializable("DataManager", dataManager);
+                newModule.setArguments(arguments);
+                ft.add(R.id.LlPlans, newModule);
+            }
 
         ft.commit();
     }
