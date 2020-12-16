@@ -2,19 +2,18 @@ package com.example.trainx.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.example.trainx.activities.NewPlanActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.trainx.R;
+import com.example.trainx.activities.NewPlanActivity;
 import com.example.trainx.data.DataManager;
 import com.example.trainx.models.TrainingPlan;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -22,6 +21,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class PlansFragment extends Fragment implements NewPlanActivity.DataFromActivityToFragment {
     DataManager dataManager;
+    boolean isLoaded = false;
 
     public PlansFragment() {
     }
@@ -38,9 +38,10 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View myView =  inflater.inflate(R.layout.fragment_plans, container, false);
-
-        prepareUIElement(myView);
-        loadPlans(dataManager);
+        if(!isLoaded) {
+            prepareUIElement(myView);
+            loadPlans(dataManager);
+        }
 
         return myView;
     }
@@ -58,8 +59,7 @@ public class PlansFragment extends Fragment implements NewPlanActivity.DataFromA
     }
 
     private void loadPlans(DataManager dataManager) {
-        FrameLayout fL = getActivity().findViewById(R.id.FrameLayout);
-        fL.removeAllViews();
+
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         fm.beginTransaction();

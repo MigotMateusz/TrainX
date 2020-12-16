@@ -140,8 +140,10 @@ public class MainActivity extends AppCompatActivity{
             newBundle.putSerializable("DataManager", dataManager);
         }
         fragment.setArguments(newBundle);
+        FrameLayout fL = findViewById(R.id.FrameLayout);
+        fL.removeAllViews();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.FrameLayout, fragment).commit();
+                .replace(R.id.FrameLayout, fragment).commit();
     }
 
     public DataManager getDataManager() {

@@ -89,6 +89,7 @@ public class DataManager implements Serializable {
     }
 
     private void readTrainingPlansData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity) {
+        trainingPlans.clear();
         DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Plans");
         if(ref != null) {
             ref.addValueEventListener(new ValueEventListener() {
@@ -201,7 +202,7 @@ public class DataManager implements Serializable {
 
     private void readShuffleData(DatabaseReference mDatabase, FirebaseUser currentUser, MainActivity activity) {
         boolean exists = false;
-        DatabaseReference ref = mDatabase.child("users").child(currentUser.getUid()).child("Shuffle");
+        DatabaseReference ref = mDatabase.child("shuffle");
         Log.v("shuffle ref", "shuffle: " + ref);
 
         ref.addValueEventListener(new ValueEventListener() {

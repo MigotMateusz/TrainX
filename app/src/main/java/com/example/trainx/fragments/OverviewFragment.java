@@ -43,6 +43,8 @@ public class OverviewFragment extends Fragment {
     MaterialTextView yourText;
     MaterialTextView nextText;
     MaterialTextView dayTextView;
+    Date currentDate = Calendar.getInstance().getTime();
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     public OverviewFragment() {}
 
@@ -50,6 +52,7 @@ public class OverviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,23 +63,28 @@ public class OverviewFragment extends Fragment {
         yourText = myView.findViewById(R.id.yourText);
         nextText = myView.findViewById(R.id.nextTrainingDayText);
         MaterialTextView weightTextView = myView.findViewById(R.id.weightTextView);
-        DataManager.loadOverviewData(new OnOverviewDataReceive() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onDataReceived(String date, double weight, int strike, String lastDate) throws ParseException {
-                setDaysInARow(strike, lastDate);
-                weightTextView.setText(String.valueOf(weight));
+        DataManager.loadOverviewData((date, weight, strike, lastDate) -> {
+            setDaysInARow(strike, lastDate);
+            weightTextView.setText(String.valueOf(weight));
+            if(currentDate.before(new SimpleDateFormat("yyyy-MM-dd").parse(date))) {
                 nextText.setText(date);
+            } else if(currentDate.equals(new SimpleDateFormat("yyyy-MM-dd").parse(date))) {
+                yourText.setText("You have training planned today");
             }
+            else {
+                yourText.setText("You don't have any training planned yet");
+                nextText.setText("");
+            }
+
         });
 
         try {
-            DataManager dataManager = ((MainActivity)getActivity()).getDataManager();//(DataManager) getArguments().getSerializable("DataManager");
+            DataManager dataManager = ((MainActivity)getActivity()).getDataManager();
 
             if(dataManager != null)
                 if(dataManager.isTrainingToday() == true){
-                    button.setVisibility(View.VISIBLE);
                     yourText.setText("You have training planned today");
+                    button.setVisibility(View.VISIBLE);
                     nextText.setVisibility(View.GONE);
                     button.setOnClickListener(view -> {
                         if (dataManager.isTrainingDone())
@@ -89,9 +97,7 @@ public class OverviewFragment extends Fragment {
                         }
                     });
                 }
-                else {
-                    Date currentDate = Calendar.getInstance().getTime();
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                /*else {
                     String date = df.format(currentDate);
                     for(int i = 0; i < dataManager.getTrainingExecutions().size(); i++) {
                         Date today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(date);
@@ -101,16 +107,18 @@ public class OverviewFragment extends Fragment {
                             Log.i("OverviewLog", dataManager.getTrainingExecutions().get(i).getDate());
                             nextText.setText(dataManager.getTrainingExecutions().get(i).getDate());
                             break;
+                        } else {
+                            nextText.setText("");
                         }
                     }
-                }
+                }*/
 
 
 
             prepareWeightTextView(myView,dataManager);
             prepareUpdateButton(myView, dataManager);
             prepareShuffleButton(myView, dataManager);
-        } catch(NullPointerException | ParseException exception) {
+        } catch(NullPointerException exception /*| ParseException exception*/) {
             Toast.makeText(getActivity(), "Couldn't load data", Toast.LENGTH_SHORT).show();
         }
 
@@ -163,23 +171,15 @@ public class OverviewFragment extends Fragment {
                 final EditText input = new EditText(getContext());
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        double w = Double.parseDouble(input.getText().toString());
-                        Date currentDate = Calendar.getInstance().getTime();
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                        String date = df.format(currentDate);
-                        dataManager.addNewWeight(new Weight(w, date));
-                        prepareWeightTextView(myView, dataManager);
-                    }
+                builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                    double w = Double.parseDouble(input.getText().toString());
+                    Date currentDate = Calendar.getInstance().getTime();
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String date = df.format(currentDate);
+                    dataManager.addNewWeight(new Weight(w, date));
+                    prepareWeightTextView(myView, dataManager);
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+                builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
                 builder.show();
             }
         });
@@ -187,15 +187,12 @@ public class OverviewFragment extends Fragment {
 
     private void prepareShuffleButton(View myView, DataManager dataManager) {
         MaterialButton shuffleButton = myView.findViewById(R.id.shuffleButton);
-        shuffleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                Intent intent = new Intent(getActivity(), ShuffleActivity.class);
-                bundle.putSerializable("dataManager", dataManager);
-                intent.putExtra("bundle", bundle);
-                startActivity(intent);
-            }
+        shuffleButton.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            Intent intent = new Intent(getActivity(), ShuffleActivity.class);
+            bundle.putSerializable("dataManager", dataManager);
+            intent.putExtra("bundle", bundle);
+            startActivity(intent);
         });
     }
 
